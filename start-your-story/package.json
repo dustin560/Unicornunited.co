@@ -1,0 +1,15 @@
+{
+  "name": "start-your-story",
+  "version": "2.1.0",
+  "description": "Start your Story — an AI-powered brand workshop game by Unicorn",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "dotenv": "^16.4.5",
+    "resend": "^4.0.0"
+  }
+}

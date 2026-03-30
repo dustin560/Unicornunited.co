@@ -1,0 +1,1953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Start your Story — Brand Workshop Game by Unicorn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --night:#1A0A2E;--violet:#7B2FBE;--magenta:#C724B1;--rose:#E84D8A;
+  --lavender:#F8F0FF;--ink:#0d0818;--surface:#170d2a;--card:#1e1136;
+  --mist:rgba(248,240,255,.55);--soft:rgba(248,240,255,.35);--white:#fff;
+  --grad:linear-gradient(90deg,var(--violet),var(--magenta));
+  --grad3:linear-gradient(135deg,var(--violet) 0%,var(--magenta) 50%,var(--rose) 100%);
+  /* Quadrant colours */
+  --q-power:#E84D8A;--q-passion:#C724B1;--q-progress:#7B2FBE;--q-protection:#5B4FD6;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Sora',sans-serif;background:var(--ink);color:var(--white);overflow-x:hidden;min-height:100vh;-webkit-font-smoothing:antialiased;}
+button{font-family:'Sora',sans-serif;cursor:pointer;}
+input,textarea{font-family:'Sora',sans-serif;}
+a{color:inherit;text-decoration:none;}
+
+/* ── Shared ── */
+.grad-text{background:var(--grad3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.btn-primary{background:var(--grad);color:var(--white);font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.85rem 2rem;border:none;border-radius:2px;transition:all .3s;display:inline-flex;align-items:center;gap:.5rem;}
+.btn-primary:hover{opacity:.85;transform:translateY(-1px);}
+.btn-primary:disabled{opacity:.3;cursor:not-allowed;transform:none;}
+.btn-ghost{color:rgba(248,240,255,.5);font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:none;border:1px solid rgba(248,240,255,.12);padding:.85rem 1.8rem;border-radius:2px;transition:all .3s;}
+.btn-ghost:hover{color:var(--lavender);border-color:rgba(248,240,255,.25);}
+.stag{font-size:.6rem;font-weight:700;letter-spacing:.25em;text-transform:uppercase;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block;margin-bottom:.9rem;}
+
+/* ── Screens ── */
+.screen{display:none;min-height:100vh;flex-direction:column;align-items:center;justify-content:center;padding:2rem;position:relative;overflow:hidden;}
+.screen.active{display:flex;}
+
+/* ── Progress Bar ── */
+.progress-bar{position:fixed;top:0;left:0;right:0;height:3px;z-index:100;}
+.progress-fill{height:100%;background:var(--grad);transition:width .6s ease;width:0%;}
+
+/* ── Landing ── */
+.landing-bg{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 40%,rgba(123,47,190,.18) 0%,transparent 65%),radial-gradient(ellipse 40% 40% at 80% 80%,rgba(199,36,177,.08) 0%,transparent 60%),var(--ink);}
+.landing-ring{position:absolute;border-radius:50%;border:1px solid rgba(123,47,190,.1);top:50%;left:50%;transform:translate(-50%,-50%);}
+.landing-ring:nth-child(1){width:400px;height:400px;animation:rpulse 7s ease infinite;}
+.landing-ring:nth-child(2){width:620px;height:620px;border-color:rgba(199,36,177,.06);animation:rpulse 7s 2s ease infinite;}
+.landing-ring:nth-child(3){width:840px;height:840px;border-color:rgba(232,77,138,.03);animation:rpulse 7s 4s ease infinite;}
+@keyframes rpulse{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:1;}50%{transform:translate(-50%,-50%) scale(1.05);opacity:.5;}}
+.landing-content{position:relative;z-index:2;max-width:640px;text-align:center;}
+.landing-kicker{display:inline-flex;align-items:center;gap:.6rem;font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(248,240,255,.45);margin-bottom:2rem;}
+.landing-kicker::before,.landing-kicker::after{content:'';display:block;width:24px;height:1px;background:rgba(248,240,255,.2);}
+.landing-title{font-size:clamp(2.8rem,7vw,5.5rem);font-weight:800;line-height:1;letter-spacing:-.04em;margin-bottom:1.5rem;}
+.landing-sub{font-size:.95rem;font-weight:400;line-height:1.72;color:var(--mist);max-width:480px;margin:0 auto 2.8rem;}
+.landing-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+.landing-footer{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:.5rem;}
+.landing-footer span{font-size:.55rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(248,240,255,.12);}
+.scroll-line{width:1px;height:28px;background:linear-gradient(to bottom,rgba(123,47,190,.4),transparent);animation:sline 2s ease infinite;}
+@keyframes sline{0%{transform:scaleY(0);transform-origin:top;}50%{transform:scaleY(1);transform-origin:top;}51%{transform-origin:bottom;}100%{transform:scaleY(0);transform-origin:bottom;}}
+
+/* ── Setup ── */
+.setup-box{position:relative;z-index:2;background:var(--surface);border:1px solid rgba(123,47,190,.18);padding:2.5rem;max-width:480px;width:100%;}
+.setup-title{font-size:1.4rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.3rem;}
+.setup-sub{font-size:.82rem;color:var(--mist);margin-bottom:2rem;line-height:1.6;}
+.field{margin-bottom:1.2rem;text-align:left;}
+.field label{display:block;font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(248,240,255,.4);margin-bottom:.4rem;}
+.field input{width:100%;background:rgba(123,47,190,.07);border:1px solid rgba(123,47,190,.18);color:var(--white);font-size:.85rem;padding:.7rem .9rem;outline:none;border-radius:2px;transition:border-color .3s;}
+.field input:focus{border-color:rgba(123,47,190,.4);}
+.field input::placeholder{color:rgba(248,240,255,.18);}
+.field-hint{font-size:.65rem;color:rgba(248,240,255,.18);margin-top:.3rem;line-height:1.45;}
+
+/* ── Game Chrome ── */
+.game-chrome{position:relative;z-index:2;width:100%;max-width:860px;padding:0;}
+.game-chrome .screen{min-height:auto;padding:0;justify-content:flex-start;align-items:stretch;}
+.chapter-header{text-align:center;margin-bottom:2rem;padding-top:1rem;}
+.chapter-tag{font-size:.56rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.4rem;}
+.chapter-title{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;}
+.chapter-sub{font-size:.85rem;color:var(--mist);line-height:1.65;max-width:500px;margin:.8rem auto 0;}
+
+/* ── Narration Bar ── */
+.narration{background:rgba(123,47,190,.06);border:1px solid rgba(123,47,190,.1);border-radius:2px;padding:1rem 1.4rem;margin-bottom:1.5rem;font-size:.84rem;line-height:1.72;color:rgba(248,240,255,.8);animation:fadeUp .5s ease;}
+.narration strong{color:rgba(181,126,255,.95);}
+.narration .gm-tag{font-size:.5rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.35rem;display:block;}
+
+/* ── Binary Choice Cards ── */
+.binary-choices{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem;}
+.binary-card{background:var(--surface);border:1px solid rgba(123,47,190,.12);padding:1.5rem;text-align:center;cursor:pointer;transition:all .35s;position:relative;overflow:hidden;}
+.binary-card:hover{border-color:rgba(199,36,177,.35);transform:translateY(-2px);background:rgba(30,17,54,.9);}
+.binary-card.selected{border-color:var(--magenta);background:rgba(199,36,177,.1);box-shadow:0 0 30px rgba(199,36,177,.15);}
+.binary-card .card-svg{margin-bottom:.6rem;display:flex;justify-content:center;align-items:center;}
+.binary-card .card-word{font-size:1.1rem;font-weight:700;letter-spacing:-.02em;margin-bottom:.3rem;}
+.binary-card .card-desc{font-size:.72rem;color:rgba(248,240,255,.35);line-height:1.5;}
+
+/* ── Round Counter ── */
+.round-counter{text-align:center;margin-bottom:1.2rem;}
+.round-dots{display:flex;gap:6px;justify-content:center;margin-bottom:.4rem;}
+.round-dot{width:8px;height:8px;border-radius:50%;border:1.5px solid rgba(248,240,255,.12);transition:all .3s;}
+.round-dot.done{background:var(--magenta);border-color:var(--magenta);}
+.round-dot.current{border-color:var(--violet);box-shadow:0 0 8px rgba(123,47,190,.4);}
+.round-label{font-size:.6rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(248,240,255,.2);}
+
+/* ── SVG Positioning Map ── */
+.map-container{max-width:520px;width:100%;margin:0 auto 1.5rem;background:rgba(123,47,190,.03);border:1px solid rgba(123,47,190,.08);padding:1rem;border-radius:2px;}
+.map-container svg{width:100%;height:auto;display:block;}
+
+/* ── Archetype Cards ── */
+.arch-spread{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.8rem;margin-bottom:1.5rem;}
+.arch-card-mini{background:var(--surface);border:1px solid rgba(123,47,190,.1);padding:1rem;text-align:center;cursor:pointer;transition:all .35s;position:relative;}
+.arch-card-mini:hover{border-color:rgba(199,36,177,.3);transform:translateY(-2px);}
+.arch-card-mini.selected{border-color:var(--magenta);background:rgba(199,36,177,.08);box-shadow:0 0 20px rgba(199,36,177,.1);}
+.arch-card-mini.dimmed{opacity:.3;pointer-events:none;}
+.arch-card-mini .card-icon{margin-bottom:.4rem;display:flex;justify-content:center;align-items:center;}
+.arch-card-mini .card-name{font-size:.78rem;font-weight:700;margin-bottom:.2rem;}
+.arch-card-mini .card-hook{font-size:.62rem;color:rgba(248,240,255,.35);line-height:1.4;}
+.selection-count{text-align:center;font-size:.68rem;font-weight:600;color:rgba(248,240,255,.25);margin-bottom:.8rem;}
+
+/* ── Heatmap overlay for card voting ── */
+.arch-card-mini .heat-bar{position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--grad);transform:scaleX(0);transform-origin:left;transition:transform .6s ease;}
+
+/* ── Tournament Bracket ── */
+.bracket-match{display:grid;grid-template-columns:1fr auto 1fr;gap:1rem;align-items:center;margin-bottom:1.5rem;}
+.bracket-vs{font-size:.7rem;font-weight:800;color:rgba(248,240,255,.15);letter-spacing:.1em;}
+.bracket-card{background:var(--surface);border:1px solid rgba(123,47,190,.12);padding:1.4rem;text-align:center;cursor:pointer;transition:all .35s;}
+.bracket-card:hover{border-color:rgba(199,36,177,.3);transform:scale(1.02);}
+.bracket-card.selected{border-color:var(--magenta);background:rgba(199,36,177,.1);}
+.bracket-card .card-icon{margin-bottom:.3rem;display:flex;justify-content:center;align-items:center;}
+.bracket-card .card-name{font-size:.95rem;font-weight:700;margin-bottom:.15rem;}
+.bracket-card .card-hook{font-size:.7rem;color:rgba(248,240,255,.4);line-height:1.4;}
+
+/* ── Values Tower ── */
+.values-tower{display:flex;flex-direction:column;gap:0;margin-bottom:1.5rem;max-width:600px;width:100%;margin-left:auto;margin-right:auto;}
+.tower-tier{border:1px solid rgba(123,47,190,.1);padding:1.2rem;transition:all .3s;}
+.tower-tier.active{border-color:rgba(123,47,190,.25);background:rgba(123,47,190,.03);}
+.tower-tier.locked{opacity:.35;pointer-events:none;}
+.tier-header{display:flex;align-items:center;gap:.8rem;margin-bottom:.8rem;}
+.tier-icon{font-size:1.4rem;}
+.tier-label{font-size:.8rem;font-weight:700;letter-spacing:-.01em;}
+.tier-desc{font-size:.62rem;color:rgba(248,240,255,.3);font-weight:400;}
+.tier-values{display:flex;flex-wrap:wrap;gap:.4rem;}
+.value-chip{background:rgba(123,47,190,.05);border:1px solid rgba(123,47,190,.1);padding:.45rem .8rem;font-size:.68rem;font-weight:500;color:rgba(248,240,255,.5);cursor:pointer;transition:all .25s;border-radius:2px;user-select:none;}
+.value-chip:hover{border-color:rgba(199,36,177,.3);color:var(--white);}
+.value-chip.selected{border-color:var(--magenta);background:rgba(199,36,177,.1);color:var(--white);}
+.value-chip.arch-value{border-color:rgba(199,36,177,.25);color:rgba(248,240,255,.7);background:rgba(199,36,177,.06);}
+.tier-selection-count{font-size:.55rem;font-weight:600;color:rgba(248,240,255,.2);margin-top:.5rem;text-align:right;}
+
+/* ── Values Profile Chart ── */
+.values-chart{max-width:500px;width:100%;margin:0 auto 1.5rem;}
+.chart-bar-row{display:flex;align-items:center;gap:.8rem;margin-bottom:.5rem;}
+.chart-label{width:80px;font-size:.68rem;font-weight:600;color:rgba(248,240,255,.4);text-align:right;}
+.chart-track{flex:1;height:28px;background:rgba(123,47,190,.04);border:1px solid rgba(123,47,190,.06);position:relative;overflow:hidden;}
+.chart-fill{height:100%;transition:width .8s cubic-bezier(.4,0,.2,1);display:flex;align-items:center;padding-left:.5rem;}
+.chart-fill span{font-size:.6rem;font-weight:700;color:var(--white);letter-spacing:.05em;}
+
+/* ── Moodboard ── */
+.mood-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:.6rem;margin-bottom:1.5rem;}
+.mood-tile{aspect-ratio:1;border:1px solid rgba(123,47,190,.08);cursor:pointer;position:relative;overflow:hidden;transition:all .3s;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:.5rem;}
+.mood-tile:hover{border-color:rgba(199,36,177,.3);transform:scale(1.03);}
+.mood-tile.selected{border-color:var(--magenta);box-shadow:0 0 20px rgba(199,36,177,.15);}
+.mood-tile.selected::after{content:'✓';position:absolute;top:.4rem;right:.5rem;font-size:.7rem;color:var(--magenta);font-weight:700;}
+.mood-tile .tile-visual{width:100%;height:60%;border-radius:1px;margin-bottom:.3rem;}
+.mood-tile .tile-label{font-size:.62rem;font-weight:600;color:rgba(248,240,255,.5);}
+
+/* ── Tone Sliders ── */
+.tone-sliders{max-width:500px;width:100%;margin:0 auto 1.5rem;}
+.tone-row{margin-bottom:1rem;}
+.tone-labels{display:flex;justify-content:space-between;margin-bottom:.3rem;}
+.tone-labels span{font-size:.62rem;font-weight:600;color:rgba(248,240,255,.35);text-transform:uppercase;letter-spacing:.08em;}
+.tone-track{position:relative;height:6px;background:rgba(123,47,190,.08);border-radius:3px;cursor:pointer;}
+.tone-thumb{position:absolute;top:50%;transform:translate(-50%,-50%);width:18px;height:18px;border-radius:50%;background:var(--grad);border:2px solid var(--white);cursor:grab;transition:left .1s;box-shadow:0 0 10px rgba(199,36,177,.3);}
+.tone-track::before{content:'';position:absolute;left:0;top:0;bottom:0;background:var(--grad);border-radius:3px;transition:width .1s;}
+
+/* ── Word Cloud Input ── */
+.word-cloud{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1rem;min-height:40px;padding:.5rem;border:1px dashed rgba(123,47,190,.12);background:rgba(123,47,190,.02);}
+.word-tag{background:rgba(199,36,177,.1);border:1px solid rgba(199,36,177,.25);padding:.3rem .6rem;font-size:.68rem;font-weight:600;color:var(--white);display:flex;align-items:center;gap:.3rem;border-radius:2px;animation:fadeUp .3s ease;}
+.word-tag .remove{cursor:pointer;opacity:.4;font-size:.8rem;line-height:1;}
+.word-tag .remove:hover{opacity:1;}
+.word-input-row{display:flex;gap:.5rem;margin-bottom:1.5rem;}
+.word-input-row input{flex:1;background:rgba(123,47,190,.04);border:1px solid rgba(123,47,190,.12);color:var(--white);font-size:.8rem;padding:.55rem .8rem;outline:none;border-radius:2px;}
+.word-input-row input::placeholder{color:rgba(248,240,255,.15);}
+
+/* ── Brand World Output ── */
+.bw-hero{text-align:center;padding:2rem 0;margin-bottom:2rem;}
+.bw-hero h2{font-size:clamp(2rem,5vw,3rem);font-weight:800;letter-spacing:-.04em;line-height:1.05;margin-bottom:.6rem;}
+.bw-hero p{font-size:.88rem;color:var(--mist);line-height:1.7;max-width:500px;margin:0 auto;}
+
+.bw-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;max-width:700px;width:100%;margin-left:auto;margin-right:auto;}
+.bw-card{background:var(--surface);border:1px solid rgba(123,47,190,.12);padding:1.5rem;transition:border-color .3s;animation:fadeUp .5s ease both;}
+.bw-card:hover{border-color:rgba(123,47,190,.25);}
+.bw-card.full{grid-column:1/-1;}
+.bw-label{font-size:.52rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.5rem;}
+.bw-value{font-size:1.1rem;font-weight:700;color:var(--white);line-height:1.35;margin-bottom:.3rem;}
+.bw-desc{font-size:.8rem;color:var(--mist);line-height:1.65;}
+.bw-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.5rem;}
+.bw-tag{font-size:.58rem;font-weight:600;letter-spacing:.06em;padding:.3rem .6rem;border:1px solid rgba(123,47,190,.2);color:rgba(248,240,255,.5);border-radius:2px;}
+
+/* ── Trust Bars ── */
+/* (Trust scoring removed) */
+
+/* ── KBA Framework ── */
+.kba-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.6rem;margin-top:.5rem;}
+.kba-item{background:rgba(123,47,190,.04);border:1px solid rgba(123,47,190,.08);padding:.8rem;text-align:center;}
+.kba-label{font-size:.5rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--magenta);margin-bottom:.3rem;}
+.kba-text{font-size:.75rem;color:rgba(248,240,255,.7);line-height:1.5;}
+
+/* ── CTA ── */
+.bw-cta{text-align:center;padding:2rem;border:1px solid rgba(123,47,190,.1);background:rgba(123,47,190,.03);margin-top:1rem;max-width:700px;width:100%;margin-left:auto;margin-right:auto;}
+.bw-cta p{font-size:.82rem;color:var(--mist);line-height:1.6;margin-bottom:1rem;}
+
+/* ── Archetype Result Card ── */
+.arch-result{max-width:700px;width:100%;margin:0 auto 1.5rem;display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.arch-result-card{background:var(--surface);border:1px solid rgba(123,47,190,.15);overflow:hidden;animation:fadeUp .5s ease both;}
+.arc-header{padding:1.5rem;position:relative;overflow:hidden;}
+.arc-header::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--grad);}
+.arc-name{font-size:1.6rem;font-weight:800;letter-spacing:-.03em;margin-bottom:.2rem;}
+.arc-territory{font-size:.72rem;color:var(--magenta);font-weight:600;margin-bottom:.5rem;}
+.arc-desc{font-size:.78rem;color:var(--mist);line-height:1.65;}
+.arc-shadow{padding:1rem 1.5rem;background:rgba(0,0,0,.15);border-top:1px solid rgba(123,47,190,.06);}
+.arc-shadow-label{font-size:.5rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--rose);margin-bottom:.25rem;}
+.arc-shadow-text{font-size:.72rem;color:rgba(248,240,255,.4);line-height:1.5;}
+.arc-values{padding:1rem 1.5rem;border-top:1px solid rgba(123,47,190,.06);}
+.arc-values-label{font-size:.5rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(248,240,255,.25);margin-bottom:.35rem;}
+
+/* ── Manifesto Phase ── */
+.manifesto-form{display:flex;flex-direction:column;gap:1.5rem;margin-top:1rem;}
+.manifesto-block{background:var(--surface);border:1px solid rgba(123,47,190,.12);padding:1.5rem;position:relative;transition:border-color .3s;}
+.manifesto-block:focus-within{border-color:rgba(199,36,177,.3);}
+.manifesto-ring{display:flex;justify-content:center;margin-bottom:.6rem;}
+.manifesto-label{font-size:.6rem;font-weight:800;letter-spacing:.25em;text-transform:uppercase;text-align:center;margin-bottom:.5rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.manifesto-prompt{font-size:.85rem;color:rgba(248,240,255,.7);line-height:1.65;text-align:center;margin-bottom:.8rem;}
+.manifesto-input{width:100%;background:rgba(123,47,190,.05);border:1px solid rgba(123,47,190,.12);color:var(--white);font-size:.85rem;padding:.7rem .9rem;outline:none;border-radius:2px;resize:none;line-height:1.6;transition:border-color .3s;}
+.manifesto-input:focus{border-color:rgba(199,36,177,.35);}
+.manifesto-input::placeholder{color:rgba(248,240,255,.15);font-style:italic;}
+
+/* ── Visual Brand World Card ── */
+.brand-world-visual{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1rem;margin-top:.6rem;}
+.vbw-tile{background:rgba(123,47,190,.04);border:1px solid rgba(123,47,190,.08);padding:1rem;text-align:center;transition:all .3s;}
+.vbw-icon{margin-bottom:.5rem;display:flex;justify-content:center;}
+.vbw-label{font-size:.5rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(248,240,255,.25);margin-bottom:.3rem;}
+.vbw-value{font-size:.82rem;color:rgba(248,240,255,.7);line-height:1.5;}
+
+/* ── Manifesto Output Card ── */
+.manifesto-output{display:flex;flex-direction:column;gap:0;margin-top:.6rem;}
+.manifesto-row{display:grid;grid-template-columns:80px 1fr;gap:0;border-bottom:1px solid rgba(123,47,190,.06);}
+.manifesto-row:last-child{border-bottom:none;}
+.manifesto-row-label{font-size:.6rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase;padding:1rem;display:flex;align-items:center;justify-content:center;background:rgba(123,47,190,.04);}
+.manifesto-row-label.why-label{color:var(--rose);}
+.manifesto-row-label.how-label{color:var(--magenta);}
+.manifesto-row-label.what-label{color:var(--violet);}
+.manifesto-row-text{font-size:.84rem;color:rgba(248,240,255,.75);line-height:1.65;padding:1rem 1.2rem;}
+
+/* ── Brand Associations ── */
+.associations-cloud{display:flex;flex-wrap:wrap;gap:.6rem .9rem;align-items:baseline;justify-content:center;padding:.8rem 0;margin-top:.4rem;}
+.assoc-word{font-weight:600;color:rgba(248,240,255,.65);letter-spacing:-.01em;transition:color .3s;}
+
+/* ── Benchmark Brands ── */
+.benchmark-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:.6rem;}
+.benchmark-card{background:rgba(123,47,190,.03);border:1px solid rgba(123,47,190,.08);overflow:hidden;}
+.benchmark-header{padding:1rem 1.2rem;border-bottom:1px solid rgba(123,47,190,.06);}
+.benchmark-name{font-size:1.1rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.25rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.benchmark-why{font-size:.75rem;color:rgba(248,240,255,.45);line-height:1.55;}
+.benchmark-examples{padding:.8rem 1.2rem;}
+.benchmark-examples-label{font-size:.48rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(248,240,255,.2);margin-bottom:.5rem;}
+.benchmark-example{font-size:.75rem;color:rgba(248,240,255,.55);line-height:1.55;padding:.35rem 0 .35rem .8rem;border-left:2px solid rgba(123,47,190,.15);margin-bottom:.4rem;}
+@media(max-width:640px){.benchmark-grid{grid-template-columns:1fr;}}
+
+/* ── Synthesis Reveal ── */
+.synth-reveal{text-align:center;}
+.synth-sources{display:flex;align-items:center;justify-content:center;gap:.8rem;margin-bottom:1.5rem;flex-wrap:wrap;}
+.synth-source{display:flex;align-items:center;gap:.4rem;background:rgba(123,47,190,.06);border:1px solid rgba(123,47,190,.1);padding:.5rem .8rem;border-radius:2px;}
+.synth-source span{font-size:.75rem;font-weight:600;color:rgba(248,240,255,.6);}
+.synth-plus{font-size:1.2rem;font-weight:800;color:rgba(248,240,255,.15);}
+.synth-arrow{font-size:1.4rem;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.synth-card{max-width:480px;margin:0 auto;border-image:linear-gradient(135deg,var(--violet),var(--magenta),var(--rose)) 1;border-width:1px;border-style:solid;}
+.synth-card .arc-header::before{height:4px;background:var(--grad3);}
+
+/* ── Loading Spinner ── */
+.loading-overlay{position:fixed;inset:0;z-index:200;background:rgba(13,8,24,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;transition:opacity .5s;}
+.loading-overlay.hidden{opacity:0;pointer-events:none;}
+.loading-ring{width:52px;height:52px;border:2px solid rgba(123,47,190,.15);border-top-color:var(--magenta);border-radius:50%;animation:spin .9s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.loading-text{font-size:.78rem;color:rgba(248,240,255,.4);font-weight:500;}
+
+/* ── Animations ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.fade-up{animation:fadeUp .5s ease both;}
+.fade-up-d1{animation:fadeUp .5s .1s ease both;}
+.fade-up-d2{animation:fadeUp .5s .2s ease both;}
+
+/* ── Responsive ── */
+@media(max-width:640px){
+  .binary-choices{grid-template-columns:1fr;}
+  .arch-spread{grid-template-columns:repeat(auto-fill,minmax(110px,1fr));}
+  .bw-grid{grid-template-columns:1fr;}
+  .arch-result{grid-template-columns:1fr;}
+  .kba-grid{grid-template-columns:1fr;}
+  .bracket-match{grid-template-columns:1fr;gap:.5rem;}
+  .bracket-vs{display:none;}
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<!-- Loading -->
+<div class="loading-overlay hidden" id="loadingOverlay">
+  <div class="loading-ring"></div>
+  <div class="loading-text" id="loadingText">The Game Master is thinking...</div>
+</div>
+
+<!-- ═══ LANDING ═══ -->
+<div class="screen active" id="landing">
+  <div class="landing-bg"></div>
+  <div class="landing-ring"></div><div class="landing-ring"></div><div class="landing-ring"></div>
+  <div class="landing-content">
+    <div class="landing-kicker">A Unicorn Workshop Experience</div>
+    <h1 class="landing-title">Start your<br><span class="grad-text">Story.</span></h1>
+    <p class="landing-sub">A brand workshop, reimagined as a game. Play to discover who you are, what you stand for, and the story only you can tell.</p>
+    <div class="landing-actions">
+      <button class="btn-primary" onclick="showScreen('setup')">Begin the Game</button>
+    </div>
+  </div>
+  <div class="landing-footer">
+    <div class="scroll-line"></div>
+    <span>By Unicorn</span>
+  </div>
+</div>
+
+<!-- ═══ SETUP ═══ -->
+<div class="screen" id="setup">
+  <div class="landing-bg"></div>
+  <div class="setup-box">
+    <div class="stag" style="text-align:center;">Game Setup</div>
+    <h2 class="setup-title" style="text-align:center;">Before we start</h2>
+    <p class="setup-sub" style="text-align:center;">A few details so the Game Master can tailor the experience.</p>
+    <div class="field">
+      <label>Your Name</label>
+      <input type="text" id="playerName" placeholder="e.g. Dustin" maxlength="24">
+    </div>
+    <div class="field">
+      <label>Your Company / Brand Name</label>
+      <input type="text" id="brandName" placeholder="e.g. Acme Studios" maxlength="40">
+    </div>
+    <div id="keyError" style="display:none;color:var(--rose);font-size:.72rem;margin-bottom:.8rem;text-align:center;"></div>
+    <button class="btn-primary" style="width:100%;justify-content:center;margin-top:.5rem;" onclick="beginGame()">Start your Story</button>
+    <button class="btn-ghost" style="width:100%;margin-top:.6rem;" onclick="showScreen('landing')">Back</button>
+  </div>
+</div>
+
+<!-- ═══ GAME AREA ═══ -->
+<div class="screen" id="gameScreen" style="justify-content:flex-start;padding-top:3rem;">
+  <div class="landing-bg"></div>
+  <div class="game-chrome" id="gameArea"></div>
+</div>
+
+<script>
+// ═══════════════════════════════════════
+// API calls go through the server proxy — no key needed here
+// ═══════════════════════════════════════
+
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
+const G = {
+  playerName: '', brandName: '',
+  chapter: 0,
+  // Chapter 1 — Compass
+  compassScores: { freedom: 0, order: 0, ego: 0, social: 0 },
+  quadrant: null, // power, passion, progress, protection
+  // Chapter 2 — Archetypes
+  selectedArchetypes: [],
+  finalArchetypes: [],       // the 2 bracket finalists (source material)
+  synthesizedArchetype: null, // the ONE blended archetype generated by AI
+  // Chapter 3 — Values
+  values: { foundation: [], current: [], constellation: [] },
+  // Chapter 4 — Moodboard + Manifesto
+  moodSelections: [], toneValues: {}, brandWords: [],
+  manifesto: { why:'', how:'', what:'' },
+  // Chapter 5 — Output
+  brandWorld: null,
+  // AI context
+  aiContext: {}
+};
+
+// ═══════════════════════════════════════
+// ARCHETYPE DATA (based on Dustin's model)
+// ═══════════════════════════════════════
+// ── SVG ICON GENERATOR ──
+// Minimal geometric icons in Unicorn palette, unique per archetype
+function archIcon(id, size=48) {
+  const s = size;
+  const icons = {
+    firestarter: `<svg width="${s}" height="${s}" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M24 4L28 18L38 14L32 26L42 32L28 30L24 44L20 30L6 32L16 26L10 14L20 18Z" stroke="url(#gFire)" stroke-width="1.5" fill="rgba(232,77,138,.1)"/>
+      <circle cx="24" cy="24" r="6" fill="url(#gFire)" opacity=".7"/>
+      <defs><linearGradient id="gFire" x1="6" y1="44" x2="42" y2="4"><stop stop-color="#E84D8A"/><stop offset="1" stop-color="#C724B1"/></linearGradient></defs></svg>`,
+    catalyst: `<svg width="${s}" height="${s}" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="24" cy="24" r="16" stroke="url(#gCat)" stroke-width="1.5" fill="rgba(232,77,138,.05)"/>
+      <path d="M24 8V24L36 32" stroke="url(#gCat)" stroke-width="1.5" stroke-linecap="round"/>
+      <circle cx="24" cy="24" r="3" fill="url(#gCat)"/>
+      <circle cx="24" cy="8" r="2" fill="#E84D8A" opacity=".6"/>
+      <circle cx="36" cy="32" r="2" fill="#E84D8A" opacity=".6"/>
+      <defs><linearGradient id="gCat" x1="8" y1="40" x2="40" y2="8"><stop stop-color="#E84D8A"/><stop offset="1" stop-color="#C724B1"/></linearGradient></defs></svg>`,
+    vanguard: `<svg width="${s}" height="${s}" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M24 4L40 40H8Z" stroke="url(#gVan)" stroke-width="1.5" fill="rgba(232,77,138,.06)" stroke-linejoin="round"/>
+      <path d="M24 16L32 36H16Z" stroke="url(#gVan)" stroke-width="1" opacity=".4" stroke-linejoin="round"/>
+      <circle cx="24" cy="22" r="3" fill="url(#gVan)" opacity=".8"/>
+      <defs><linearGradient id="gVan" x1="8" y1="40" x2="40" y2="4"><stop stop-color="#E84D8A"/><stop offset="1" stop-color="#ff6b9d"/></linearGradient></defs></svg>`,
+    shapeshifter: `<svg width="${s}" height="${s}" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M24 6C30 14 38 18 38 26C38 34 32 42 24 42C16 42 10 34 10 26C10 18 18 14 24 6Z" stroke="url(#gShp)" stroke-width="1.5" fill="rgba(199,36,177,.06)"/>
+      <path d="M24 16C28 20 32 22 32 28C32 32 28 36 24 36" stroke="url(#gShp)" stroke-width="1" opacity=".4"/>
+      <circle cx="22" cy="26" r="3" fill="url(#gShp)" opacity=".7"/>
+      <defs><linearGradient id="gShp" x1="10" y1="42" x2="38" y2="6"><stop stop-color="#C724B1"/><stop offset="1" stop-color="#E84D8A"/></linearGradient></defs></svg>`,
+    wayfinder: `<svg width="${s}" height="${s}" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="24" cy="24" r="18" stroke="rgba(199,36,177,.2)" stroke-width="1"/>
+      <path d="M24 6L28 20L42 24L28 28L24 42L20 28L6 24L20 20Z" stroke="url(#gWay)" stroke-width="1.5" fill="rgba(199,36,177,.08)"/>
+      <circle cx="24" cy="24" r="3" fill="url(#gWay)"/>
+      <defs><linearGradient id="gWay" x1="6" y1="42" x2="42" y2="6"><stop stop-color="#C724B1"/><stop offset="1" stop-color="#9B59B6"/></linearGradient></defs></svg>`,
+    spark: `<svg width="${s}" height="${s}" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M24 4V14M24 34V44M4 24H14M34 24H44M10 10L17 17M31 31L38 38M38 10L31 17M17 31L10 38" stroke="url(#gSpk)" stroke-width="1.5" stroke-linecap="round"/>
+      <circle cx="24" cy="24" r="7" stroke="url(#gSpk)" stroke-width="1.5" fill="rgba(199,36,177,.08)"/>
+      <circle cx="24" cy="24" r="3" fill="url(#gSpk)" opacity=".8"/>
+      <defs><linearGradient id="gSpk" x1="4" y1="44" x2="44" y2="4"><stop stop-color="#C724B1"/><stop offset="1" stop-color="#E84D8A"/></linearGradient></defs></svg>`,
+    strategist: `<svg width="${s}" height="${s}" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="8" y="8" width="32" height="32" rx="2" stroke="url(#gStr)" stroke-width="1.5" fill="rgba(123,47,190,.05)"/>
+      <line x1="8" y1="20" x2="40" y2="20" stroke="url(#gStr)" stroke-width="1" opacity=".3"/>
+      <line x1="8" y1="32" x2="40" y2="32" stroke="url(#gStr)" stroke-width="1" opacity=".3"/>
+      <line x1="20" y1="8" x2="20" y2="40" stroke="url(#gStr)" stroke-width="1" opacity=".3"/>
+      <line x1="32" y1="8" x2="32" y2="40" stroke="url(#gStr)" stroke-width="1" opacity=".3"/>
+      <circle cx="20" cy="20" r="3" fill="url(#gStr)" opacity=".8"/>
+      <circle cx="32" cy="14" r="2" fill="url(#gStr)" opacity=".5"/>
+      <circle cx="14" cy="32" r="2" fill="url(#gStr)" opacity=".5"/>
+      <defs><linearGradient id="gStr" x1="8" y1="40" x2="40" y2="8"><stop stop-color="#7B2FBE"/><stop offset="1" stop-color="#9B59B6"/></linearGradient></defs></svg>`,
+    oracle: `<svg width="${s}" height="${s}" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="24" cy="24" r="18" stroke="url(#gOra)" stroke-width="1" fill="rgba(123,47,190,.03)"/>
+      <circle cx="24" cy="24" r="12" stroke="url(#gOra)" stroke-width="1" opacity=".5"/>
+      <circle cx="24" cy="24" r="6" stroke="url(#gOra)" stroke-width="1.5" fill="rgba(123,47,190,.08)"/>
+      <circle cx="24" cy="24" r="2.5" fill="url(#gOra)"/>
+      <path d="M24 6V12M24 36V42" stroke="url(#gOra)" stroke-width="1" opacity=".3"/>
+      <defs><linearGradient id="gOra" x1="6" y1="42" x2="42" y2="6"><stop stop-color="#7B2FBE"/><stop offset="1" stop-color="#C724B1"/></linearGradient></defs></svg>`,
+    forgemaster: `<svg width="${s}" height="${s}" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M14 40L24 8L34 40" stroke="url(#gFrg)" stroke-width="1.5" fill="rgba(123,47,190,.06)" stroke-linejoin="round"/>
+      <line x1="18" y1="28" x2="30" y2="28" stroke="url(#gFrg)" stroke-width="1.5"/>
+      <circle cx="24" cy="18" r="3" fill="url(#gFrg)" opacity=".7"/>
+      <line x1="10" y1="40" x2="38" y2="40" stroke="url(#gFrg)" stroke-width="1.5" stroke-linecap="round"/>
+      <defs><linearGradient id="gFrg" x1="10" y1="40" x2="38" y2="8"><stop stop-color="#7B2FBE"/><stop offset="1" stop-color="#5B4FD6"/></linearGradient></defs></svg>`,
+    sentinel: `<svg width="${s}" height="${s}" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M24 4L40 14V30C40 36 33 42 24 44C15 42 8 36 8 30V14Z" stroke="url(#gSen)" stroke-width="1.5" fill="rgba(91,79,214,.06)"/>
+      <path d="M24 14L32 20V28C32 32 28 36 24 38" stroke="url(#gSen)" stroke-width="1" opacity=".3"/>
+      <circle cx="24" cy="24" r="4" fill="url(#gSen)" opacity=".7"/>
+      <defs><linearGradient id="gSen" x1="8" y1="44" x2="40" y2="4"><stop stop-color="#5B4FD6"/><stop offset="1" stop-color="#7B2FBE"/></linearGradient></defs></svg>`,
+    harbour: `<svg width="${s}" height="${s}" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M6 32C6 32 14 24 24 24C34 24 42 32 42 32" stroke="url(#gHrb)" stroke-width="1.5" fill="rgba(91,79,214,.05)"/>
+      <path d="M10 36C10 36 16 30 24 30C32 30 38 36 38 36" stroke="url(#gHrb)" stroke-width="1" opacity=".3"/>
+      <line x1="24" y1="8" x2="24" y2="24" stroke="url(#gHrb)" stroke-width="1.5"/>
+      <circle cx="24" cy="8" r="3" fill="url(#gHrb)" opacity=".7"/>
+      <line x1="8" y1="40" x2="40" y2="40" stroke="url(#gHrb)" stroke-width="1.5" stroke-linecap="round"/>
+      <defs><linearGradient id="gHrb" x1="6" y1="40" x2="42" y2="8"><stop stop-color="#5B4FD6"/><stop offset="1" stop-color="#7B8FD6"/></linearGradient></defs></svg>`,
+    weaver: `<svg width="${s}" height="${s}" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="24" cy="16" r="8" stroke="url(#gWvr)" stroke-width="1.5" fill="rgba(91,79,214,.05)"/>
+      <circle cx="14" cy="34" r="8" stroke="url(#gWvr)" stroke-width="1.5" fill="rgba(91,79,214,.05)"/>
+      <circle cx="34" cy="34" r="8" stroke="url(#gWvr)" stroke-width="1.5" fill="rgba(91,79,214,.05)"/>
+      <circle cx="24" cy="26" r="2.5" fill="url(#gWvr)" opacity=".8"/>
+      <defs><linearGradient id="gWvr" x1="6" y1="42" x2="42" y2="6"><stop stop-color="#5B4FD6"/><stop offset="1" stop-color="#C724B1"/></linearGradient></defs></svg>`,
+  };
+  return icons[id] || `<div style="width:${s}px;height:${s}px;background:var(--grad);border-radius:50%;opacity:.3;"></div>`;
+}
+
+const ARCHETYPES = [
+  // ── POWER quadrant (Freedom + Ego) ── Energy, Vitality, Creation, Transformation
+  { id:'firestarter', name:'The Firestarter', quadrant:'power', territory:'Creation',
+    hook:'Ignites change others are afraid to start',
+    desc:'You don\'t wait for permission — you light the match. Firestarter brands exist to disrupt, provoke, and force the conversation nobody else will have. You believe the status quo is the enemy.',
+    shadow:'Can become reckless, burning bridges just to watch them fall. The urge to disrupt can override the need to build.',
+    values:['Disruption','Authenticity','Defiance','Courage'] },
+  { id:'catalyst', name:'The Catalyst', quadrant:'power', territory:'Transformation',
+    hook:'Transforms everything they touch',
+    desc:'You don\'t just change things — you make change feel inevitable. Catalyst brands see the hidden potential in people and systems, then unlock it. Where you go, transformation follows.',
+    shadow:'Can become impatient with those who move slowly. Risk of burning people out in the pursuit of transformation.',
+    values:['Transformation','Ambition','Momentum','Impact'] },
+  { id:'vanguard', name:'The Vanguard', quadrant:'power', territory:'Creation',
+    hook:'First to move, first to build, first to arrive',
+    desc:'You lead from the front because nobody else is going where you\'re going. Vanguard brands are pioneers who create markets, set standards, and make the future feel closer.',
+    shadow:'Can become isolated at the frontier. Risk of outpacing your audience and building for a world that hasn\'t arrived yet.',
+    values:['Innovation','Vision','Leadership','Boldness'] },
+
+  // ── PASSION quadrant (Freedom + Social) ── Warmth, Inspiration, Discovery
+  { id:'shapeshifter', name:'The Shapeshifter', quadrant:'passion', territory:'Transformation',
+    hook:'Adapts, evolves, and reimagines endlessly',
+    desc:'You see possibilities where others see fixed forms. Shapeshifter brands transform perception itself — reframing how people think, feel, and believe. The impossible is just something you haven\'t tried yet.',
+    shadow:'Can become elusive, changing so often that people lose trust in what you actually stand for.',
+    values:['Transformation','Intuition','Wonder','Possibility'] },
+  { id:'wayfinder', name:'The Wayfinder', quadrant:'passion', territory:'Discovery',
+    hook:'Charts paths through the unknown',
+    desc:'You\'re driven by the frontier — what\'s beyond, what\'s next, what nobody has mapped. Wayfinder brands inspire freedom and curiosity, inviting others on a journey they didn\'t know they needed.',
+    shadow:'Can become restless, always seeking the next horizon and never putting down roots.',
+    values:['Freedom','Curiosity','Adventure','Discovery'] },
+  { id:'spark', name:'The Spark', quadrant:'passion', territory:'Inspiration',
+    hook:'Ignites joy and possibility in others',
+    desc:'You make people feel alive. Spark brands use energy, warmth, and playful irreverence to cut through the noise. Serious doesn\'t mean solemn — you prove the best ideas travel on a smile.',
+    shadow:'Can be perceived as lightweight when depth is needed. Risk of trading substance for sparkle.',
+    values:['Joy','Energy','Connection','Warmth'] },
+
+  // ── PROGRESS quadrant (Order + Ego) ── Intellect, Strategy, Authority, Vision
+  { id:'strategist', name:'The Strategist', quadrant:'progress', territory:'Authority',
+    hook:'Sees ten moves ahead and builds accordingly',
+    desc:'You bring order to chaos and build things that last. Strategist brands earn authority through expertise, precision, and the quiet confidence that comes from having done the hard thinking others skip.',
+    shadow:'Can become rigid or over-engineered. Risk of building perfect systems that forget about the humans inside them.',
+    values:['Expertise','Precision','Strategy','Excellence'] },
+  { id:'oracle', name:'The Oracle', quadrant:'progress', territory:'Vision',
+    hook:'Sees patterns others miss entirely',
+    desc:'You read the signals before they become trends. Oracle brands are trusted for depth, clarity, and the ability to make complexity feel navigable. People come to you when the stakes are high.',
+    shadow:'Can become paralysed by analysis, or preachy with their insights. Knowing everything means nothing if you never act.',
+    values:['Wisdom','Clarity','Foresight','Truth'] },
+  { id:'forgemaster', name:'The Forgemaster', quadrant:'progress', territory:'Authority',
+    hook:'Crafts what endures long after the hype fades',
+    desc:'You build with intention. Every detail matters, every decision is deliberate. Forgemaster brands are respected for their craft, their standards, and the quality that speaks louder than any campaign.',
+    shadow:'Can become perfectionist to the point of paralysis. Risk of being so focused on craft that you miss the moment.',
+    values:['Mastery','Quality','Integrity','Endurance'] },
+
+  // ── PROTECTION quadrant (Order + Social) ── Safety, Compassion, Reassurance
+  { id:'sentinel', name:'The Sentinel', quadrant:'protection', territory:'Reassurance',
+    hook:'Stands guard so others can thrive',
+    desc:'You stand between your people and the chaos. Sentinel brands build unwavering trust through reliability, safety, and a deep commitment to protecting what matters most.',
+    shadow:'Can become rigid, resisting change in the name of stability. Guarding too tightly can stifle the very thing you protect.',
+    values:['Trust','Safety','Loyalty','Stability'] },
+  { id:'harbour', name:'The Harbour', quadrant:'protection', territory:'Compassion',
+    hook:'The calm in every storm, the home in every journey',
+    desc:'You exist to shelter. Harbour brands create the conditions for people to rest, heal, and gather strength. In a world that moves too fast, you\'re the place where people remember who they are.',
+    shadow:'Can become self-sacrificing, giving so much that nothing is left. Risk of enabling dependency instead of growth.',
+    values:['Empathy','Generosity','Sanctuary','Belonging'] },
+  { id:'weaver', name:'The Weaver', quadrant:'protection', territory:'Compassion',
+    hook:'Connects threads others don\'t even see',
+    desc:'You build community. Weaver brands see the invisible connections between people, ideas, and moments — and strengthen them. Your superpower isn\'t standing out, it\'s bringing together.',
+    shadow:'Can become invisible, so focused on others that your own identity fades. Risk of being taken for granted.',
+    values:['Community','Reliability','Support','Consistency'] },
+];
+
+// ── COMPASS ICON GENERATOR ──
+function compassIcon(key, sz=44) {
+  const g = (id,c1,c2) => `<defs><linearGradient id="${id}" x1="0" y1="${sz}" x2="${sz}" y2="0"><stop stop-color="${c1}"/><stop offset="1" stop-color="${c2}"/></linearGradient></defs>`;
+  const icons = {
+    challenge: `<svg width="${sz}" height="${sz}" viewBox="0 0 44 44" fill="none">${g('gc1','#E84D8A','#C724B1')}<path d="M22 4L26 16L38 12L30 22L40 30L26 28L22 40L18 28L4 30L14 22L6 12L18 16Z" stroke="url(#gc1)" stroke-width="1.2" fill="rgba(232,77,138,.08)"/></svg>`,
+    nurture: `<svg width="${sz}" height="${sz}" viewBox="0 0 44 44" fill="none">${g('gc2','#5B4FD6','#7B2FBE')}<path d="M22 38C22 38 8 28 8 18C8 12 12 8 18 10C20 10.8 22 14 22 14C22 14 24 10.8 26 10C32 8 36 12 36 18C36 28 22 38 22 38Z" stroke="url(#gc2)" stroke-width="1.2" fill="rgba(91,79,214,.06)"/><line x1="22" y1="30" x2="22" y2="22" stroke="url(#gc2)" stroke-width="1" opacity=".4"/></svg>`,
+    energy: `<svg width="${sz}" height="${sz}" viewBox="0 0 44 44" fill="none">${g('gc3','#E84D8A','#ff6b9d')}<path d="M26 4L16 20H28L18 40" stroke="url(#gc3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="22" cy="22" r="3" fill="url(#gc3)" opacity=".5"/></svg>`,
+    trust: `<svg width="${sz}" height="${sz}" viewBox="0 0 44 44" fill="none">${g('gc4','#5B4FD6','#7B8FD6')}<circle cx="16" cy="22" r="8" stroke="url(#gc4)" stroke-width="1.2" fill="rgba(91,79,214,.04)"/><circle cx="28" cy="22" r="8" stroke="url(#gc4)" stroke-width="1.2" fill="rgba(91,79,214,.04)"/><circle cx="22" cy="22" r="3" fill="url(#gc4)" opacity=".6"/></svg>`,
+    vision: `<svg width="${sz}" height="${sz}" viewBox="0 0 44 44" fill="none">${g('gc5','#C724B1','#7B2FBE')}<circle cx="22" cy="22" r="16" stroke="url(#gc5)" stroke-width="1" opacity=".3"/><circle cx="22" cy="22" r="10" stroke="url(#gc5)" stroke-width="1.2" fill="rgba(199,36,177,.05)"/><circle cx="22" cy="22" r="4" fill="url(#gc5)" opacity=".7"/><line x1="22" y1="2" x2="22" y2="8" stroke="url(#gc5)" stroke-width="1" opacity=".3"/></svg>`,
+    certainty: `<svg width="${sz}" height="${sz}" viewBox="0 0 44 44" fill="none">${g('gc6','#5B4FD6','#7B2FBE')}<path d="M22 4L38 14V28C38 34 30 40 22 42C14 40 6 34 6 28V14Z" stroke="url(#gc6)" stroke-width="1.2" fill="rgba(91,79,214,.05)"/><circle cx="22" cy="22" r="4" fill="url(#gc6)" opacity=".5"/></svg>`,
+    ambition: `<svg width="${sz}" height="${sz}" viewBox="0 0 44 44" fill="none">${g('gc7','#E84D8A','#C724B1')}<path d="M22 4L36 38H8Z" stroke="url(#gc7)" stroke-width="1.2" fill="rgba(232,77,138,.05)" stroke-linejoin="round"/><line x1="22" y1="18" x2="22" y2="4" stroke="url(#gc7)" stroke-width="1.5" stroke-linecap="round"/><circle cx="22" cy="18" r="3" fill="url(#gc7)" opacity=".6"/></svg>`,
+    purpose: `<svg width="${sz}" height="${sz}" viewBox="0 0 44 44" fill="none">${g('gc8','#7B2FBE','#5B4FD6')}<circle cx="22" cy="22" r="16" stroke="url(#gc8)" stroke-width="1" opacity=".2"/><circle cx="22" cy="22" r="10" stroke="url(#gc8)" stroke-width="1" opacity=".3"/><circle cx="22" cy="22" r="4" stroke="url(#gc8)" stroke-width="1.2" fill="rgba(123,47,190,.08)"/><circle cx="22" cy="22" r="1.5" fill="url(#gc8)"/></svg>`,
+    transform: `<svg width="${sz}" height="${sz}" viewBox="0 0 44 44" fill="none">${g('gc9','#C724B1','#E84D8A')}<path d="M12 32C12 32 16 12 22 12C28 12 32 32 32 32" stroke="url(#gc9)" stroke-width="1.2" fill="rgba(199,36,177,.05)"/><path d="M8 32C8 32 14 18 22 18C30 18 36 32 36 32" stroke="url(#gc9)" stroke-width="1" opacity=".2"/><circle cx="22" cy="16" r="3" fill="url(#gc9)" opacity=".6"/></svg>`,
+    belong: `<svg width="${sz}" height="${sz}" viewBox="0 0 44 44" fill="none">${g('gc10','#5B4FD6','#C724B1')}<circle cx="15" cy="18" r="6" stroke="url(#gc10)" stroke-width="1.2" fill="rgba(91,79,214,.04)"/><circle cx="29" cy="18" r="6" stroke="url(#gc10)" stroke-width="1.2" fill="rgba(91,79,214,.04)"/><circle cx="22" cy="30" r="6" stroke="url(#gc10)" stroke-width="1.2" fill="rgba(91,79,214,.04)"/><circle cx="22" cy="22" r="2" fill="url(#gc10)" opacity=".6"/></svg>`,
+    wave: `<svg width="${sz}" height="${sz}" viewBox="0 0 44 44" fill="none">${g('gc11','#E84D8A','#C724B1')}<path d="M4 28C10 18 16 14 22 22C28 30 34 26 40 16" stroke="url(#gc11)" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M4 34C10 24 16 20 22 28C28 36 34 32 40 22" stroke="url(#gc11)" stroke-width="1" opacity=".2" fill="none"/></svg>`,
+    mountain: `<svg width="${sz}" height="${sz}" viewBox="0 0 44 44" fill="none">${g('gc12','#5B4FD6','#7B2FBE')}<path d="M4 38L18 10L26 24L32 14L40 38Z" stroke="url(#gc12)" stroke-width="1.2" fill="rgba(91,79,214,.05)" stroke-linejoin="round"/><circle cx="18" cy="14" r="2" fill="url(#gc12)" opacity=".5"/></svg>`,
+    standout: `<svg width="${sz}" height="${sz}" viewBox="0 0 44 44" fill="none">${g('gc13','#E84D8A','#ff6b9d')}<polygon points="22,4 26,16 38,16 28,24 32,36 22,28 12,36 16,24 6,16 18,16" stroke="url(#gc13)" stroke-width="1.2" fill="rgba(232,77,138,.06)"/></svg>`,
+    fitin: `<svg width="${sz}" height="${sz}" viewBox="0 0 44 44" fill="none">${g('gc14','#7B2FBE','#5B4FD6')}<circle cx="14" cy="22" r="8" stroke="url(#gc14)" stroke-width="1" opacity=".3" fill="rgba(123,47,190,.03)"/><circle cx="22" cy="14" r="8" stroke="url(#gc14)" stroke-width="1" opacity=".3" fill="rgba(123,47,190,.03)"/><circle cx="30" cy="22" r="8" stroke="url(#gc14)" stroke-width="1" opacity=".3" fill="rgba(123,47,190,.03)"/><circle cx="22" cy="30" r="8" stroke="url(#gc14)" stroke-width="1" opacity=".3" fill="rgba(123,47,190,.03)"/><circle cx="22" cy="22" r="3" fill="url(#gc14)" opacity=".7"/></svg>`,
+    fight: `<svg width="${sz}" height="${sz}" viewBox="0 0 44 44" fill="none">${g('gc15','#E84D8A','#C724B1')}<line x1="8" y1="36" x2="36" y2="8" stroke="url(#gc15)" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="8" x2="36" y2="36" stroke="url(#gc15)" stroke-width="1.5" stroke-linecap="round"/><circle cx="22" cy="22" r="6" stroke="url(#gc15)" stroke-width="1.2" fill="rgba(232,77,138,.06)"/></svg>`,
+    calling: `<svg width="${sz}" height="${sz}" viewBox="0 0 44 44" fill="none">${g('gc16','#7B2FBE','#C724B1')}<circle cx="22" cy="14" r="4" fill="url(#gc16)" opacity=".6"/><path d="M22 18V32" stroke="url(#gc16)" stroke-width="1.5"/><path d="M14 38L22 32L30 38" stroke="url(#gc16)" stroke-width="1.2" fill="rgba(123,47,190,.05)"/><path d="M12 8L22 4L32 8" stroke="url(#gc16)" stroke-width="1" opacity=".3"/></svg>`,
+  };
+  return icons[key] || '';
+}
+
+// Compass binary choices — each nudges scores
+const COMPASS_ROUNDS = [
+  { q:'Which world feels more like your brand?',
+    a:{ icon:'challenge', word:'Challenge', desc:'Break conventions. Question everything.', scores:{freedom:2,ego:1} },
+    b:{ icon:'nurture', word:'Nurture', desc:'Grow roots. Build something that lasts.', scores:{order:2,social:1} }},
+  { q:'When your brand enters a room, what happens?',
+    a:{ icon:'energy', word:'Energy shifts', desc:'Heads turn. The conversation changes.', scores:{ego:2,freedom:1} },
+    b:{ icon:'trust', word:'Trust deepens', desc:'People relax. They feel understood.', scores:{social:2,order:1} }},
+  { q:'Your brand\'s superpower is closer to…',
+    a:{ icon:'vision', word:'Vision', desc:'Seeing what others can\'t. Shaping the future.', scores:{freedom:2,ego:1} },
+    b:{ icon:'certainty', word:'Certainty', desc:'Being the rock. The one people count on.', scores:{order:2,social:1} }},
+  { q:'Which tension drives you more?',
+    a:{ icon:'ambition', word:'Ambition', desc:'The gap between where you are and where you could be.', scores:{ego:2,freedom:1} },
+    b:{ icon:'purpose', word:'Purpose', desc:'The gap between how things are and how they should be.', scores:{social:2,order:1} }},
+  { q:'Your customers come to you because…',
+    a:{ icon:'transform', word:'Transformation', desc:'You change how they see the world.', scores:{freedom:2,ego:1} },
+    b:{ icon:'belong', word:'Belonging', desc:'You make them feel part of something.', scores:{social:2,order:1} }},
+  { q:'If your brand were a force of nature…',
+    a:{ icon:'wave', word:'The Wave', desc:'Unstoppable momentum. Reshaping the landscape.', scores:{freedom:1,ego:2} },
+    b:{ icon:'mountain', word:'The Mountain', desc:'Immovable. Dependable. There through every storm.', scores:{order:1,social:2} }},
+  { q:'What matters more to your brand?',
+    a:{ icon:'standout', word:'Standing out', desc:'Being distinctive. Unmistakably you.', scores:{ego:2,freedom:1} },
+    b:{ icon:'fitin', word:'Fitting in', desc:'Being woven into people\'s lives. Essential.', scores:{social:2,order:1} }},
+  { q:'Your brand\'s origin story is about…',
+    a:{ icon:'fight', word:'A fight', desc:'Something was broken and you couldn\'t ignore it.', scores:{freedom:2,ego:1} },
+    b:{ icon:'calling', word:'A calling', desc:'You saw a need and felt compelled to serve it.', scores:{social:2,order:1} }},
+];
+
+// ── VALUES TIER ICONS ──
+function tierIcon(key, sz=32) {
+  const icons = {
+    foundation: `<svg width="${sz}" height="${sz}" viewBox="0 0 32 32" fill="none"><defs><linearGradient id="gTf" x1="0" y1="32" x2="32" y2="0"><stop stop-color="#5B4FD6"/><stop offset="1" stop-color="#7B2FBE"/></linearGradient></defs><rect x="4" y="22" width="24" height="6" rx="1" stroke="url(#gTf)" stroke-width="1.2" fill="rgba(91,79,214,.08)"/><rect x="8" y="14" width="16" height="8" rx="1" stroke="url(#gTf)" stroke-width="1" opacity=".5" fill="rgba(91,79,214,.04)"/><rect x="12" y="6" width="8" height="8" rx="1" stroke="url(#gTf)" stroke-width="1" opacity=".3" fill="rgba(91,79,214,.02)"/></svg>`,
+    current: `<svg width="${sz}" height="${sz}" viewBox="0 0 32 32" fill="none"><defs><linearGradient id="gTc" x1="0" y1="32" x2="32" y2="0"><stop stop-color="#C724B1"/><stop offset="1" stop-color="#7B2FBE"/></linearGradient></defs><path d="M4 20C8 14 12 18 16 12C20 6 24 10 28 4" stroke="url(#gTc)" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M4 26C8 20 12 24 16 18C20 12 24 16 28 10" stroke="url(#gTc)" stroke-width="1" opacity=".3" fill="none"/><circle cx="16" cy="12" r="2.5" fill="url(#gTc)" opacity=".7"/></svg>`,
+    constellation: `<svg width="${sz}" height="${sz}" viewBox="0 0 32 32" fill="none"><defs><linearGradient id="gTs" x1="0" y1="32" x2="32" y2="0"><stop stop-color="#E84D8A"/><stop offset="1" stop-color="#C724B1"/></linearGradient></defs><circle cx="16" cy="6" r="2" fill="url(#gTs)" opacity=".8"/><circle cx="6" cy="18" r="2" fill="url(#gTs)" opacity=".8"/><circle cx="26" cy="16" r="2" fill="url(#gTs)" opacity=".8"/><circle cx="12" cy="28" r="2" fill="url(#gTs)" opacity=".8"/><circle cx="24" cy="26" r="2" fill="url(#gTs)" opacity=".8"/><line x1="16" y1="6" x2="6" y2="18" stroke="url(#gTs)" stroke-width=".8" opacity=".3"/><line x1="16" y1="6" x2="26" y2="16" stroke="url(#gTs)" stroke-width=".8" opacity=".3"/><line x1="6" y1="18" x2="12" y2="28" stroke="url(#gTs)" stroke-width=".8" opacity=".3"/><line x1="26" y1="16" x2="24" y2="26" stroke="url(#gTs)" stroke-width=".8" opacity=".3"/><line x1="12" y1="28" x2="24" y2="26" stroke="url(#gTs)" stroke-width=".8" opacity=".3"/></svg>`,
+  };
+  return icons[key] || '';
+}
+
+// ── SYNTHESIZED ARCHETYPE ICON ──
+// Generates a unique blended SVG from two source archetype quadrant colours
+function synthArchIcon(size=64) {
+  const s = size;
+  const q1 = G.finalArchetypes[0]?.quadrant || 'power';
+  const q2 = G.finalArchetypes[1]?.quadrant || 'passion';
+  const qc = { power:'#E84D8A', passion:'#C724B1', progress:'#7B2FBE', protection:'#5B4FD6' };
+  const c1 = qc[q1], c2 = qc[q2];
+  return `<svg width="${s}" height="${s}" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="gSynth" x1="0" y1="64" x2="64" y2="0">
+        <stop stop-color="${c1}"/><stop offset="1" stop-color="${c2}"/>
+      </linearGradient>
+      <radialGradient id="gSynthR" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="${c1}" stop-opacity=".25"/>
+        <stop offset="100%" stop-color="${c2}" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <circle cx="32" cy="32" r="28" stroke="url(#gSynth)" stroke-width="1" opacity=".2"/>
+    <circle cx="32" cy="32" r="20" stroke="url(#gSynth)" stroke-width="1.2" fill="url(#gSynthR)"/>
+    <path d="M32 12L36 26H50L38 34L42 48L32 40L22 48L26 34L14 26H28Z" stroke="url(#gSynth)" stroke-width="1.2" fill="rgba(199,36,177,.08)" stroke-linejoin="round"/>
+    <circle cx="32" cy="32" r="5" fill="url(#gSynth)" opacity=".8"/>
+    <circle cx="32" cy="32" r="2" fill="#fff" opacity=".9"/>
+  </svg>`;
+}
+
+// ── VALUES DATA — dynamically built from chosen archetypes ──
+// Base pools per tier. getValuesData() enriches them with archetype-specific values.
+const BASE_VALUES = {
+  foundation: ['Trust','Safety','Reliability','Quality','Consistency','Transparency','Honesty','Accessibility','Simplicity','Fairness'],
+  current: ['Expertise','Growth','Belonging','Ambition','Recognition','Collaboration','Empowerment','Impact','Mastery','Resilience'],
+  constellation: ['Freedom','Transformation','Legacy','Transcendence','Wonder','Boldness','Vision','Purpose','Joy','Possibility']
+};
+
+// Map archetype values into tiers
+const VALUE_TIER_MAP = {
+  // Foundation-tier values
+  'Trust':'foundation','Safety':'foundation','Loyalty':'foundation','Stability':'foundation',
+  'Reliability':'foundation','Support':'foundation','Consistency':'foundation','Integrity':'foundation',
+  'Quality':'foundation','Honesty':'foundation',
+  // Current-tier values
+  'Expertise':'current','Precision':'current','Strategy':'current','Excellence':'current',
+  'Mastery':'current','Ambition':'current','Impact':'current','Momentum':'current',
+  'Connection':'current','Warmth':'current','Energy':'current','Community':'current',
+  'Empathy':'current','Generosity':'current','Belonging':'current',
+  // Constellation-tier values
+  'Disruption':'constellation','Authenticity':'constellation','Defiance':'constellation','Courage':'constellation',
+  'Innovation':'constellation','Vision':'constellation','Leadership':'constellation','Boldness':'constellation',
+  'Transformation':'constellation','Intuition':'constellation','Wonder':'constellation','Possibility':'constellation',
+  'Freedom':'constellation','Curiosity':'constellation','Adventure':'constellation','Discovery':'constellation',
+  'Joy':'constellation','Wisdom':'constellation','Foresight':'constellation','Truth':'constellation',
+  'Sanctuary':'constellation','Endurance':'constellation',
+};
+
+function getValuesData() {
+  // Start with base pools (copy)
+  const data = {
+    foundation: [...BASE_VALUES.foundation],
+    current: [...BASE_VALUES.current],
+    constellation: [...BASE_VALUES.constellation]
+  };
+
+  // Inject archetype-specific values into the right tiers, at the front
+  // Use synthesized archetype if available, otherwise fall back to finalArchetypes
+  const archValues = G.synthesizedArchetype
+    ? G.synthesizedArchetype.values
+    : (G.finalArchetypes ? G.finalArchetypes.flatMap(a => a.values) : []);
+  if (archValues.length) {
+    archValues.forEach(v => {
+      const tier = VALUE_TIER_MAP[v] || 'current';
+      if (!data[tier].includes(v)) {
+        data[tier].unshift(v);  // put archetype values first
+      }
+    });
+  }
+
+  // Cap each tier at 12 for clean display
+  Object.keys(data).forEach(k => { data[k] = data[k].slice(0, 12); });
+  return data;
+}
+
+// Moodboard tiles
+const MOOD_TILES = [
+  { label:'Midnight Studio', colors:['#1a0a2e','#2d1b4e','#7B2FBE'], vibe:'dark-creative' },
+  { label:'Neon Pulse', colors:['#C724B1','#E84D8A','#ff6b9d'], vibe:'vibrant-bold' },
+  { label:'Morning Mist', colors:['#e8e0f0','#f0e8ff','#d4c4e8'], vibe:'soft-ethereal' },
+  { label:'Deep Ocean', colors:['#0a1628','#1a3a5c','#2a6a9a'], vibe:'calm-depth' },
+  { label:'Warm Earth', colors:['#2a1a0a','#5a3a1a','#8a6a3a'], vibe:'grounded-natural' },
+  { label:'Electric Mint', colors:['#0a2a1a','#1a5a3a','#3ade80'], vibe:'fresh-tech' },
+  { label:'Golden Hour', colors:['#3a2a0a','#8a6a1a','#f0b855'], vibe:'warm-premium' },
+  { label:'Steel & Glass', colors:['#1a1a2a','#3a3a4a','#7a7a8a'], vibe:'modern-minimal' },
+  { label:'Wild Garden', colors:['#1a2a0a','#3a5a1a','#6a9a3a'], vibe:'organic-growth' },
+  { label:'Sunset Blaze', colors:['#3a0a0a','#8a2a1a','#e84d3a'], vibe:'passionate-warm' },
+  { label:'Arctic Dawn', colors:['#e0e8f0','#c0d0e8','#80a0c8'], vibe:'clean-trust' },
+  { label:'Velvet Night', colors:['#1a0a1a','#3a1a3a','#6a2a6a'], vibe:'luxe-mystery' },
+];
+
+const TONE_AXES = [
+  { left:'Formal', right:'Playful', id:'formality' },
+  { left:'Quiet', right:'Loud', id:'volume' },
+  { left:'Classic', right:'Cutting-edge', id:'era' },
+  { left:'Exclusive', right:'Inclusive', id:'access' },
+];
+
+// ═══════════════════════════════════════
+// GAME MASTER PROMPT
+// ═══════════════════════════════════════
+const SYS_PROMPT = `You are Dustin, the Game Master of "Start your Story" — a brand workshop game by Unicorn. You're a seasoned brand strategist with deep enterprise experience, but you speak with warmth, wit, and zero jargon.
+
+Your personality:
+- Provocative but supportive — challenge assumptions without being harsh
+- Short, punchy sentences mixed with deeper observations
+- NEVER use bullet points, markdown, or lists — speak in natural flowing prose
+- Genuinely curious about every business
+- Dry British wit, occasional irreverence
+- Keep things moving briskly
+
+CRITICAL RULES:
+- Keep responses to 2-3 SHORT paragraphs maximum
+- Use <strong> for emphasis, never markdown
+- Sound like a real person running a workshop, not an AI
+- Reference what the player has actually told you — make it personal`;
+
+// ═══════════════════════════════════════
+// NAVIGATION & UTILITIES
+// ═══════════════════════════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function setProgress(pct) {
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+function showLoading(msg) {
+  const el = document.getElementById('loadingOverlay');
+  document.getElementById('loadingText').textContent = msg || 'The Game Master is thinking...';
+  el.classList.remove('hidden');
+}
+function hideLoading() { document.getElementById('loadingOverlay').classList.add('hidden'); }
+
+function el(id) { return document.getElementById(id); }
+
+function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// ═══════════════════════════════════════
+// AI CALLS
+// ═══════════════════════════════════════
+async function askAI(prompt, context) {
+  const sysPrompt = SYS_PROMPT + `\n\nPLAYER: ${G.playerName}\nBRAND: ${G.brandName}\n\n${context || ''}`;
+  try {
+    const res = await fetch('/api/ai', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        system: sysPrompt,
+        prompt: prompt,
+        max_tokens: 1024
+      })
+    });
+    const data = await res.json();
+    if (data.error) return `Something went wrong: ${data.error}`;
+    return data.text || 'The Game Master pauses thoughtfully...';
+  } catch(e) {
+    return `Connection issue — ${e.message}`;
+  }
+}
+
+// ═══════════════════════════════════════
+// BEGIN GAME
+// ═══════════════════════════════════════
+// On load: check server health
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    const res = await fetch('/api/health');
+    const data = await res.json();
+    if (!data.hasKey) {
+      const errEl = el('keyError');
+      if (errEl) { errEl.textContent = 'Server API key not configured — ask the host to set ANTHROPIC_API_KEY in .env'; errEl.style.display = 'block'; }
+    }
+  } catch(e) { /* running as static file, that's fine */ }
+});
+
+function beginGame() {
+  G.playerName = el('playerName').value.trim() || 'Player';
+  G.brandName = el('brandName').value.trim() || 'your brand';
+  showScreen('gameScreen');
+  setProgress(5);
+  runChapter1();
+}
+
+// ═══════════════════════════════════════
+// CHAPTER 1: THE COMPASS
+// ═══════════════════════════════════════
+async function runChapter1() {
+  G.chapter = 1;
+  G.compassScores = { freedom:0, order:0, ego:0, social:0 };
+  const area = el('gameArea');
+
+  // Get AI intro
+  showLoading('Setting the stage...');
+  const intro = await askAI(
+    `Welcome ${G.playerName} to the game. They're playing for "${G.brandName}". This is Chapter 1: The Compass. They'll be making quick instinctive choices to map where their brand sits. Tell them to go with their gut — there are no wrong answers. Keep it to 2 sentences max.`,
+    'PHASE: Chapter 1 opening. Be brief and energising.'
+  );
+  hideLoading();
+
+  let roundIdx = 0;
+  renderCompassRound(roundIdx, intro);
+
+  function renderCompassRound(idx, narrationText) {
+    const round = COMPASS_ROUNDS[idx];
+    area.innerHTML = `
+      <div class="chapter-header fade-up">
+        <div class="chapter-tag">Chapter 1 — The Compass</div>
+        <div class="chapter-title">Map your <span class="grad-text">Territory</span></div>
+        <div class="chapter-sub">Quick instinctive choices. Go with your gut.</div>
+      </div>
+      <div class="round-counter fade-up-d1">
+        <div class="round-dots">
+          ${COMPASS_ROUNDS.map((_,i) => `<div class="round-dot ${i < idx ? 'done' : ''} ${i === idx ? 'current' : ''}"></div>`).join('')}
+        </div>
+        <div class="round-label">Round ${idx+1} of ${COMPASS_ROUNDS.length}</div>
+      </div>
+      ${narrationText ? `<div class="narration fade-up-d1"><div class="gm-tag">Game Master</div>${narrationText}</div>` : ''}
+      <div style="text-align:center;font-size:1.05rem;font-weight:700;margin-bottom:1.2rem;color:var(--white);animation:fadeUp .5s .15s ease both;">${round.q}</div>
+      <div class="binary-choices fade-up-d2">
+        <div class="binary-card" onclick="pickCompass(this,'a',${idx})">
+          <div class="card-svg">${compassIcon(round.a.icon)}</div>
+          <div class="card-word">${round.a.word}</div>
+          <div class="card-desc">${round.a.desc}</div>
+        </div>
+        <div class="binary-card" onclick="pickCompass(this,'b',${idx})">
+          <div class="card-svg">${compassIcon(round.b.icon)}</div>
+          <div class="card-word">${round.b.word}</div>
+          <div class="card-desc">${round.b.desc}</div>
+        </div>
+      </div>
+      <div class="map-container fade-up-d2" id="liveMap"></div>
+    `;
+    renderLiveMap();
+    setProgress(5 + (idx / COMPASS_ROUNDS.length) * 15);
+  }
+
+  window.pickCompass = async function(cardEl, choice, idx) {
+    // Disable further clicks
+    document.querySelectorAll('.binary-card').forEach(c => c.style.pointerEvents='none');
+    cardEl.classList.add('selected');
+
+    // Apply scores
+    const round = COMPASS_ROUNDS[idx];
+    const scores = choice === 'a' ? round.a.scores : round.b.scores;
+    Object.keys(scores).forEach(k => G.compassScores[k] += scores[k]);
+
+    await delay(600);
+
+    if (idx < COMPASS_ROUNDS.length - 1) {
+      renderCompassRound(idx + 1, null);
+    } else {
+      finishCompass();
+    }
+  };
+
+  async function finishCompass() {
+    // Determine quadrant
+    const vertical = G.compassScores.freedom - G.compassScores.order; // positive = freedom
+    const horizontal = G.compassScores.ego - G.compassScores.social; // positive = ego
+    if (vertical >= 0 && horizontal >= 0) G.quadrant = 'power';
+    else if (vertical >= 0 && horizontal < 0) G.quadrant = 'passion';
+    else if (vertical < 0 && horizontal >= 0) G.quadrant = 'progress';
+    else G.quadrant = 'protection';
+
+    const quadLabels = { power:'Power — Energy & Vitality', passion:'Passion — Warmth & Harmony', progress:'Progress — Intellect & Control', protection:'Protection — Safety & Certainty' };
+
+    showLoading('Reading the compass...');
+    const narration = await askAI(
+      `The player completed the Compass. Their brand maps to the ${G.quadrant.toUpperCase()} quadrant (${quadLabels[G.quadrant]}). Their scores were: Freedom ${G.compassScores.freedom}, Order ${G.compassScores.order}, Ego ${G.compassScores.ego}, Social ${G.compassScores.social}. Give a brief (2-3 sentences) vivid interpretation of what this means for their brand. Then tell them Chapter 2 will dig deeper into exactly which archetype they are.`,
+      `CONTEXT: Brand "${G.brandName}", quadrant: ${G.quadrant}`
+    );
+    hideLoading();
+
+    area.innerHTML = `
+      <div class="chapter-header fade-up">
+        <div class="chapter-tag">Chapter 1 — Complete</div>
+        <div class="chapter-title">Your <span class="grad-text">Territory</span></div>
+      </div>
+      <div class="map-container fade-up-d1" id="finalMap"></div>
+      <div class="narration fade-up-d2"><div class="gm-tag">Game Master</div>${narration}</div>
+      <div style="text-align:center;margin-top:1rem;" class="fade-up-d2">
+        <button class="btn-primary" onclick="runChapter2()">Continue to Chapter 2 →</button>
+      </div>
+    `;
+    renderLiveMap('finalMap', true);
+    setProgress(20);
+  }
+}
+
+function renderLiveMap(containerId, showResult) {
+  const container = el(containerId || 'liveMap');
+  if (!container) return;
+  const s = G.compassScores;
+  const total = Math.max(s.freedom + s.order + s.ego + s.social, 1);
+
+  // Normalize to map coordinates (center is 250,210)
+  const vertical = (s.freedom - s.order) / Math.max(total, 1);
+  const horizontal = (s.ego - s.social) / Math.max(total, 1);
+  const cx = 250 + horizontal * 160;
+  const cy = 210 - vertical * 140;
+
+  const quadColors = { power:'#E84D8A', passion:'#C724B1', progress:'#7B2FBE', protection:'#5B4FD6' };
+  const dotColor = G.quadrant ? quadColors[G.quadrant] : 'var(--magenta)';
+
+  container.innerHTML = `
+    <svg viewBox="0 0 500 420" xmlns="http://www.w3.org/2000/svg">
+      <!-- Grid -->
+      <rect x="50" y="20" width="200" height="190" fill="rgba(232,77,138,.03)" rx="2"/>
+      <rect x="250" y="20" width="200" height="190" fill="rgba(199,36,177,.03)" rx="2"/>
+      <rect x="50" y="210" width="200" height="190" fill="rgba(123,47,190,.03)" rx="2"/>
+      <rect x="250" y="210" width="200" height="190" fill="rgba(91,79,214,.03)" rx="2"/>
+
+      <!-- Axes -->
+      <line x1="50" y1="210" x2="450" y2="210" stroke="rgba(248,240,255,.08)" stroke-width="1"/>
+      <line x1="250" y1="20" x2="250" y2="400" stroke="rgba(248,240,255,.08)" stroke-width="1"/>
+
+      <!-- Axis labels -->
+      <text x="250" y="14" text-anchor="middle" font-size="7" fill="rgba(248,240,255,.2)" font-family="Sora" font-weight="700" letter-spacing=".12em">FREEDOM</text>
+      <text x="250" y="416" text-anchor="middle" font-size="7" fill="rgba(248,240,255,.2)" font-family="Sora" font-weight="700" letter-spacing=".12em">ORDER</text>
+      <text x="20" y="214" text-anchor="middle" font-size="7" fill="rgba(248,240,255,.2)" font-family="Sora" font-weight="700" letter-spacing=".12em" transform="rotate(-90,20,214)">SOCIAL</text>
+      <text x="480" y="214" text-anchor="middle" font-size="7" fill="rgba(248,240,255,.2)" font-family="Sora" font-weight="700" letter-spacing=".12em" transform="rotate(90,480,214)">EGO</text>
+
+      <!-- Quadrant labels -->
+      <text x="150" y="110" text-anchor="middle" font-size="9" fill="rgba(232,77,138,.2)" font-family="Sora" font-weight="800" letter-spacing=".08em">POWER</text>
+      <text x="350" y="110" text-anchor="middle" font-size="9" fill="rgba(199,36,177,.2)" font-family="Sora" font-weight="800" letter-spacing=".08em">PASSION</text>
+      <text x="150" y="310" text-anchor="middle" font-size="9" fill="rgba(123,47,190,.2)" font-family="Sora" font-weight="800" letter-spacing=".08em">PROGRESS</text>
+      <text x="350" y="310" text-anchor="middle" font-size="9" fill="rgba(91,79,214,.2)" font-family="Sora" font-weight="800" letter-spacing=".08em">PROTECTION</text>
+
+      <!-- Outer ring labels -->
+      <text x="100" y="50" text-anchor="middle" font-size="6" fill="rgba(248,240,255,.1)" font-family="Sora" font-weight="600">Creation</text>
+      <text x="200" y="35" text-anchor="middle" font-size="6" fill="rgba(248,240,255,.1)" font-family="Sora" font-weight="600">Transformation</text>
+      <text x="300" y="35" text-anchor="middle" font-size="6" fill="rgba(248,240,255,.1)" font-family="Sora" font-weight="600">Inspiration</text>
+      <text x="400" y="50" text-anchor="middle" font-size="6" fill="rgba(248,240,255,.1)" font-family="Sora" font-weight="600">Discovery</text>
+      <text x="430" y="310" text-anchor="middle" font-size="6" fill="rgba(248,240,255,.1)" font-family="Sora" font-weight="600">Compassion</text>
+      <text x="350" y="390" text-anchor="middle" font-size="6" fill="rgba(248,240,255,.1)" font-family="Sora" font-weight="600">Reassurance</text>
+      <text x="150" y="390" text-anchor="middle" font-size="6" fill="rgba(248,240,255,.1)" font-family="Sora" font-weight="600">Authority</text>
+      <text x="70" y="310" text-anchor="middle" font-size="6" fill="rgba(248,240,255,.1)" font-family="Sora" font-weight="600">Vision</text>
+
+      <!-- Player dot -->
+      <circle cx="${cx}" cy="${cy}" r="20" fill="${dotColor}" opacity=".12">
+        <animate attributeName="r" values="18;26;18" dur="2.4s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values=".15;.05;.15" dur="2.4s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="${cx}" cy="${cy}" r="8" fill="${dotColor}" opacity=".9"/>
+      ${showResult ? `<text x="${cx}" y="${cy + 22}" text-anchor="middle" font-size="8" fill="${dotColor}" font-family="Sora" font-weight="700">${G.brandName}</text>` : ''}
+    </svg>
+  `;
+}
+
+// ═══════════════════════════════════════
+// CHAPTER 2: THE CARDS
+// ═══════════════════════════════════════
+async function runChapter2() {
+  G.chapter = 2;
+  G.selectedArchetypes = [];
+  setProgress(22);
+  const area = el('gameArea');
+
+  showLoading('Preparing the cards...');
+  const intro = await askAI(
+    `Starting Chapter 2: The Cards. The player's brand "${G.brandName}" mapped to the ${G.quadrant} quadrant. Now they'll see 12 archetype cards spread out. Tell them to pick the 3-4 that feel most like their brand — go with instinct, not strategy. Keep it to 2 sentences.`,
+    `CONTEXT: Quadrant is ${G.quadrant}. This is the card selection phase.`
+  );
+  hideLoading();
+
+  // Phase 1: Silent sort
+  renderCardSpread(intro);
+}
+
+function renderCardSpread(narration) {
+  const area = el('gameArea');
+  const quadColors = { power:'var(--q-power)', passion:'var(--q-passion)', progress:'var(--q-progress)', protection:'var(--q-protection)' };
+
+  // Adjacency: which quadrants are neighbours (share an axis)
+  const adjacent = {
+    power: ['passion','progress'],
+    passion: ['power','protection'],
+    progress: ['power','protection'],
+    protection: ['passion','progress']
+  };
+
+  // Sort: primary quadrant first, then adjacent, then opposite (dimmed)
+  const primary = ARCHETYPES.filter(a => a.quadrant === G.quadrant);
+  const adj = ARCHETYPES.filter(a => adjacent[G.quadrant].includes(a.quadrant));
+  const opposite = ARCHETYPES.filter(a => a.quadrant !== G.quadrant && !adjacent[G.quadrant].includes(a.quadrant));
+  const sorted = [...primary, ...adj, ...opposite];
+
+  const quadLabels = { power:'Power', passion:'Passion', progress:'Progress', protection:'Protection' };
+
+  area.innerHTML = `
+    <div class="chapter-header fade-up">
+      <div class="chapter-tag">Chapter 2 — The Cards</div>
+      <div class="chapter-title">Find your <span class="grad-text">Characters</span></div>
+      <div class="chapter-sub">Your compass points to <strong>${quadLabels[G.quadrant]}</strong>. Pick 3–4 that feel like your brand.</div>
+    </div>
+    <div class="narration fade-up-d1"><div class="gm-tag">Game Master</div>${narration}</div>
+    <div class="selection-count fade-up-d1" id="selCount">0 of 3–4 selected</div>
+    <div class="arch-spread fade-up-d2" id="archSpread">
+      ${sorted.map(a => {
+        const isPrimary = a.quadrant === G.quadrant;
+        const isAdj = adjacent[G.quadrant].includes(a.quadrant);
+        const dimClass = (!isPrimary && !isAdj) ? ' dimmed' : '';
+        return `
+        <div class="arch-card-mini${dimClass}" data-id="${a.id}" onclick="toggleArch('${a.id}',this)" style="border-left:2px solid ${quadColors[a.quadrant]};">
+          <div class="card-icon">${archIcon(a.id, 42)}</div>
+          <div class="card-name">${a.name}</div>
+          <div class="card-hook">${a.hook}</div>
+          <div class="heat-bar"></div>
+        </div>`;
+      }).join('')}
+    </div>
+    <div style="text-align:center;" class="fade-up-d2">
+      <button class="btn-primary" id="confirmCards" disabled onclick="confirmCardSelection()">Lock in my choices</button>
+    </div>
+  `;
+}
+
+window.toggleArch = function(id, cardEl) {
+  const idx = G.selectedArchetypes.indexOf(id);
+  if (idx > -1) {
+    G.selectedArchetypes.splice(idx, 1);
+    cardEl.classList.remove('selected');
+  } else {
+    if (G.selectedArchetypes.length >= 4) return;
+    G.selectedArchetypes.push(id);
+    cardEl.classList.add('selected');
+  }
+  el('selCount').textContent = `${G.selectedArchetypes.length} of 3–4 selected`;
+  el('confirmCards').disabled = G.selectedArchetypes.length < 3;
+};
+
+window.confirmCardSelection = async function() {
+  if (G.selectedArchetypes.length < 3) return;
+
+  // Phase 2: Show heatmap/reveal then tournament
+  const selected = G.selectedArchetypes.map(id => ARCHETYPES.find(a => a.id === id));
+  setProgress(30);
+
+  if (selected.length <= 2) {
+    G.finalArchetypes = selected;
+    finishChapter2();
+    return;
+  }
+
+  // Tournament bracket — head to head
+  showLoading('The debate begins...');
+  const names = selected.map(a => a.name).join(', ');
+  const narration = await askAI(
+    `The player chose these archetypes: ${names}. Now they need to narrow down to their top 2. Frame this as a head-to-head "debate" — which archetype truly represents "${G.brandName}"? Keep it to 2 sentences. Be provocative.`,
+    `CONTEXT: Selected archetypes: ${names}. Brand: ${G.brandName}. Quadrant: ${G.quadrant}.`
+  );
+  hideLoading();
+
+  runBracket(selected, narration, 0);
+};
+
+function runBracket(candidates, narration, matchIdx) {
+  const area = el('gameArea');
+  // Pair them off
+  if (candidates.length <= 2) {
+    G.finalArchetypes = candidates;
+    finishChapter2();
+    return;
+  }
+
+  const a = candidates[0];
+  const b = candidates[1];
+  const remaining = candidates.slice(2);
+
+  area.innerHTML = `
+    <div class="chapter-header fade-up">
+      <div class="chapter-tag">Chapter 2 — The Debate</div>
+      <div class="chapter-title">Head to <span class="grad-text">Head</span></div>
+      <div class="chapter-sub">Which archetype is more you?</div>
+    </div>
+    ${narration ? `<div class="narration fade-up-d1"><div class="gm-tag">Game Master</div>${narration}</div>` : ''}
+    <div class="bracket-match fade-up-d2">
+      <div class="bracket-card" onclick="bracketPick(this,0)">
+        <div class="card-icon">${archIcon(a.id, 56)}</div>
+        <div class="card-name">${a.name}</div>
+        <div class="card-hook">${a.hook}</div>
+      </div>
+      <div class="bracket-vs">VS</div>
+      <div class="bracket-card" onclick="bracketPick(this,1)">
+        <div class="card-icon">${archIcon(b.id, 56)}</div>
+        <div class="card-name">${b.name}</div>
+        <div class="card-hook">${b.hook}</div>
+      </div>
+    </div>
+  `;
+
+  window.bracketPick = async function(cardEl, choice) {
+    document.querySelectorAll('.bracket-card').forEach(c => c.style.pointerEvents='none');
+    cardEl.classList.add('selected');
+    await delay(500);
+    const winner = choice === 0 ? a : b;
+    const newCandidates = [winner, ...remaining];
+    runBracket(newCandidates, null, matchIdx + 1);
+  };
+}
+
+async function finishChapter2() {
+  setProgress(38);
+  const a1 = G.finalArchetypes[0];
+  const a2 = G.finalArchetypes[1];
+  const names = `${a1.name} & ${a2.name}`;
+
+  showLoading('Forging your unique archetype...');
+
+  // Ask AI to synthesize the two finalists into ONE unique archetype
+  const synthPrompt = `The player's brand "${G.brandName}" has two finalist archetypes:
+
+1. ${a1.name} (${a1.territory}, ${a1.quadrant} quadrant): ${a1.desc}
+   Values: ${a1.values.join(', ')}. Shadow: ${a1.shadow}
+
+2. ${a2.name} (${a2.territory}, ${a2.quadrant} quadrant): ${a2.desc}
+   Values: ${a2.values.join(', ')}. Shadow: ${a2.shadow}
+
+SYNTHESIZE these two into ONE unique archetype that captures the essence of both. This brand doesn't split its identity — it FUSES these energies into something singular and powerful.
+
+Return ONLY a JSON object:
+{
+  "name": "The [UniqueBlendedName]",
+  "territory": "A 1-2 word territory label (like Creation, Transformation, etc.)",
+  "desc": "A vivid 3-4 sentence description of this singular archetype. What does this brand stand for? How do the two energies fuse into something greater?",
+  "shadow": "A 2 sentence shadow side — the risk when this archetype goes too far.",
+  "values": ["Value1","Value2","Value3","Value4","Value5"],
+  "narration": "A vivid 2-3 sentence Game Master interpretation. What kind of brand story does this archetype suggest? Then tee up Chapter 3: The Values Tower."
+}`;
+
+  const synthResponse = await askAI(synthPrompt,
+    'CRITICAL: Return ONLY valid JSON. No markdown, no explanation. The archetype name must be original — NOT just combining the two source names with a slash or ampersand. Create a genuinely new identity.'
+  );
+  hideLoading();
+
+  // Parse synthesized archetype
+  let synth = {};
+  try {
+    const jsonStr = synthResponse.replace(/```json?\n?/g,'').replace(/```/g,'').trim();
+    synth = JSON.parse(jsonStr);
+  } catch(e) {
+    // Fallback: blend manually
+    synth = {
+      name: `The ${a1.name.replace('The ','')}${a2.name.replace('The ','')}`,
+      territory: `${a1.territory} × ${a2.territory}`,
+      desc: `${a1.desc} ${a2.desc}`,
+      shadow: `${a1.shadow} ${a2.shadow}`,
+      values: [...new Set([...a1.values.slice(0,3), ...a2.values.slice(0,3)])].slice(0,5),
+      narration: `Your brand fuses ${a1.name} and ${a2.name} into something singular and new.`
+    };
+  }
+
+  // Store the synthesized archetype
+  G.synthesizedArchetype = {
+    name: synth.name || 'The Archetype',
+    territory: synth.territory || 'Synthesis',
+    desc: synth.desc || '',
+    shadow: synth.shadow || '',
+    values: synth.values || [...a1.values.slice(0,3), ...a2.values.slice(0,2)],
+    quadrant: G.quadrant,
+    sourceIds: [a1.id, a2.id]
+  };
+
+  const narration = synth.narration || `Your brand fuses ${names} into something new and powerful.`;
+
+  const area = el('gameArea');
+  area.innerHTML = `
+    <div class="chapter-header fade-up">
+      <div class="chapter-tag">Chapter 2 — Complete</div>
+      <div class="chapter-title">Your <span class="grad-text">Archetype</span></div>
+      <div class="chapter-sub">Two energies, one identity.</div>
+    </div>
+    <div class="synth-reveal fade-up-d1">
+      <div class="synth-sources">
+        <div class="synth-source">${archIcon(a1.id, 36)}<span>${a1.name}</span></div>
+        <div class="synth-plus">+</div>
+        <div class="synth-source">${archIcon(a2.id, 36)}<span>${a2.name}</span></div>
+        <div class="synth-arrow">→</div>
+      </div>
+      <div class="arch-result">
+        <div class="arch-result-card synth-card">
+          <div class="arc-header">
+            <div style="margin-bottom:.5rem;">${synthArchIcon(72)}</div>
+            <div class="arc-name" style="font-size:1.6rem;">${G.synthesizedArchetype.name}</div>
+            <div class="arc-territory">${G.synthesizedArchetype.territory}</div>
+            <div class="arc-desc">${G.synthesizedArchetype.desc}</div>
+          </div>
+          <div class="arc-shadow">
+            <div class="arc-shadow-label">Shadow Side</div>
+            <div class="arc-shadow-text">${G.synthesizedArchetype.shadow}</div>
+          </div>
+          <div class="arc-values">
+            <div class="arc-values-label">Key Values</div>
+            <div class="bw-tags">${G.synthesizedArchetype.values.map(v => `<span class="bw-tag">${v}</span>`).join('')}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="narration fade-up-d2"><div class="gm-tag">Game Master</div>${narration}</div>
+    <div style="text-align:center;margin-top:1rem;" class="fade-up-d2">
+      <button class="btn-primary" onclick="runChapter3()">Continue to Chapter 3 →</button>
+    </div>
+  `;
+}
+
+// ═══════════════════════════════════════
+// CHAPTER 3: THE VALUES TOWER
+// ═══════════════════════════════════════
+async function runChapter3() {
+  G.chapter = 3;
+  G.values = { foundation:[], current:[], constellation:[] };
+  setProgress(42);
+  const area = el('gameArea');
+
+  showLoading('Building the tower...');
+  const archName = G.synthesizedArchetype ? G.synthesizedArchetype.name : G.finalArchetypes.map(a => a.name).join(' & ');
+  const archValues = G.synthesizedArchetype ? G.synthesizedArchetype.values.join(', ') : G.finalArchetypes.flatMap(a => a.values).join(', ');
+  const intro = await askAI(
+    `Starting Chapter 3: The Values Tower for "${G.brandName}" (${archName}). Their archetype values include ${archValues}. Explain the three tiers briefly: Foundation (the non-negotiable bedrock — trust, safety, reliability), Current (the driving force — growth, connection, ambition), Constellation (the guiding stars — legacy, vision, transformation). Some values from their archetypes are already woven in. Tell them to pick 2-3 values at each level, starting from the base. Keep it to 3 sentences.`,
+    `CONTEXT: Brand: ${G.brandName}. Archetype: ${archName}. Quadrant: ${G.quadrant}.`
+  );
+  hideLoading();
+
+  let currentTier = 'foundation';
+  renderValuesTower(intro, currentTier);
+}
+
+function renderValuesTower(narration, activeTier) {
+  const area = el('gameArea');
+  const tiers = ['foundation','current','constellation'];
+  const tierInfo = {
+    foundation: { iconKey:'foundation', label:'Foundation', desc:'The bedrock — what your brand promises, always' },
+    current: { iconKey:'current', label:'Current', desc:'The driving force — what propels you forward' },
+    constellation: { iconKey:'constellation', label:'Constellation', desc:'The guiding stars — where you\'re heading' }
+  };
+
+  const valuesData = getValuesData();
+
+  area.innerHTML = `
+    <div class="chapter-header fade-up">
+      <div class="chapter-tag">Chapter 3 — The Values Tower</div>
+      <div class="chapter-title">What you <span class="grad-text">Stand For</span></div>
+      <div class="chapter-sub">Pick 2–3 values at each tier. Your archetype values are highlighted.</div>
+    </div>
+    ${narration ? `<div class="narration fade-up-d1"><div class="gm-tag">Game Master</div>${narration}</div>` : ''}
+    <div class="values-tower fade-up-d2">
+      ${[...tiers].reverse().map(t => {
+        const info = tierInfo[t];
+        const isActive = t === activeTier;
+        const isLocked = tiers.indexOf(t) > tiers.indexOf(activeTier);
+        const archVals = G.synthesizedArchetype ? G.synthesizedArchetype.values : (G.finalArchetypes ? G.finalArchetypes.flatMap(a => a.values) : []);
+        return `
+          <div class="tower-tier ${isActive ? 'active' : ''} ${isLocked ? 'locked' : ''}" id="tier-${t}">
+            <div class="tier-header">
+              <span class="tier-icon">${tierIcon(info.iconKey)}</span>
+              <div><div class="tier-label">${info.label}</div><div class="tier-desc">${info.desc}</div></div>
+            </div>
+            <div class="tier-values">
+              ${valuesData[t].map(v => {
+                const isArch = archVals.includes(v);
+                return `<div class="value-chip ${G.values[t].includes(v)?'selected':''} ${isArch?'arch-value':''}" data-tier="${t}" data-value="${v}" onclick="toggleValue('${t}','${v}',this)">${v}</div>`;
+              }).join('')}
+            </div>
+            <div class="tier-selection-count">${G.values[t].length} of 2–3 selected</div>
+          </div>`;
+      }).join('')}
+    </div>
+    <div style="text-align:center;" class="fade-up-d2">
+      <button class="btn-primary" id="confirmTier" onclick="advanceTier()" ${G.values[activeTier].length < 2 ? 'disabled' : ''}>${activeTier === 'constellation' ? 'Complete Values Tower' : 'Next Tier →'}</button>
+    </div>
+  `;
+
+  window._currentTier = activeTier;
+}
+
+window.toggleValue = function(tier, value, chipEl) {
+  if (tier !== window._currentTier) return;
+  const arr = G.values[tier];
+  const idx = arr.indexOf(value);
+  if (idx > -1) {
+    arr.splice(idx, 1);
+    chipEl.classList.remove('selected');
+  } else {
+    if (arr.length >= 3) return;
+    arr.push(value);
+    chipEl.classList.add('selected');
+  }
+  const countEl = document.querySelector(`#tier-${tier} .tier-selection-count`);
+  if (countEl) countEl.textContent = `${arr.length} of 2–3 selected`;
+  el('confirmTier').disabled = arr.length < 2;
+};
+
+window.advanceTier = async function() {
+  const tiers = ['foundation','current','constellation'];
+  const currentIdx = tiers.indexOf(window._currentTier);
+
+  if (currentIdx < 2) {
+    window._currentTier = tiers[currentIdx + 1];
+    renderValuesTower(null, window._currentTier);
+    setProgress(42 + (currentIdx + 1) * 5);
+  } else {
+    finishChapter3();
+  }
+};
+
+async function finishChapter3() {
+  setProgress(55);
+  const allValues = [...G.values.foundation, ...G.values.current, ...G.values.constellation];
+  const archNames = G.synthesizedArchetype ? G.synthesizedArchetype.name : G.finalArchetypes.map(a => a.name).join(' & ');
+
+  showLoading('Reading your values...');
+  const narration = await askAI(
+    `The player completed the Values Tower for "${G.brandName}". Foundation: ${G.values.foundation.join(', ')}. Current: ${G.values.current.join(', ')}. Constellation: ${G.values.constellation.join(', ')}. Their archetypes are ${archNames}. Give a 2-3 sentence interpretation of their values profile — what story do these values tell? Where is the weight? Then tee up Chapter 4: building the brand's visual world.`,
+    `CONTEXT: All values: ${allValues.join(', ')}. Quadrant: ${G.quadrant}.`
+  );
+  hideLoading();
+
+  const area = el('gameArea');
+  const fPct = (G.values.foundation.length / 3) * 100;
+  const cPct = (G.values.current.length / 3) * 100;
+  const sPct = (G.values.constellation.length / 3) * 100;
+
+  area.innerHTML = `
+    <div class="chapter-header fade-up">
+      <div class="chapter-tag">Chapter 3 — Complete</div>
+      <div class="chapter-title">Your <span class="grad-text">Values Profile</span></div>
+    </div>
+    <div class="values-chart fade-up-d1">
+      <div class="chart-bar-row">
+        <div class="chart-label" style="display:flex;align-items:center;gap:.3rem;justify-content:flex-end;">${tierIcon('constellation',18)} Constellation</div>
+        <div class="chart-track"><div class="chart-fill" style="width:${sPct}%;background:linear-gradient(90deg,var(--rose),var(--magenta));"><span>${G.values.constellation.join(' · ')}</span></div></div>
+      </div>
+      <div class="chart-bar-row">
+        <div class="chart-label" style="display:flex;align-items:center;gap:.3rem;justify-content:flex-end;">${tierIcon('current',18)} Current</div>
+        <div class="chart-track"><div class="chart-fill" style="width:${cPct}%;background:linear-gradient(90deg,var(--magenta),var(--violet));"><span>${G.values.current.join(' · ')}</span></div></div>
+      </div>
+      <div class="chart-bar-row">
+        <div class="chart-label" style="display:flex;align-items:center;gap:.3rem;justify-content:flex-end;">${tierIcon('foundation',18)} Foundation</div>
+        <div class="chart-track"><div class="chart-fill" style="width:${fPct}%;background:linear-gradient(90deg,var(--violet),var(--q-protection));"><span>${G.values.foundation.join(' · ')}</span></div></div>
+      </div>
+    </div>
+    <div class="narration fade-up-d2"><div class="gm-tag">Game Master</div>${narration}</div>
+    <div style="text-align:center;margin-top:1rem;" class="fade-up-d2">
+      <button class="btn-primary" onclick="runChapter4()">Continue to Chapter 4 →</button>
+    </div>
+  `;
+}
+
+// ═══════════════════════════════════════
+// CHAPTER 4: THE WORLD (Moodboard)
+// ═══════════════════════════════════════
+async function runChapter4() {
+  G.chapter = 4;
+  G.moodSelections = [];
+  G.toneValues = {};
+  G.brandWords = [];
+  setProgress(58);
+  const area = el('gameArea');
+
+  const archNames = G.synthesizedArchetype ? G.synthesizedArchetype.name : G.finalArchetypes.map(a => a.name).join(' & ');
+  const allValues = [...G.values.foundation, ...G.values.current, ...G.values.constellation];
+
+  showLoading('Preparing the visual world...');
+  const intro = await askAI(
+    `Starting Chapter 4: Building the Brand World for "${G.brandName}" (${archNames}, values: ${allValues.join(', ')}). They'll choose mood tiles, set tone sliders, and add brand words. Tell them to think about what their brand FEELS like — the textures, colours, energy. 2 sentences max.`,
+    `CONTEXT: Quadrant: ${G.quadrant}. This is the creative/visual chapter.`
+  );
+  hideLoading();
+
+  renderMoodPhase(intro);
+}
+
+function renderMoodPhase(narration) {
+  const area = el('gameArea');
+  area.innerHTML = `
+    <div class="chapter-header fade-up">
+      <div class="chapter-tag">Chapter 4 — The World</div>
+      <div class="chapter-title">Build your <span class="grad-text">Brand World</span></div>
+      <div class="chapter-sub">What does your brand feel like? Pick 3–4 moods.</div>
+    </div>
+    ${narration ? `<div class="narration fade-up-d1"><div class="gm-tag">Game Master</div>${narration}</div>` : ''}
+    <div class="mood-grid fade-up-d2" id="moodGrid">
+      ${MOOD_TILES.map((t,i) => `
+        <div class="mood-tile" data-idx="${i}" onclick="toggleMood(${i},this)">
+          <div class="tile-visual" style="background:linear-gradient(135deg,${t.colors[0]},${t.colors[1]},${t.colors[2]});"></div>
+          <div class="tile-label">${t.label}</div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="selection-count fade-up-d2" id="moodCount">0 of 3–4 selected</div>
+    <div style="text-align:center;" class="fade-up-d2">
+      <button class="btn-primary" id="confirmMood" disabled onclick="goToTone()">Next: Set the Tone →</button>
+    </div>
+  `;
+}
+
+window.toggleMood = function(idx, tileEl) {
+  const i = G.moodSelections.indexOf(idx);
+  if (i > -1) {
+    G.moodSelections.splice(i, 1);
+    tileEl.classList.remove('selected');
+  } else {
+    if (G.moodSelections.length >= 4) return;
+    G.moodSelections.push(idx);
+    tileEl.classList.add('selected');
+  }
+  el('moodCount').textContent = `${G.moodSelections.length} of 3–4 selected`;
+  el('confirmMood').disabled = G.moodSelections.length < 3;
+};
+
+window.goToTone = function() {
+  setProgress(65);
+  const area = el('gameArea');
+
+  TONE_AXES.forEach(t => G.toneValues[t.id] = 50);
+
+  area.innerHTML = `
+    <div class="chapter-header fade-up">
+      <div class="chapter-tag">Chapter 4 — The World</div>
+      <div class="chapter-title">Set the <span class="grad-text">Tone</span></div>
+      <div class="chapter-sub">Drag each slider to where your brand sits.</div>
+    </div>
+    <div class="tone-sliders fade-up-d1">
+      ${TONE_AXES.map(t => `
+        <div class="tone-row">
+          <div class="tone-labels"><span>${t.left}</span><span>${t.right}</span></div>
+          <div class="tone-track" id="track-${t.id}" onmousedown="startDrag('${t.id}',event)" ontouchstart="startDrag('${t.id}',event)">
+            <div class="tone-thumb" id="thumb-${t.id}" style="left:50%;"></div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+    <div style="margin-bottom:1.5rem;" class="fade-up-d1">
+      <div style="font-size:.72rem;font-weight:600;color:rgba(248,240,255,.35);margin-bottom:.5rem;text-align:center;">ADD BRAND WORDS</div>
+      <div class="word-cloud" id="wordCloud"></div>
+      <div class="word-input-row">
+        <input type="text" id="wordInput" placeholder="Type a word and press Enter..." maxlength="20" onkeydown="if(event.key==='Enter')addWord()">
+        <button class="btn-ghost" onclick="addWord()" style="padding:.55rem 1rem;">Add</button>
+      </div>
+    </div>
+    <div style="text-align:center;" class="fade-up-d2">
+      <button class="btn-primary" onclick="finishChapter4()">Complete Chapter 4 →</button>
+    </div>
+  `;
+
+  // Init tone sliders
+  updateToneStyles();
+};
+
+let _dragging = null;
+window.startDrag = function(id, e) {
+  e.preventDefault();
+  _dragging = id;
+  moveDrag(e);
+  document.addEventListener('mousemove', moveDrag);
+  document.addEventListener('touchmove', moveDrag);
+  document.addEventListener('mouseup', stopDrag);
+  document.addEventListener('touchend', stopDrag);
+};
+function moveDrag(e) {
+  if (!_dragging) return;
+  const track = el('track-' + _dragging);
+  const rect = track.getBoundingClientRect();
+  const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+  let pct = ((clientX - rect.left) / rect.width) * 100;
+  pct = Math.max(0, Math.min(100, pct));
+  G.toneValues[_dragging] = Math.round(pct);
+  updateToneStyles();
+}
+function stopDrag() { _dragging = null; document.removeEventListener('mousemove', moveDrag); document.removeEventListener('touchmove', moveDrag); }
+
+function updateToneStyles() {
+  TONE_AXES.forEach(t => {
+    const thumb = el('thumb-' + t.id);
+    const track = el('track-' + t.id);
+    if (!thumb) return;
+    const pct = G.toneValues[t.id];
+    thumb.style.left = pct + '%';
+    track.style.setProperty('--fill', pct + '%');
+    track.style.cssText += `;--fill:${pct}%`;
+  });
+}
+
+window.addWord = function() {
+  const input = el('wordInput');
+  const word = input.value.trim();
+  if (!word || G.brandWords.length >= 8) return;
+  G.brandWords.push(word);
+  input.value = '';
+  renderWordCloud();
+};
+
+function renderWordCloud() {
+  el('wordCloud').innerHTML = G.brandWords.map((w,i) => `<div class="word-tag">${w}<span class="remove" onclick="removeWord(${i})">×</span></div>`).join('');
+}
+
+window.removeWord = function(i) {
+  G.brandWords.splice(i, 1);
+  renderWordCloud();
+};
+
+window.finishChapter4 = async function() {
+  setProgress(70);
+  runManifestoPhase();
+};
+
+// ═══════════════════════════════════════
+// CHAPTER 4B: THE MANIFESTO (Why / How / What)
+// ═══════════════════════════════════════
+async function runManifestoPhase() {
+  G.manifesto = { why:'', how:'', what:'' };
+  const area = el('gameArea');
+  const archNames = G.synthesizedArchetype ? G.synthesizedArchetype.name : G.finalArchetypes.map(a => a.name).join(' & ');
+  const archDesc = G.synthesizedArchetype ? G.synthesizedArchetype.desc : '';
+  const allValues = [...G.values.foundation, ...G.values.current, ...G.values.constellation];
+  const moods = G.moodSelections.map(i => MOOD_TILES[i].label).join(', ');
+
+  showLoading('Preparing the manifesto...');
+  const promptsResponse = await askAI(
+    `The player is building their brand identity for "${G.brandName}".
+Their archetype: ${archNames}${archDesc ? ` — ${archDesc}` : ''}.
+Quadrant: ${G.quadrant}. Values: ${allValues.join(', ')}. Mood: ${moods}.
+
+Generate 3 reflective prompts to uncover their WHY, HOW, and WHAT. These are about IDENTITY and BELIEF — not about their product or service. The product is irrelevant. This is about what the brand stands for as a force in the world.
+
+Each prompt should be deeply personal and relate to the specific archetype and values they chose. Make them feel like a mirror, not a questionnaire.
+
+Return ONLY a JSON object:
+{
+  "intro": "A 2-sentence Game Master intro for the manifesto phase. Tell them this is where they find the soul of their brand — the belief behind the identity.",
+  "why_prompt": "A provocative 1-2 sentence prompt to uncover their WHY — the deep belief or injustice that drives this brand to exist. Frame it through their specific archetype energy.",
+  "why_placeholder": "A short example answer in their archetype voice (6-10 words)",
+  "how_prompt": "A provocative 1-2 sentence prompt to uncover their HOW — the distinctive way this brand shows up in the world. Frame it through their values and tone.",
+  "how_placeholder": "A short example answer (6-10 words)",
+  "what_prompt": "A provocative 1-2 sentence prompt to uncover their WHAT — what this brand creates or changes in the world. Frame it through their territory and mood. Not the product — the IMPACT.",
+  "what_placeholder": "A short example answer (6-10 words)"
+}`,
+    'CRITICAL: Return ONLY valid JSON. No markdown. Prompts must feel personal to THIS brand. Never mention products or services. This is about identity, belief, purpose.'
+  );
+  hideLoading();
+
+  let prompts = {};
+  try {
+    const jsonStr = promptsResponse.replace(/```json?\n?/g,'').replace(/```/g,'').trim();
+    prompts = JSON.parse(jsonStr);
+  } catch(e) {
+    prompts = {
+      intro: `Every brand has a soul. Before we reveal your Brand World, let's find the belief that powers everything — the reason ${G.brandName} exists.`,
+      why_prompt: `As ${archNames}, what injustice or truth does ${G.brandName} refuse to ignore?`,
+      why_placeholder: 'We believe the world needs more...',
+      how_prompt: `How does ${G.brandName} show up differently? What's the distinctive energy people feel?`,
+      how_placeholder: 'We show up by...',
+      what_prompt: `What does ${G.brandName} ultimately change in the world? Not what you sell — what shifts?`,
+      what_placeholder: 'We create a world where...'
+    };
+  }
+
+  area.innerHTML = `
+    <div class="chapter-header fade-up">
+      <div class="chapter-tag">Chapter 4 — The Manifesto</div>
+      <div class="chapter-title">Find your <span class="grad-text">Core Truth</span></div>
+      <div class="chapter-sub">Not what you sell. What you believe.</div>
+    </div>
+    <div class="narration fade-up-d1"><div class="gm-tag">Game Master</div>${prompts.intro || ''}</div>
+
+    <div class="manifesto-form fade-up-d2">
+      <div class="manifesto-block">
+        <div class="manifesto-ring why-ring">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><defs><linearGradient id="gWhy" x1="0" y1="48" x2="48" y2="0"><stop stop-color="#E84D8A"/><stop offset="1" stop-color="#C724B1"/></linearGradient></defs><circle cx="24" cy="24" r="20" stroke="url(#gWhy)" stroke-width="1.5" fill="rgba(232,77,138,.06)"/><circle cx="24" cy="24" r="10" stroke="url(#gWhy)" stroke-width="1" opacity=".3"/><circle cx="24" cy="24" r="3" fill="url(#gWhy)" opacity=".8"/></svg>
+        </div>
+        <div class="manifesto-label">WHY</div>
+        <div class="manifesto-prompt">${prompts.why_prompt || ''}</div>
+        <textarea class="manifesto-input" id="manifestoWhy" rows="2" placeholder="${prompts.why_placeholder || 'We believe...'}" maxlength="200"></textarea>
+      </div>
+
+      <div class="manifesto-block">
+        <div class="manifesto-ring how-ring">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><defs><linearGradient id="gHow" x1="0" y1="48" x2="48" y2="0"><stop stop-color="#C724B1"/><stop offset="1" stop-color="#7B2FBE"/></linearGradient></defs><path d="M8 36C14 24 20 28 24 20C28 12 34 16 40 8" stroke="url(#gHow)" stroke-width="1.5" fill="none" stroke-linecap="round"/><circle cx="24" cy="20" r="3" fill="url(#gHow)" opacity=".8"/></svg>
+        </div>
+        <div class="manifesto-label">HOW</div>
+        <div class="manifesto-prompt">${prompts.how_prompt || ''}</div>
+        <textarea class="manifesto-input" id="manifestoHow" rows="2" placeholder="${prompts.how_placeholder || 'We show up by...'}" maxlength="200"></textarea>
+      </div>
+
+      <div class="manifesto-block">
+        <div class="manifesto-ring what-ring">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><defs><linearGradient id="gWhat" x1="0" y1="48" x2="48" y2="0"><stop stop-color="#7B2FBE"/><stop offset="1" stop-color="#5B4FD6"/></linearGradient></defs><polygon points="24,4 28,16 40,16 30,24 34,36 24,28 14,36 18,24 8,16 20,16" stroke="url(#gWhat)" stroke-width="1.2" fill="rgba(123,47,190,.06)"/></svg>
+        </div>
+        <div class="manifesto-label">WHAT</div>
+        <div class="manifesto-prompt">${prompts.what_prompt || ''}</div>
+        <textarea class="manifesto-input" id="manifestoWhat" rows="2" placeholder="${prompts.what_placeholder || 'We create a world where...'}" maxlength="200"></textarea>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:1.5rem;" class="fade-up-d2">
+      <button class="btn-primary" id="confirmManifesto" onclick="finishManifesto()">Forge my Brand World →</button>
+    </div>
+  `;
+}
+
+window.finishManifesto = async function() {
+  G.manifesto.why = el('manifestoWhy').value.trim();
+  G.manifesto.how = el('manifestoHow').value.trim();
+  G.manifesto.what = el('manifestoWhat').value.trim();
+  setProgress(78);
+  runChapter5();
+};
+
+// ═══════════════════════════════════════
+// CHAPTER 5: THE REVEAL
+// ═══════════════════════════════════════
+async function runChapter5() {
+  G.chapter = 5;
+  setProgress(78);
+
+  const archNames = G.synthesizedArchetype ? G.synthesizedArchetype.name : G.finalArchetypes.map(a => a.name).join(' & ');
+  const allValues = [...G.values.foundation, ...G.values.current, ...G.values.constellation];
+  const moods = G.moodSelections.map(i => MOOD_TILES[i].label).join(', ');
+  const tones = TONE_AXES.map(t => {
+    const pct = G.toneValues[t.id];
+    if (pct < 30) return t.left;
+    if (pct > 70) return t.right;
+    return `balanced ${t.left}/${t.right}`;
+  }).join(', ');
+
+  // Manifesto context
+  const manifestoCtx = G.manifesto.why || G.manifesto.how || G.manifesto.what
+    ? `\n- Manifesto — WHY: "${G.manifesto.why || '(not answered)'}"; HOW: "${G.manifesto.how || '(not answered)'}"; WHAT: "${G.manifesto.what || '(not answered)'}"`
+    : '';
+
+  showLoading('The Game Master is writing your story...');
+  const brandWorldText = await askAI(
+    `Generate the final Brand World for "${G.brandName}".
+
+IMPORTANT: This is about IDENTITY — not product or service. The brand is a force, a belief system, a way of showing up in the world.
+
+Based on everything:
+- Quadrant: ${G.quadrant}
+- Archetype: ${archNames}${G.synthesizedArchetype ? ` (synthesized from ${G.finalArchetypes.map(a=>a.name).join(' & ')})` : ''}
+- Values — Foundation: ${G.values.foundation.join(', ')}; Current: ${G.values.current.join(', ')}; Constellation: ${G.values.constellation.join(', ')}
+- Mood: ${moods}
+- Tone: ${tones}
+- Brand words: ${G.brandWords.join(', ') || 'none'}${manifestoCtx}
+
+Write a JSON object (and ONLY the JSON, no other text) with these fields:
+{
+  "story_opening": "A vivid 2-3 sentence 'Once upon a time' opening paragraph for this brand's story. This is identity, not product.",
+  "positioning": "A one-sentence brand positioning statement — what this brand IS, not what it sells",
+  "know": "What people should KNOW about this brand identity (1 sentence)",
+  "believe": "What people should BELIEVE about this brand (1 sentence)",
+  "act": "What people should DO / feel compelled to do because of this brand (1 sentence)",
+  "manifesto_why": "A polished 1-2 sentence manifesto WHY — the deep belief driving this brand. Build on the player's answer if provided, elevate it.",
+  "manifesto_how": "A polished 1-2 sentence manifesto HOW — the distinctive way this brand shows up. Build on the player's answer.",
+  "manifesto_what": "A polished 1-2 sentence manifesto WHAT — what this brand creates or changes in the world. Not a product. An impact.",
+  "personality": "3-4 adjectives that define the brand personality",
+  "visual_shapes": "The shape language of this brand (e.g. angular crystalline forms, soft organic curves, bold geometric blocks). 3-5 words.",
+  "visual_imagery": "The imagery themes (e.g. vast landscapes, intimate moments, urban energy, celestial bodies). 3-5 words.",
+  "visual_motion": "How this brand moves (e.g. fluid and continuous, sharp and decisive, slow and deliberate, explosive bursts). 3-5 words.",
+  "visual_texture": "The texture of this brand (e.g. smooth polished metal, raw natural grain, soft fabric, rough concrete). 3-5 words.",
+  "visual_experience": "The experiences this brand evokes (e.g. the moment before a leap, sunrise after a storm, a hand reaching out). One vivid image/moment.",
+  "associations": ["word1","word2","word3","word4","word5","word6","word7","word8"],
+  "benchmark_1_name": "Name of a real-world brand with a similar positioning/archetype energy",
+  "benchmark_1_why": "One sentence — why this brand is a kindred spirit in positioning",
+  "benchmark_1_examples": ["How they bring their positioning to life — example 1 (specific campaign, design choice, experience, or behaviour)", "Example 2", "Example 3"],
+  "benchmark_2_name": "Name of a second real-world brand with similar energy but from a DIFFERENT industry",
+  "benchmark_2_why": "One sentence — why this brand shares the same identity DNA",
+  "benchmark_2_examples": ["How they bring their positioning to life — example 1", "Example 2", "Example 3"]
+}
+
+IMPORTANT for associations: Think about the sensory, emotional, and cultural associations this brand identity evokes. These are NOT values or adjectives — they are nouns, places, moments, textures, sounds, and imagery. Examples: "midnight", "campfire", "thunder", "velvet", "rooftop", "atlas", "neon", "cathedral". Pick 8 evocative association words that capture the FEELING of this brand identity.
+
+IMPORTANT for benchmarks: Choose 2 well-known brands from DIFFERENT industries that share a similar positioning energy, archetype, or belief system. These must be real brands. For each, give 2-3 SPECIFIC examples of how they bring their positioning to life through design, campaigns, experiences, or brand behaviour — not vague statements.`,
+    'CRITICAL: Return ONLY valid JSON. No markdown, no explanation, just the JSON object. Remember: this is about IDENTITY — never mention products or services. Benchmark brands must be real and well-known.'
+  );
+  hideLoading();
+
+  // Parse AI response
+  let bw = {};
+  try {
+    const jsonStr = brandWorldText.replace(/```json?\n?/g,'').replace(/```/g,'').trim();
+    bw = JSON.parse(jsonStr);
+  } catch(e) {
+    bw = {
+      story_opening: brandWorldText,
+      positioning: `${G.brandName} — where ${G.quadrant} meets purpose.`,
+      know: `${G.brandName} is a ${G.quadrant}-driven identity.`,
+      believe: `${G.brandName} stands for what matters.`,
+      act: `Join ${G.brandName} when you're ready to believe in something.`,
+      manifesto_why: G.manifesto.why || 'We exist because the world needs this.',
+      manifesto_how: G.manifesto.how || 'We show up with intention and energy.',
+      manifesto_what: G.manifesto.what || 'We change how people see what\'s possible.',
+      personality: archNames,
+      visual_shapes: 'Geometric and bold',
+      visual_imagery: 'Horizons and open space',
+      visual_motion: 'Fluid and continuous',
+      visual_texture: 'Smooth polished surfaces',
+      visual_experience: 'The moment before everything changes',
+      associations: ['midnight','compass','thunder','horizon','atlas','ember','signal','cathedral'],
+      benchmark_1_name: 'Patagonia',
+      benchmark_1_why: 'A brand built on belief, not product.',
+      benchmark_1_examples: ['Don\'t Buy This Jacket campaign','Worn Wear repair programme','1% for the Planet commitment'],
+      benchmark_2_name: 'Apple',
+      benchmark_2_why: 'Identity-first positioning that transcends category.',
+      benchmark_2_examples: ['Think Different campaign','Minimalist retail temple experience','Product launches as cultural events']
+    };
+  }
+  G.brandWorld = bw;
+
+  renderBrandWorld(bw);
+  setProgress(100);
+}
+
+function renderBrandWorld(bw) {
+  const area = el('gameArea');
+  const allValues = [...G.values.foundation, ...G.values.current, ...G.values.constellation];
+  const selectedMoods = G.moodSelections.map(i => MOOD_TILES[i]);
+
+  area.innerHTML = `
+    <div class="bw-hero fade-up">
+      <div class="stag" style="text-align:center;">Your Brand World</div>
+      <h2>${G.brandName}</h2>
+      <p>${bw.story_opening || ''}</p>
+    </div>
+
+    <!-- Archetype Card -->
+    ${G.synthesizedArchetype ? `
+    <div class="arch-result fade-up-d1" style="display:flex;justify-content:center;">
+      <div class="arch-result-card synth-card">
+        <div class="arc-header" style="text-align:center;">
+          <div style="margin-bottom:.5rem;">${synthArchIcon(72)}</div>
+          <div class="arc-name" style="font-size:1.6rem;">${G.synthesizedArchetype.name}</div>
+          <div class="arc-territory">${G.synthesizedArchetype.territory}</div>
+          <div class="arc-desc">${G.synthesizedArchetype.desc}</div>
+        </div>
+        <div class="arc-shadow">
+          <div class="arc-shadow-label">Shadow Side</div>
+          <div class="arc-shadow-text">${G.synthesizedArchetype.shadow}</div>
+        </div>
+        <div class="arc-values">
+          <div class="arc-values-label">Key Values</div>
+          <div class="bw-tags">${G.synthesizedArchetype.values.map(v => `<span class="bw-tag">${v}</span>`).join('')}</div>
+        </div>
+        <div style="padding:.6rem 1.5rem;border-top:1px solid rgba(123,47,190,.06);display:flex;gap:.6rem;justify-content:center;align-items:center;">
+          <span style="font-size:.5rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(248,240,255,.2);">Forged from</span>
+          ${G.finalArchetypes.map(a => `<span style="display:inline-flex;align-items:center;gap:.25rem;font-size:.65rem;color:rgba(248,240,255,.4);">${archIcon(a.id, 18)} ${a.name}</span>`).join('<span style="color:rgba(248,240,255,.1);">+</span>')}
+        </div>
+      </div>
+    </div>` : `
+    <div class="arch-result fade-up-d1">
+      ${G.finalArchetypes.map(a => `
+        <div class="arch-result-card">
+          <div class="arc-header">
+            <div style="margin-bottom:.3rem;">${archIcon(a.id, 56)}</div>
+            <div class="arc-name">${a.name}</div>
+            <div class="arc-territory">${a.territory}</div>
+            <div class="arc-desc">${a.desc}</div>
+          </div>
+          <div class="arc-shadow">
+            <div class="arc-shadow-label">Shadow Side</div>
+            <div class="arc-shadow-text">${a.shadow}</div>
+          </div>
+          <div class="arc-values">
+            <div class="arc-values-label">Key Values</div>
+            <div class="bw-tags">${a.values.map(v => `<span class="bw-tag">${v}</span>`).join('')}</div>
+          </div>
+        </div>
+      `).join('')}
+    </div>`}
+
+
+    <!-- Positioning Map -->
+    <div class="bw-grid" style="margin-bottom:1.5rem;">
+      <div class="bw-card full fade-up-d1">
+        <div class="bw-label">Your Position</div>
+        <div class="map-container" id="finalMapBW" style="margin:0;border:none;padding:0;background:none;"></div>
+      </div>
+    </div>
+
+    <!-- Brand Positioning -->
+    <div class="bw-grid fade-up-d1">
+      <div class="bw-card full">
+        <div class="bw-label">Brand Positioning</div>
+        <div class="bw-value">${bw.positioning || ''}</div>
+      </div>
+    </div>
+
+    <!-- KBA Framework -->
+    <div class="bw-grid fade-up-d1" style="margin-top:1rem;">
+      <div class="bw-card full">
+        <div class="bw-label">Know → Believe → Act</div>
+        <div class="kba-grid">
+          <div class="kba-item">
+            <div class="kba-label">Know</div>
+            <div class="kba-text">${bw.know || ''}</div>
+          </div>
+          <div class="kba-item">
+            <div class="kba-label">Believe</div>
+            <div class="kba-text">${bw.believe || ''}</div>
+          </div>
+          <div class="kba-item">
+            <div class="kba-label">Act</div>
+            <div class="kba-text">${bw.act || ''}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Core Manifesto -->
+    <div class="bw-grid fade-up-d1" style="margin-top:1rem;">
+      <div class="bw-card full">
+        <div class="bw-label">Core Manifesto</div>
+        <div class="manifesto-output">
+          <div class="manifesto-row">
+            <div class="manifesto-row-label why-label">WHY</div>
+            <div class="manifesto-row-text">${bw.manifesto_why || G.manifesto.why || ''}</div>
+          </div>
+          <div class="manifesto-row">
+            <div class="manifesto-row-label how-label">HOW</div>
+            <div class="manifesto-row-text">${bw.manifesto_how || G.manifesto.how || ''}</div>
+          </div>
+          <div class="manifesto-row">
+            <div class="manifesto-row-label what-label">WHAT</div>
+            <div class="manifesto-row-text">${bw.manifesto_what || G.manifesto.what || ''}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Values Profile -->
+    <div class="bw-grid fade-up-d2" style="margin-top:1rem;">
+      <div class="bw-card">
+        <div class="bw-label">Values Profile</div>
+        <div class="bw-tags">${allValues.map(v => `<span class="bw-tag">${v}</span>`).join('')}</div>
+      </div>
+      <div class="bw-card">
+        <div class="bw-label">Brand Personality</div>
+        <div class="bw-value" style="font-size:.9rem;">${bw.personality || ''}</div>
+        ${G.brandWords.length ? `<div class="bw-tags" style="margin-top:.5rem;">${G.brandWords.map(w => `<span class="bw-tag">${w}</span>`).join('')}</div>` : ''}
+      </div>
+    </div>
+
+    <!-- Visual Brand World -->
+    <div class="bw-grid fade-up-d2" style="margin-top:1rem;">
+      <div class="bw-card full">
+        <div class="bw-label">Visual Brand World</div>
+        <div class="brand-world-visual">
+          <div class="vbw-tile">
+            <div class="vbw-icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><defs><linearGradient id="vShp" x1="0" y1="36" x2="36" y2="0"><stop stop-color="#E84D8A"/><stop offset="1" stop-color="#C724B1"/></linearGradient></defs><polygon points="18,2 34,12 34,28 18,34 2,28 2,12" stroke="url(#vShp)" stroke-width="1.2" fill="rgba(232,77,138,.06)"/><polygon points="18,8 28,14 28,26 18,30 8,26 8,14" stroke="url(#vShp)" stroke-width="1" opacity=".3"/></svg></div>
+            <div class="vbw-label">Shapes</div>
+            <div class="vbw-value">${bw.visual_shapes || ''}</div>
+          </div>
+          <div class="vbw-tile">
+            <div class="vbw-icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><defs><linearGradient id="vImg" x1="0" y1="36" x2="36" y2="0"><stop stop-color="#C724B1"/><stop offset="1" stop-color="#7B2FBE"/></linearGradient></defs><rect x="3" y="6" width="30" height="24" rx="1" stroke="url(#vImg)" stroke-width="1.2" fill="rgba(199,36,177,.04)"/><circle cx="12" cy="14" r="3" fill="url(#vImg)" opacity=".5"/><path d="M3 26L12 18L20 24L26 18L33 22" stroke="url(#vImg)" stroke-width="1" opacity=".5"/></svg></div>
+            <div class="vbw-label">Imagery</div>
+            <div class="vbw-value">${bw.visual_imagery || ''}</div>
+          </div>
+          <div class="vbw-tile">
+            <div class="vbw-icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><defs><linearGradient id="vMot" x1="0" y1="36" x2="36" y2="0"><stop stop-color="#7B2FBE"/><stop offset="1" stop-color="#5B4FD6"/></linearGradient></defs><path d="M4 28C10 16 16 22 22 12C28 2 34 8 34 8" stroke="url(#vMot)" stroke-width="1.5" fill="none" stroke-linecap="round"/><circle cx="22" cy="12" r="2.5" fill="url(#vMot)" opacity=".7"/><path d="M4 32C10 20 16 26 22 16" stroke="url(#vMot)" stroke-width="1" opacity=".2" fill="none"/></svg></div>
+            <div class="vbw-label">Motion</div>
+            <div class="vbw-value">${bw.visual_motion || ''}</div>
+          </div>
+          <div class="vbw-tile">
+            <div class="vbw-icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><defs><linearGradient id="vTex" x1="0" y1="36" x2="36" y2="0"><stop stop-color="#E84D8A"/><stop offset="1" stop-color="#7B2FBE"/></linearGradient></defs><line x1="4" y1="8" x2="32" y2="8" stroke="url(#vTex)" stroke-width="1" opacity=".2"/><line x1="4" y1="14" x2="32" y2="14" stroke="url(#vTex)" stroke-width="1.5" opacity=".4"/><line x1="4" y1="20" x2="32" y2="20" stroke="url(#vTex)" stroke-width="2" opacity=".6"/><line x1="4" y1="26" x2="32" y2="26" stroke="url(#vTex)" stroke-width="1.5" opacity=".4"/><line x1="4" y1="32" x2="32" y2="32" stroke="url(#vTex)" stroke-width="1" opacity=".2"/></svg></div>
+            <div class="vbw-label">Texture</div>
+            <div class="vbw-value">${bw.visual_texture || ''}</div>
+          </div>
+        </div>
+        <div style="margin-top:1rem;padding:1rem;background:rgba(199,36,177,.04);border:1px solid rgba(199,36,177,.08);text-align:center;">
+          <div class="vbw-label" style="margin-bottom:.3rem;">Experience</div>
+          <div style="font-size:.9rem;color:rgba(248,240,255,.65);line-height:1.6;font-style:italic;">${bw.visual_experience || ''}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Brand Associations -->
+    ${bw.associations && bw.associations.length ? `
+    <div class="bw-grid fade-up-d2" style="margin-top:1rem;">
+      <div class="bw-card full">
+        <div class="bw-label">Brand Associations</div>
+        <div class="associations-cloud">
+          ${bw.associations.map((a,i) => {
+            const sizes = [1.4, 1.1, .95, 1.25, .85, 1.15, 1.0, .9];
+            const opacities = [.85, .65, .5, .75, .45, .7, .55, .4];
+            return `<span class="assoc-word" style="font-size:${sizes[i % 8]}rem;opacity:${opacities[i % 8]};">${a}</span>`;
+          }).join('')}
+        </div>
+      </div>
+    </div>` : ''}
+
+    <!-- Benchmark Brands -->
+    ${bw.benchmark_1_name ? `
+    <div class="bw-grid fade-up-d2" style="margin-top:1rem;">
+      <div class="bw-card full">
+        <div class="bw-label">Kindred Spirits — Brands with Similar Energy</div>
+        <div class="benchmark-grid">
+          <div class="benchmark-card">
+            <div class="benchmark-header">
+              <div class="benchmark-name">${bw.benchmark_1_name}</div>
+              <div class="benchmark-why">${bw.benchmark_1_why || ''}</div>
+            </div>
+            <div class="benchmark-examples">
+              <div class="benchmark-examples-label">How they bring it to life</div>
+              ${(bw.benchmark_1_examples || []).map(ex => `<div class="benchmark-example">${ex}</div>`).join('')}
+            </div>
+          </div>
+          ${bw.benchmark_2_name ? `
+          <div class="benchmark-card">
+            <div class="benchmark-header">
+              <div class="benchmark-name">${bw.benchmark_2_name}</div>
+              <div class="benchmark-why">${bw.benchmark_2_why || ''}</div>
+            </div>
+            <div class="benchmark-examples">
+              <div class="benchmark-examples-label">How they bring it to life</div>
+              ${(bw.benchmark_2_examples || []).map(ex => `<div class="benchmark-example">${ex}</div>`).join('')}
+            </div>
+          </div>` : ''}
+        </div>
+      </div>
+    </div>` : ''}
+
+    <!-- Moodboard -->
+    <div class="bw-grid fade-up-d2" style="margin-top:1rem;">
+      <div class="bw-card full">
+        <div class="bw-label">Brand Moodboard</div>
+        <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.4rem;">
+          ${selectedMoods.map(m => `<div style="width:60px;height:60px;background:linear-gradient(135deg,${m.colors[0]},${m.colors[1]},${m.colors[2]});display:flex;align-items:flex-end;justify-content:center;padding:.2rem;"><span style="font-size:.42rem;font-weight:600;color:rgba(255,255,255,.5);">${m.label}</span></div>`).join('')}
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="bw-cta fade-up-d2">
+      <div class="stag" style="text-align:center;">Your Story Begins Here</div>
+      <p>This is just the opening chapter. To build the full Brand World — identity system, strategy playbook, and live brand operations — Unicorn can take you there.</p>
+      <a href="https://unicorn.studio" target="_blank" class="btn-primary">Explore Unicorn</a>
+    </div>
+  `;
+
+  // Render final map
+  renderLiveMap('finalMapBW', true);
+}
+</script>
+</body>
+</html>

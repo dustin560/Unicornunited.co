@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battlecard: Unicorn vs Competitors</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        :root {
+            --bg-primary: #0a0d14;
+            --bg-elevated: #0f131c;
+            --bg-surface: #161b28;
+            --bg-hover: #1e2536;
+            --bg-card: #131825;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-muted: rgba(255, 255, 255, 0.45);
+            --accent: #8b5cf6;
+            --accent-hover: #7c3aed;
+            --accent-glow: rgba(139, 92, 246, 0.15);
+            --you-win: #10b981;
+            --they-win: #ef4444;
+            --tie: #f59e0b;
+            --border: rgba(255, 255, 255, 0.08);
+            --border-accent: rgba(139, 92, 246, 0.3);
+            --radius: 12px;
+            --radius-sm: 8px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 48px;
+            padding-bottom: 32px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        header .logo {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 16px;
+        }
+
+        header h1 {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.7) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header .meta {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        header .meta span {
+            margin: 0 8px;
+        }
+
+        /* Tab Navigation */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 32px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            background: transparent;
+            color: var(--text-secondary);
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .tab:hover {
+            background: var(--bg-hover);
+            border-color: rgba(255,255,255,0.15);
+            color: var(--text-primary);
+        }
+
+        .tab.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Comparison Matrix */
+        .matrix-wrapper {
+            overflow-x: auto;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            margin-bottom: 40px;
+        }
+
+        .comparison-matrix {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .comparison-matrix thead th {
+            background: var(--bg-elevated);
+            padding: 16px 14px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            white-space: nowrap;
+        }
+
+        .comparison-matrix thead th:first-child {
+            min-width: 160px;
+        }
+
+        .comparison-matrix thead th.you {
+            color: var(--accent);
+        }
+
+        .comparison-matrix tbody td {
+            padding: 14px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        .comparison-matrix tbody tr:hover {
+            background: var(--bg-hover);
+        }
+
+        .comparison-matrix tbody td:first-child {
+            font-weight: 600;
+            color: var(--text-primary);
+            white-space: nowrap;
+        }
+
+        .win-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 100px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .win-badge.you { background: rgba(16, 185, 129, 0.15); color: var(--you-win); }
+        .win-badge.them { background: rgba(239, 68, 68, 0.15); color: var(--they-win); }
+        .win-badge.tie { background: rgba(245, 158, 11, 0.15); color: var(--tie); }
+
+        /* Battlecard Sections */
+        .battlecard {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px;
+            transition: border-color 0.2s;
+        }
+
+        .card:hover {
+            border-color: rgba(255,255,255,0.12);
+        }
+
+        .card h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card h3 .icon {
+            width: 28px;
+            height: 28px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .card p, .card li {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .card ul li {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .card ul li:last-child {
+            border-bottom: none;
+        }
+
+        .card ul li::before {
+            content: '';
+            display: none;
+        }
+
+        .bullet-icon {
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        /* Profile Grid */
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 8px;
+        }
+
+        .profile-item {
+            padding: 16px;
+            background: var(--bg-surface);
+            border-radius: var(--radius-sm);
+        }
+
+        .profile-item .label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .profile-item .value {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Diff Columns */
+        .diff-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 640px) {
+            .diff-grid { grid-template-columns: 1fr; }
+        }
+
+        .diff-col h4 {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid;
+        }
+
+        .diff-col.you-win h4 {
+            color: var(--you-win);
+            border-color: var(--you-win);
+        }
+
+        .diff-col.they-win h4 {
+            color: var(--they-win);
+            border-color: var(--they-win);
+        }
+
+        .diff-col ul li {
+            border-bottom: none;
+            padding: 6px 0;
+        }
+
+        /* Talk Track */
+        .talk-track {
+            background: var(--bg-surface);
+            border-radius: var(--radius-sm);
+            padding: 20px;
+            margin-bottom: 12px;
+        }
+
+        .talk-track .scenario {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .talk-track .script {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-style: italic;
+            line-height: 1.7;
+        }
+
+        /* Landmine */
+        .landmine {
+            background: var(--bg-surface);
+            border-left: 3px solid var(--tie);
+            padding: 16px 20px;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Quick Win/Loss Guide */
+        .win-loss-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 20px;
+        }
+
+        .win-loss-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+        }
+
+        .win-loss-card h4 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .win-loss-card .scenario-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+        }
+
+        .win-loss-card .scenario-row:last-child {
+            border-bottom: none;
+        }
+
+        /* Your Company Card */
+        .your-card {
+            border: 1px solid var(--border-accent);
+            background: linear-gradient(135deg, var(--bg-card) 0%, rgba(139, 92, 246, 0.05) 100%);
+        }
+
+        .your-card h3 {
+            color: var(--accent);
+        }
+
+        .differentiator-item {
+            padding: 16px;
+            background: var(--bg-surface);
+            border-radius: var(--radius-sm);
+            margin-bottom: 10px;
+        }
+
+        .differentiator-item .title {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .differentiator-item .desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { padding: 24px 16px; }
+            header h1 { font-size: 24px; }
+            .tabs { gap: 6px; }
+            .tab { padding: 8px 14px; font-size: 13px; }
+            .card { padding: 20px; }
+            .profile-grid { grid-template-columns: 1fr 1fr; }
+            .win-loss-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">Unicorn</div>
+            <h1>Competitive Battlecard</h1>
+            <div class="meta">
+                Generated: 25 March 2026
+                <span>|</span>
+                5 Competitors Analyzed
+                <span>|</span>
+                Source: Web Research
+            </div>
+        </header>
+
+        <!-- Tab Navigation -->
+        <nav class="tabs">
+            <button class="tab active" data-tab="matrix">Comparison Matrix</button>
+            <button class="tab" data-tab="unicorn">Unicorn (You)</button>
+            <button class="tab" data-tab="478studios">478 Studios</button>
+            <button class="tab" data-tab="brandmerry">Brandmerry</button>
+            <button class="tab" data-tab="brandkickstart">Brand Kickstart</button>
+            <button class="tab" data-tab="thefutur">The Futur</button>
+            <button class="tab" data-tab="bosp">Bureau of Small Projects</button>
+        </nav>
+
+        <!-- ====== COMPARISON MATRIX ====== -->
+        <section id="matrix" class="tab-content active">
+            <div class="matrix-wrapper">
+                <table class="comparison-matrix">
+                    <thead>
+                        <tr>
+                            <th>Dimension</th>
+                            <th class="you">Unicorn</th>
+                            <th>478 Studios</th>
+                            <th>Brandmerry</th>
+                            <th>Brand Kickstart</th>
+                            <th>The Futur</th>
+                            <th>Bureau of Small Projects</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Model</td>
+                            <td>Fractional partner + coaching + AI tools</td>
+                            <td>Fractional partner (6-mo retainer)</td>
+                            <td>Courses + coaching membership</td>
+                            <td>Done-with-you (2-month sprint)</td>
+                            <td>Self-paced courses + live workshops</td>
+                            <td>Subscription agency</td>
+                        </tr>
+                        <tr>
+                            <td>Entry Price</td>
+                            <td>Multiple tiers (coaching, workshops, workbooks)</td>
+                            <td>From &pound;350/mo</td>
+                            <td>Course-based (undisclosed, est. &dollar;500-2k)</td>
+                            <td>Undisclosed (est. &dollar;2-5k)</td>
+                            <td>&dollar;199 (course)</td>
+                            <td>Subscription plans (&dollar;1-10k projects)</td>
+                        </tr>
+                        <tr>
+                            <td>Target Market</td>
+                            <td>Growing SMBs, founders, individuals</td>
+                            <td>C-suite, diverse founders in tech</td>
+                            <td>Female online entrepreneurs</td>
+                            <td>Service solopreneurs (1-3 yrs in)</td>
+                            <td>Designers &amp; creatives adding brand strategy</td>
+                            <td>Small businesses, nonprofits, startups</td>
+                        </tr>
+                        <tr>
+                            <td>Proprietary Framework</td>
+                            <td><span class="win-badge you">Strong</span> Playable Brand System, 3 C&rsquo;s of Trust, Archetype Map</td>
+                            <td>General brand strategy</td>
+                            <td>Strategic Storytelling Method</td>
+                            <td>Structured workshops + workbook</td>
+                            <td>6-Step Brand Strategy Framework</td>
+                            <td>Evolutionary Branding (marginal gains)</td>
+                        </tr>
+                        <tr>
+                            <td>AI-Powered</td>
+                            <td><span class="win-badge you">Yes</span> AI brand tools + Start your Story game</td>
+                            <td><span class="win-badge them">No</span></td>
+                            <td><span class="win-badge them">No</span></td>
+                            <td><span class="win-badge them">No</span></td>
+                            <td><span class="win-badge them">No</span></td>
+                            <td><span class="win-badge them">No</span></td>
+                        </tr>
+                        <tr>
+                            <td>Self-Serve Option</td>
+                            <td><span class="win-badge you">Yes</span> Workbooks + AI chat</td>
+                            <td><span class="win-badge them">No</span> Requires retainer</td>
+                            <td><span class="win-badge tie">Partial</span> Courses are async</td>
+                            <td><span class="win-badge them">No</span> 1:1 only</td>
+                            <td><span class="win-badge you">Yes</span> Self-paced course</td>
+                            <td><span class="win-badge them">No</span> Done-for-you</td>
+                        </tr>
+                        <tr>
+                            <td>Enterprise Background</td>
+                            <td><span class="win-badge you">Strong</span> BP, EY, Capgemini, Fidelity, Landor</td>
+                            <td>General agency experience</td>
+                            <td>Solopreneur background</td>
+                            <td>10+ years brand strategy</td>
+                            <td>Nike, Microsoft, Sony (Chris Do)</td>
+                            <td>Fortune 500 team backgrounds</td>
+                        </tr>
+                        <tr>
+                            <td>Gamified / Interactive</td>
+                            <td><span class="win-badge you">Yes</span> Start your Story game</td>
+                            <td><span class="win-badge them">No</span></td>
+                            <td><span class="win-badge them">No</span></td>
+                            <td><span class="win-badge them">No</span></td>
+                            <td><span class="win-badge tie">Partial</span> Live workshops</td>
+                            <td><span class="win-badge them">No</span></td>
+                        </tr>
+                        <tr>
+                            <td>Team / Collaborative</td>
+                            <td><span class="win-badge you">Yes</span> Designed for teams</td>
+                            <td><span class="win-badge tie">Partial</span> Works with leadership</td>
+                            <td><span class="win-badge them">No</span> Individual focus</td>
+                            <td><span class="win-badge them">No</span> 1:1 only</td>
+                            <td><span class="win-badge them">No</span> Individual learner</td>
+                            <td><span class="win-badge tie">Partial</span> Agency relationship</td>
+                        </tr>
+                        <tr>
+                            <td>Output Quality</td>
+                            <td>Shareable brand artefact (not just PDF)</td>
+                            <td>Strategy docs + creative direction</td>
+                            <td>Brand messaging + content plan</td>
+                            <td>Brand strategy document</td>
+                            <td>DIY strategy from course learnings</td>
+                            <td>Full brand identity + website</td>
+                        </tr>
+                        <tr>
+                            <td>Geographic Base</td>
+                            <td>London, UK</td>
+                            <td>UK</td>
+                            <td>US (online)</td>
+                            <td>US (online)</td>
+                            <td>US (online)</td>
+                            <td>US (online)</td>
+                        </tr>
+                        <tr>
+                            <td>Social Proof</td>
+                            <td>Enterprise client logos (BP, EY, etc.)</td>
+                            <td>Diverse founder testimonials</td>
+                            <td>&dollar;2M+ revenue, strong testimonials</td>
+                            <td>Solopreneur case studies</td>
+                            <td>1.5M+ YouTube, massive community</td>
+                            <td>Stanford, Bill Nye, government clients</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 20px;">Quick Win / Loss Guide</h2>
+            <div class="win-loss-grid">
+                <div class="win-loss-card">
+                    <h4>vs 478 Studios</h4>
+                    <div class="scenario-row">
+                        <span>AI-powered tools &amp; self-serve options</span>
+                        <span class="win-badge you">You win</span>
+                    </div>
+                    <div class="scenario-row">
+                        <span>Proprietary framework depth</span>
+                        <span class="win-badge you">You win</span>
+                    </div>
+                    <div class="scenario-row">
+                        <span>Multiple price tiers / accessibility</span>
+                        <span class="win-badge you">You win</span>
+                    </div>
+                    <div class="scenario-row">
+                        <span>Diverse founder positioning (DEI focus)</span>
+                        <span class="win-badge them">They win</span>
+                    </div>
+                </div>
+                <div class="win-loss-card">
+                    <h4>vs Brandmerry</h4>
+                    <div class="scenario-row">
+                        <span>Enterprise-grade frameworks</span>
+                        <span class="win-badge you">You win</span>
+                    </div>
+                    <div class="scenario-row">
+                        <span>AI tools &amp; gamified experience</span>
+                        <span class="win-badge you">You win</span>
+                    </div>
+                    <div class="scenario-row">
+                        <span>Team / collaborative focus</span>
+                        <span class="win-badge you">You win</span>
+                    </div>
+                    <div class="scenario-row">
+                        <span>Community size &amp; content volume</span>
+                        <span class="win-badge them">They win</span>
+                    </div>
+                    <div class="scenario-row">
+                        <span>Storytelling-first approach</span>
+                        <span class="win-badge them">They win</span>
+                    </div>
+                </div>
+                <div class="win-loss-card">
+                    <h4>vs Brand Kickstart</h4>
+                    <div class="scenario-row">
+                        <span>Scalable offerings (not just 1:1)</span>
+                        <span class="win-badge you">You win</span>
+                    </div>
+                    <div class="scenario-row">
+                        <span>AI &amp; interactive tools</span>
+                        <span class="win-badge you">You win</span>
+                    </div>
+                    <div class="scenario-row">
+                        <span>Framework depth &amp; sophistication</span>
+                        <span class="win-badge you">You win</span>
+                    </div>
+                    <div class="scenario-row">
+                        <span>Hands-on 1:1 intimacy (for solopreneurs)</span>
+                        <span class="win-badge them">They win</span>
+                    </div>
+                </div>
+                <div class="win-loss-card">
+                    <h4>vs The Futur</h4>
+                    <div class="scenario-row">
+                        <span>Done-with/for-you service (not DIY)</span>
+                        <span class="win-badge you">You win</span>
+                    </div>
+                    <div class="scenario-row">
+                        <span>Proprietary, deeper frameworks</span>
+                        <span class="win-badge you">You win</span>
+                    </div>
+                    <div class="scenario-row">
+                        <span>Brand &amp; audience size</span>
+                        <span class="win-badge them">They win</span>
+                    </div>
+                    <div class="scenario-row">
+                        <span>Price accessibility (&dollar;199 entry)</span>
+                        <span class="win-badge them">They win</span>
+                    </div>
+                </div>
+                <div class="win-loss-card">
+                    <h4>vs Bureau of Small Projects</h4>
+                    <div class="scenario-row">
+                        <span>Strategy depth (not just execution)</span>
+                        <span class="win-badge you">You win</span>
+                    </div>
+                    <div class="scenario-row">
+                        <span>AI-powered &amp; scalable</span>
+                        <span class="win-badge you">You win</span>
+                    </div>
+                    <div class="scenario-row">
+                        <span>Full execution (design + web + content)</span>
+                        <span class="win-badge them">They win</span>
+                    </div>
+                    <div class="scenario-row">
+                        <span>Done-for-you convenience</span>
+                        <span class="win-badge them">They win</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ====== UNICORN (YOU) ====== -->
+        <section id="unicorn" class="tab-content">
+            <div class="battlecard">
+                <div class="card your-card">
+                    <h3><span class="icon" style="background: var(--accent-glow);">&#9733;</span> Unicorn &mdash; Your Positioning</h3>
+                    <div class="profile-grid">
+                        <div class="profile-item">
+                            <div class="label">Founded By</div>
+                            <div class="value">Dustin Lawrence</div>
+                        </div>
+                        <div class="profile-item">
+                            <div class="label">Location</div>
+                            <div class="value">London, UK</div>
+                        </div>
+                        <div class="profile-item">
+                            <div class="label">Model</div>
+                            <div class="value">Fractional + Coaching + AI Tools</div>
+                        </div>
+                        <div class="profile-item">
+                            <div class="label">Target</div>
+                            <div class="value">Growing SMBs, founders, individuals</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon" style="background: rgba(16,185,129,0.12);">&#9889;</span> Key Differentiators</h3>
+                    <div class="differentiator-item">
+                        <div class="title">Playable Brand System (PBS)</div>
+                        <div class="desc">A rigorous, proprietary framework that reframes brand as a living, playable system. Three components: Playable Strategy Architecture, Adaptive Identity System, and Live Brand Ops, with a Brand Trust Engine across all three. No competitor has anything close to this level of intellectual depth.</div>
+                    </div>
+                    <div class="differentiator-item">
+                        <div class="title">AI-Powered Brand Tools</div>
+                        <div class="desc">AI chat interface in workbooks, "Start your Story" gamified workshop experience. You're the only competitor building AI into the brand strategy process itself &mdash; everyone else is still using static templates and Zoom calls.</div>
+                    </div>
+                    <div class="differentiator-item">
+                        <div class="title">Enterprise Pedigree, SMB Price</div>
+                        <div class="desc">Background includes BP, Capgemini, EY, Fidelity, Landor, Compass Group, Permobil. You bring Fortune 500 strategy methodology to businesses that could never afford a Landor engagement.</div>
+                    </div>
+                    <div class="differentiator-item">
+                        <div class="title">3 C&rsquo;s of Trust Framework</div>
+                        <div class="desc">Clarity, Connection, Confidence &mdash; a memorable, shareable model that gives clients a tangible way to measure and build brand trust. Nobody else in this space has a trust-specific framework.</div>
+                    </div>
+                    <div class="differentiator-item">
+                        <div class="title">Gamified, Team-Based Approach</div>
+                        <div class="desc">"Start your Story" lets teams play their way to brand clarity. Competitors offer courses (solo) or consulting (passive) &mdash; you offer participation and collaboration.</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon" style="background: rgba(245,158,11,0.12);">&#128640;</span> Product Ladder (STAN Opportunity)</h3>
+                    <ul>
+                        <li><span class="bullet-icon" style="color: var(--accent);">&#9656;</span> <div><strong>Free / Lead Gen:</strong> "Start your Story" game, LinkedIn content, free workbook samples</div></li>
+                        <li><span class="bullet-icon" style="color: var(--accent);">&#9656;</span> <div><strong>Entry Tier (STAN):</strong> Brand workbooks with AI chat, self-paced templates, mini-workshops</div></li>
+                        <li><span class="bullet-icon" style="color: var(--accent);">&#9656;</span> <div><strong>Mid Tier (STAN):</strong> Group coaching, workshop sessions, brand audit packages</div></li>
+                        <li><span class="bullet-icon" style="color: var(--accent);">&#9656;</span> <div><strong>Premium (Direct):</strong> Fractional brand partnership, custom engagements</div></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ====== 478 STUDIOS ====== -->
+        <section id="478studios" class="tab-content">
+            <div class="battlecard">
+                <div class="card">
+                    <h3><span class="icon" style="background: rgba(59,130,246,0.12);">&#127968;</span> 478 Studios &mdash; Company Profile</h3>
+                    <div class="profile-grid">
+                        <div class="profile-item">
+                            <div class="label">Founded</div>
+                            <div class="value">2019 (UK)</div>
+                        </div>
+                        <div class="profile-item">
+                            <div class="label">Pricing</div>
+                            <div class="value">From &pound;350/mo (6-mo min)</div>
+                        </div>
+                        <div class="profile-item">
+                            <div class="label">Target</div>
+                            <div class="value">Diverse founders in tech, C-suite</div>
+                        </div>
+                        <div class="profile-item">
+                            <div class="label">Model</div>
+                            <div class="value">Fractional retainer + agency</div>
+                        </div>
+                    </div>
+                    <p style="margin-top: 16px;">International creative agency focused on creating global brands led by conscious and diverse founders. Offers fractional brand strategist service with C-suite-level brand leadership, coaching, strategy and creative direction.</p>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon" style="background: rgba(59,130,246,0.12);">&#128269;</span> What They Sell</h3>
+                    <ul>
+                        <li><span class="bullet-icon" style="color: #3b82f6;">&#9656;</span> <div><strong>Fractional Brand Strategist:</strong> 6-month partnership, positioning, GTM strategy, messaging, creative direction, community building</div></li>
+                        <li><span class="bullet-icon" style="color: #3b82f6;">&#9656;</span> <div><strong>Workshops &amp; Masterclasses:</strong> Branding workshops for teams and leaders</div></li>
+                        <li><span class="bullet-icon" style="color: #3b82f6;">&#9656;</span> <div><strong>Agency Services:</strong> Full branding, design, and digital services</div></li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon" style="background: rgba(16,185,129,0.12);">&#9878;</span> Differentiation</h3>
+                    <div class="diff-grid">
+                        <div class="diff-col you-win">
+                            <h4>Where You Win</h4>
+                            <ul>
+                                <li><div><strong>AI-powered tools:</strong> They have zero AI integration; you're building the future of brand strategy</div></li>
+                                <li><div><strong>Framework depth:</strong> PBS is far more rigorous than their general approach</div></li>
+                                <li><div><strong>Scalable entry points:</strong> They require &pound;350/mo minimum; you can sell workbooks and coaching sessions at any price point on STAN</div></li>
+                                <li><div><strong>Self-serve path:</strong> Their model requires human time for every client; your AI tools scale</div></li>
+                            </ul>
+                        </div>
+                        <div class="diff-col they-win">
+                            <h4>Where They Win</h4>
+                            <ul>
+                                <li><div><strong>DEI positioning:</strong> Strong "diverse founders" angle that resonates with purpose-driven tech companies</div></li>
+                                <li><div><strong>Full agency execution:</strong> They can deliver design, digital, and creative &mdash; not just strategy</div></li>
+                                <li><div><strong>Established agency brand:</strong> Recognizable as an agency with team behind it</div></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon" style="background: rgba(139,92,246,0.12);">&#128172;</span> Talk Tracks</h3>
+                    <div class="talk-track">
+                        <div class="scenario">When a prospect is considering 478 Studios</div>
+                        <div class="script">"478 Studios does solid work, especially for tech founders who value their DEI mission. The difference is I've built a proprietary system &mdash; the Playable Brand System &mdash; that's been tested at enterprise scale with companies like BP and EY, then simplified for growing businesses. Plus my AI tools mean you get ongoing brand support between our sessions, not just a strategy deck that gathers dust."</div>
+                    </div>
+                    <div class="talk-track">
+                        <div class="scenario">When price is the concern</div>
+                        <div class="script">"At &pound;350/month locked into six months, that's over &pound;2,000 before you've seen results. I offer entry points that let you start small &mdash; grab a workbook, try a coaching session &mdash; and scale up as you see the value. You're not locked into a retainer to get enterprise-quality thinking."</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon" style="background: rgba(245,158,11,0.12);">&#128163;</span> Landmine Questions</h3>
+                    <div class="landmine">"What proprietary framework do they use? Or is it a general brand strategy approach? Ask to see the specific methodology &mdash; you want a system, not just advice."</div>
+                    <div class="landmine">"What happens after the 6-month retainer ends? Do you get tools to maintain your brand independently, or do you need to keep paying?"</div>
+                    <div class="landmine">"How does the brand strategy adapt as your business evolves? Is there any technology that keeps it alive, or is it a one-time document?"</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ====== BRANDMERRY ====== -->
+        <section id="brandmerry" class="tab-content">
+            <div class="battlecard">
+                <div class="card">
+                    <h3><span class="icon" style="background: rgba(236,72,153,0.12);">&#127800;</span> Brandmerry &mdash; Company Profile</h3>
+                    <div class="profile-grid">
+                        <div class="profile-item">
+                            <div class="label">Founder</div>
+                            <div class="value">Michelle Knight</div>
+                        </div>
+                        <div class="profile-item">
+                            <div class="label">Revenue</div>
+                            <div class="value">$2M+ reported</div>
+                        </div>
+                        <div class="profile-item">
+                            <div class="label">Target</div>
+                            <div class="value">Female online entrepreneurs</div>
+                        </div>
+                        <div class="profile-item">
+                            <div class="label">Model</div>
+                            <div class="value">Courses + Coaching + Membership</div>
+                        </div>
+                    </div>
+                    <p style="margin-top: 16px;">Brand coaching practice built around "strategic storytelling" for female entrepreneurs. Offers courses (Brand New Adventure), a membership (Brandmerry Academy), and 1:1 coaching (Passport to Freedom). New course launching Summer 2026. Strong personal brand with active content and email list.</p>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon" style="background: rgba(236,72,153,0.12);">&#128269;</span> What They Sell</h3>
+                    <ul>
+                        <li><span class="bullet-icon" style="color: #ec4899;">&#9656;</span> <div><strong>Brand New Adventure:</strong> Personal branding course covering ideal client, messaging, copy, and brand look/feel</div></li>
+                        <li><span class="bullet-icon" style="color: #ec4899;">&#9656;</span> <div><strong>Brandmerry Academy:</strong> Monthly membership with 12 marketing trainings, community, monthly strategy calls with Michelle</div></li>
+                        <li><span class="bullet-icon" style="color: #ec4899;">&#9656;</span> <div><strong>Passport to Freedom:</strong> VIP 1:1 coaching experience (premium tier)</div></li>
+                        <li><span class="bullet-icon" style="color: #ec4899;">&#9656;</span> <div><strong>Free resources:</strong> Personal Branding Guide, blog, email newsletter</div></li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon" style="background: rgba(16,185,129,0.12);">&#9878;</span> Differentiation</h3>
+                    <div class="diff-grid">
+                        <div class="diff-col you-win">
+                            <h4>Where You Win</h4>
+                            <ul>
+                                <li><div><strong>Enterprise pedigree:</strong> Your frameworks were forged at BP, EY, Landor &mdash; hers are self-taught in the online business space</div></li>
+                                <li><div><strong>AI &amp; technology:</strong> Zero tech innovation on her side; you're building AI-native brand tools</div></li>
+                                <li><div><strong>Team-based approach:</strong> Her work is individual-focused; yours helps teams align</div></li>
+                                <li><div><strong>Brand as system:</strong> PBS treats brand as a living system; she treats it as storytelling + messaging</div></li>
+                                <li><div><strong>Gender-neutral positioning:</strong> You serve all founders; she specifically targets women</div></li>
+                            </ul>
+                        </div>
+                        <div class="diff-col they-win">
+                            <h4>Where They Win</h4>
+                            <ul>
+                                <li><div><strong>Established audience:</strong> Large email list, active social presence, proven content machine</div></li>
+                                <li><div><strong>Storytelling angle:</strong> "Soul meets strategy" resonates emotionally with her audience</div></li>
+                                <li><div><strong>Proven course model:</strong> She's generating $2M+ from courses &mdash; the productized model is validated</div></li>
+                                <li><div><strong>Community &amp; membership:</strong> Active community creates stickiness you don't have yet</div></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon" style="background: rgba(139,92,246,0.12);">&#128172;</span> Talk Tracks</h3>
+                    <div class="talk-track">
+                        <div class="scenario">When a prospect is comparing you to Brandmerry</div>
+                        <div class="script">"Michelle does great work helping entrepreneurs find their story, especially in the online business space. Where I'm different is I come from the enterprise world &mdash; I've built brand systems for companies like BP and EY &mdash; and I've distilled that rigour into frameworks that growing businesses can actually use. Plus, my tools use AI to give you ongoing guidance, not just a course you watch once."</div>
+                    </div>
+                    <div class="talk-track">
+                        <div class="scenario">When they want a community</div>
+                        <div class="script">"I get it &mdash; community matters. What I offer instead is a collaborative process where your actual team is involved. Rather than a community of strangers, I help you build brand alignment with the people who matter most: your team, your stakeholders, your customers."</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon" style="background: rgba(245,158,11,0.12);">&#128163;</span> Landmine Questions</h3>
+                    <div class="landmine">"How deep does the strategy go? Is it positioning and messaging, or does it cover the full brand system &mdash; identity, operations, trust measurement?"</div>
+                    <div class="landmine">"Is the approach designed for your specific business, or is it the same framework everyone in the course follows?"</div>
+                    <div class="landmine">"What happens when your brand needs to evolve &mdash; is there a system for that, or do you retake the course?"</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ====== BRAND KICKSTART ====== -->
+        <section id="brandkickstart" class="tab-content">
+            <div class="battlecard">
+                <div class="card">
+                    <h3><span class="icon" style="background: rgba(34,197,94,0.12);">&#127919;</span> Brand Kickstart (Jamie R Cox) &mdash; Profile</h3>
+                    <div class="profile-grid">
+                        <div class="profile-item">
+                            <div class="label">Founder</div>
+                            <div class="value">Jamie R Cox</div>
+                        </div>
+                        <div class="profile-item">
+                            <div class="label">Location</div>
+                            <div class="value">US (online)</div>
+                        </div>
+                        <div class="profile-item">
+                            <div class="label">Target</div>
+                            <div class="value">Service solopreneurs (1-3 years in)</div>
+                        </div>
+                        <div class="profile-item">
+                            <div class="label">Model</div>
+                            <div class="value">2-month 1:1 sprint + quick-fix calls</div>
+                        </div>
+                    </div>
+                    <p style="margin-top: 16px;">Done-with-you brand strategy for service-based solopreneurs. 2-month engagement with five 1:1 video workshops, guided workbook, and a comprehensive brand strategy document. Also offers Brand Quick Fix ($250 one-hour sessions) and a free 5-minute brand audit.</p>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon" style="background: rgba(34,197,94,0.12);">&#128269;</span> What They Sell</h3>
+                    <ul>
+                        <li><span class="bullet-icon" style="color: #22c55e;">&#9656;</span> <div><strong>Brand Kickstart:</strong> 2-month done-with-you programme. 5 video workshops, guided workbook, brand strategy document (personas, competitive analysis, positioning, personality, messaging)</div></li>
+                        <li><span class="bullet-icon" style="color: #22c55e;">&#9656;</span> <div><strong>Brand Quick Fix:</strong> $250 one-hour consulting session for specific brand questions</div></li>
+                        <li><span class="bullet-icon" style="color: #22c55e;">&#9656;</span> <div><strong>Brand Strategy Intensive:</strong> Deeper engagement (details on request)</div></li>
+                        <li><span class="bullet-icon" style="color: #22c55e;">&#9656;</span> <div><strong>Free Brand Audit:</strong> 5-minute diagnostic tool (lead gen)</div></li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon" style="background: rgba(16,185,129,0.12);">&#9878;</span> Differentiation</h3>
+                    <div class="diff-grid">
+                        <div class="diff-col you-win">
+                            <h4>Where You Win</h4>
+                            <ul>
+                                <li><div><strong>Scalability:</strong> Brand Kickstart is 1:1 only &mdash; can&rsquo;t scale. Your model spans workbooks to AI tools to fractional partnerships</div></li>
+                                <li><div><strong>AI-powered:</strong> No technology in Jamie's process; it&rsquo;s pure human consulting</div></li>
+                                <li><div><strong>Framework sophistication:</strong> PBS goes far deeper than personas + positioning + messaging</div></li>
+                                <li><div><strong>Team alignment:</strong> Jamie works with individuals; you work with teams</div></li>
+                                <li><div><strong>Enterprise credibility:</strong> Your client list dwarfs Jamie&rsquo;s solopreneur portfolio</div></li>
+                            </ul>
+                        </div>
+                        <div class="diff-col they-win">
+                            <h4>Where They Win</h4>
+                            <ul>
+                                <li><div><strong>Intimate, hands-on feel:</strong> 5 dedicated 1:1 workshops &mdash; very personal for solopreneurs who want that</div></li>
+                                <li><div><strong>Simple, clear offer:</strong> 2 months, brand strategy document &mdash; easy to understand and buy</div></li>
+                                <li><div><strong>Proven lead gen funnel:</strong> Free brand audit &rarr; Quick Fix &rarr; Kickstart ladder works well</div></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon" style="background: rgba(139,92,246,0.12);">&#128172;</span> Talk Tracks</h3>
+                    <div class="talk-track">
+                        <div class="scenario">When a prospect likes the 1:1 attention</div>
+                        <div class="script">"I totally get wanting that personal touch. I offer coaching sessions where you get exactly that. But the magic is what happens in between &mdash; my AI tools keep working with you on your brand positioning even when we're not on a call. Jamie's great, but when the 2 months end, you're on your own with a PDF. My approach gives you a living system."</div>
+                    </div>
+                    <div class="talk-track">
+                        <div class="scenario">When they want something quick and simple</div>
+                        <div class="script">"If you just need messaging and positioning sorted, Jamie's a solid choice. But most growing businesses discover that brand strategy needs to go deeper &mdash; into your identity system, how you build trust, how the brand evolves as you grow. That's what the Playable Brand System is built for."</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon" style="background: rgba(245,158,11,0.12);">&#128163;</span> Landmine Questions</h3>
+                    <div class="landmine">"What happens after the 2-month programme? How does your brand strategy stay alive as your business changes?"</div>
+                    <div class="landmine">"Can your team be involved in the process, or is it just you working with the strategist?"</div>
+                    <div class="landmine">"Is there any technology or tools included, or is the deliverable a static document?"</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ====== THE FUTUR ====== -->
+        <section id="thefutur" class="tab-content">
+            <div class="battlecard">
+                <div class="card">
+                    <h3><span class="icon" style="background: rgba(251,191,36,0.12);">&#127891;</span> The Futur &mdash; Company Profile</h3>
+                    <div class="profile-grid">
+                        <div class="profile-item">
+                            <div class="label">Founder</div>
+                            <div class="value">Chris Do</div>
+                        </div>
+                        <div class="profile-item">
+                            <div class="label">Audience</div>
+                            <div class="value">1.5M+ YouTube subscribers</div>
+                        </div>
+                        <div class="profile-item">
+                            <div class="label">Target</div>
+                            <div class="value">Designers &amp; creatives</div>
+                        </div>
+                        <div class="profile-item">
+                            <div class="label">Model</div>
+                            <div class="value">Self-paced courses + live workshops</div>
+                        </div>
+                    </div>
+                    <p style="margin-top: 16px;">Education platform teaching creatives and designers to add brand strategy to their service offerings. Brand Strategy Fundamentals course ($199) with 90+ videos, workbook, and templates. Founded by Emmy-winning designer Chris Do, with clients including Nike, Microsoft, Sony. Massive audience but teaches strategy &mdash; doesn't do it for you.</p>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon" style="background: rgba(251,191,36,0.12);">&#128269;</span> What They Sell</h3>
+                    <ul>
+                        <li><span class="bullet-icon" style="color: #fbbf24;">&#9656;</span> <div><strong>Brand Strategy Fundamentals:</strong> $199 self-paced course. 90+ videos, 100+ page workbook, workshop template, roadmap template. 6-step framework: Vision/Mission &rarr; Personality &rarr; Audience &rarr; Gap Analysis &rarr; Positioning &rarr; Roadmap</div></li>
+                        <li><span class="bullet-icon" style="color: #fbbf24;">&#9656;</span> <div><strong>Live Workshop Add-on:</strong> $179 interactive group workshop experience</div></li>
+                        <li><span class="bullet-icon" style="color: #fbbf24;">&#9656;</span> <div><strong>Business Bootcamp:</strong> Broader business education for creatives</div></li>
+                        <li><span class="bullet-icon" style="color: #fbbf24;">&#9656;</span> <div><strong>Content Lab:</strong> Upcoming launch</div></li>
+                        <li><span class="bullet-icon" style="color: #fbbf24;">&#9656;</span> <div><strong>Free content:</strong> Massive YouTube channel, podcast, blog</div></li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon" style="background: rgba(16,185,129,0.12);">&#9878;</span> Differentiation</h3>
+                    <div class="diff-grid">
+                        <div class="diff-col you-win">
+                            <h4>Where You Win</h4>
+                            <ul>
+                                <li><div><strong>Done-with/for-you:</strong> The Futur teaches you to fish; you actually fish for them. Businesses want results, not homework</div></li>
+                                <li><div><strong>Framework depth:</strong> Their 6-step framework is solid but generic; PBS is uniquely yours and far more comprehensive</div></li>
+                                <li><div><strong>AI tools:</strong> No AI, no tech &mdash; just video content and PDFs</div></li>
+                                <li><div><strong>Business-owner focus:</strong> The Futur targets designers learning strategy; you target the actual business owners</div></li>
+                            </ul>
+                        </div>
+                        <div class="diff-col they-win">
+                            <h4>Where They Win</h4>
+                            <ul>
+                                <li><div><strong>Brand power:</strong> 1.5M+ YouTube, massive social reach, Chris Do is a known name</div></li>
+                                <li><div><strong>Price accessibility:</strong> $199 course vs. any service engagement</div></li>
+                                <li><div><strong>Content flywheel:</strong> Weekly podcast, YouTube, huge organic reach</div></li>
+                                <li><div><strong>Social proof:</strong> Emmy award, Nike/Microsoft client list, testimonials at scale</div></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon" style="background: rgba(139,92,246,0.12);">&#128172;</span> Talk Tracks</h3>
+                    <div class="talk-track">
+                        <div class="scenario">When a prospect has taken The Futur course</div>
+                        <div class="script">"Chris Do's course is a great intro to brand strategy &mdash; I respect his work. But here's the thing: a course teaches you the concepts. What I do is apply them to your specific business with a system that's been tested at enterprise scale. You wouldn't learn surgery from YouTube and then operate on yourself, right? Brand strategy works the same way."</div>
+                    </div>
+                    <div class="talk-track">
+                        <div class="scenario">When they think $199 is enough</div>
+                        <div class="script">"A $199 course gives you a generic framework and sends you on your way. My workbooks and coaching sessions cost more, but they're personalised to your business, powered by AI that adapts to your inputs, and come with a system for keeping your brand alive &mdash; not just a strategy deck you finished watching."</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon" style="background: rgba(245,158,11,0.12);">&#128163;</span> Landmine Questions</h3>
+                    <div class="landmine">"That course is designed for designers learning to offer strategy, not for business owners who need strategy done. Which one are you?"</div>
+                    <div class="landmine">"After you've watched the videos, who helps you apply it to your specific market, audience, and competitive landscape?"</div>
+                    <div class="landmine">"Does the course include any ongoing tools or support, or is it learn-and-leave?"</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ====== BUREAU OF SMALL PROJECTS ====== -->
+        <section id="bosp" class="tab-content">
+            <div class="battlecard">
+                <div class="card">
+                    <h3><span class="icon" style="background: rgba(99,102,241,0.12);">&#127970;</span> Bureau of Small Projects &mdash; Profile</h3>
+                    <div class="profile-grid">
+                        <div class="profile-item">
+                            <div class="label">Founded</div>
+                            <div class="value">2013 (US)</div>
+                        </div>
+                        <div class="profile-item">
+                            <div class="label">Pricing</div>
+                            <div class="value">$1k-$10k projects / subscriptions</div>
+                        </div>
+                        <div class="profile-item">
+                            <div class="label">Target</div>
+                            <div class="value">Small businesses, nonprofits, startups</div>
+                        </div>
+                        <div class="profile-item">
+                            <div class="label">Model</div>
+                            <div class="value">Subscription agency (done-for-you)</div>
+                        </div>
+                    </div>
+                    <p style="margin-top: 16px;">Full-service agency that brings Fortune 500 experience to small businesses, nonprofits, and startups. Services include branding, web development, marketing, and content creation. Uses "Evolutionary Branding" methodology based on marginal gains. Notable clients include Stanford, Blackrock Neurotech, Bill Nye's Planetary Society.</p>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon" style="background: rgba(99,102,241,0.12);">&#128269;</span> What They Sell</h3>
+                    <ul>
+                        <li><span class="bullet-icon" style="color: #6366f1;">&#9656;</span> <div><strong>Branding:</strong> Logo design, brand strategy, evolutionary branding process</div></li>
+                        <li><span class="bullet-icon" style="color: #6366f1;">&#9656;</span> <div><strong>Web Development:</strong> Website design, development, maintenance, support</div></li>
+                        <li><span class="bullet-icon" style="color: #6366f1;">&#9656;</span> <div><strong>Marketing:</strong> Strategy and campaign execution</div></li>
+                        <li><span class="bullet-icon" style="color: #6366f1;">&#9656;</span> <div><strong>Content Creation:</strong> Video production and multimedia</div></li>
+                        <li><span class="bullet-icon" style="color: #6366f1;">&#9656;</span> <div><strong>Subscriptions:</strong> Ongoing support plans across all services</div></li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon" style="background: rgba(16,185,129,0.12);">&#9878;</span> Differentiation</h3>
+                    <div class="diff-grid">
+                        <div class="diff-col you-win">
+                            <h4>Where You Win</h4>
+                            <ul>
+                                <li><div><strong>Strategy depth:</strong> They're execution-focused (design, web, content); you go deep on strategy and frameworks</div></li>
+                                <li><div><strong>AI &amp; scalability:</strong> Traditional agency model vs. your AI-powered approach</div></li>
+                                <li><div><strong>Empowerment model:</strong> You teach and equip; they do it for you (creating dependency)</div></li>
+                                <li><div><strong>Proprietary system:</strong> PBS vs. their "evolutionary branding" (borrowed concept)</div></li>
+                            </ul>
+                        </div>
+                        <div class="diff-col they-win">
+                            <h4>Where They Win</h4>
+                            <ul>
+                                <li><div><strong>Full execution:</strong> Need a logo, website, video, AND strategy? They do it all under one roof</div></li>
+                                <li><div><strong>Done-for-you convenience:</strong> Some clients just want it handled; they don't want to learn</div></li>
+                                <li><div><strong>Track record:</strong> Since 2013, impressive client list (Stanford, Blackrock Neurotech)</div></li>
+                                <li><div><strong>Subscription model:</strong> Ongoing relationship with predictable pricing</div></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon" style="background: rgba(139,92,246,0.12);">&#128172;</span> Talk Tracks</h3>
+                    <div class="talk-track">
+                        <div class="scenario">When they want full execution too</div>
+                        <div class="script">"Bureau of Small Projects is solid if you want an agency to handle everything. But here's what I've learned working with EY and Capgemini: the brands that win aren't the ones with the prettiest logos &mdash; they're the ones with the clearest strategy. I help you nail the strategy first, so whatever designer or agency you bring in executes on a foundation that actually works."</div>
+                    </div>
+                    <div class="talk-track">
+                        <div class="scenario">When they prefer done-for-you</div>
+                        <div class="script">"I get the appeal of done-for-you. But brand strategy is different from brand execution. A designer can make your brand look great &mdash; but only you know what your brand should say and stand for. My approach equips you and your team to own that, and then you can hand off execution to anyone."</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon" style="background: rgba(245,158,11,0.12);">&#128163;</span> Landmine Questions</h3>
+                    <div class="landmine">"How deep is the strategy work? Do they start with positioning and trust frameworks, or jump straight to logos and websites?"</div>
+                    <div class="landmine">"Will you own and understand your brand strategy, or is it locked in the agency's process?"</div>
+                    <div class="landmine">"What's the strategic framework behind their 'evolutionary branding'? Ask them to explain the system."</div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active from all tabs
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+                // Activate clicked tab
+                tab.classList.add('active');
+                const targetId = tab.getAttribute('data-tab');
+                document.getElementById(targetId).classList.add('active');
+
+                // Scroll to top of content
+                window.scrollTo({ top: 200, behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>

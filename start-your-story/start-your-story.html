@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Start your Story — Brand Workshop Game by Unicorn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --night:#1A0A2E;--violet:#7B2FBE;--magenta:#C724B1;--rose:#E84D8A;
+  --lavender:#F8F0FF;--ink:#0d0818;--surface:#170d2a;--card:#1e1136;
+  --mist:rgba(248,240,255,.55);--soft:rgba(248,240,255,.35);--white:#fff;
+  --grad:linear-gradient(90deg,var(--violet),var(--magenta));
+  --grad3:linear-gradient(135deg,var(--violet) 0%,var(--magenta) 50%,var(--rose) 100%);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Sora',sans-serif;background:var(--ink);color:var(--white);overflow-x:hidden;min-height:100vh;}
+button{font-family:'Sora',sans-serif;cursor:pointer;}
+input,textarea{font-family:'Sora',sans-serif;}
+a{color:inherit;text-decoration:none;}
+
+/* ── Shared ── */
+.grad-text{background:var(--grad3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.btn-primary{background:var(--grad);color:var(--white);font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.85rem 2rem;border:none;border-radius:2px;transition:all .3s;display:inline-flex;align-items:center;gap:.5rem;}
+.btn-primary:hover{opacity:.85;transform:translateY(-1px);}
+.btn-primary:disabled{opacity:.3;cursor:not-allowed;transform:none;}
+.btn-ghost{color:rgba(248,240,255,.5);font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:none;border:1px solid rgba(248,240,255,.12);padding:.85rem 1.8rem;border-radius:2px;transition:all .3s;}
+.btn-ghost:hover{color:var(--lavender);border-color:rgba(248,240,255,.25);}
+.stag{font-size:.6rem;font-weight:700;letter-spacing:.25em;text-transform:uppercase;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block;margin-bottom:.9rem;}
+
+/* ── Screens ── */
+.screen{display:none;min-height:100vh;flex-direction:column;align-items:center;justify-content:center;padding:2rem;position:relative;overflow:hidden;}
+.screen.active{display:flex;}
+
+/* ── Landing ── */
+.landing-bg{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 40%,rgba(123,47,190,.18) 0%,transparent 65%),radial-gradient(ellipse 40% 40% at 80% 80%,rgba(199,36,177,.08) 0%,transparent 60%),var(--ink);}
+.landing-ring{position:absolute;border-radius:50%;border:1px solid rgba(123,47,190,.1);top:50%;left:50%;transform:translate(-50%,-50%);}
+.landing-ring:nth-child(1){width:400px;height:400px;animation:rpulse 7s ease infinite;}
+.landing-ring:nth-child(2){width:620px;height:620px;border-color:rgba(199,36,177,.06);animation:rpulse 7s 2s ease infinite;}
+.landing-ring:nth-child(3){width:840px;height:840px;border-color:rgba(232,77,138,.03);animation:rpulse 7s 4s ease infinite;}
+@keyframes rpulse{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:1;}50%{transform:translate(-50%,-50%) scale(1.05);opacity:.5;}}
+.landing-content{position:relative;z-index:2;max-width:640px;text-align:center;}
+.landing-kicker{display:inline-flex;align-items:center;gap:.6rem;font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(248,240,255,.45);margin-bottom:2rem;}
+.landing-kicker::before,.landing-kicker::after{content:'';display:block;width:24px;height:1px;background:rgba(248,240,255,.2);}
+.landing-title{font-size:clamp(2.8rem,7vw,5.5rem);font-weight:800;line-height:1;letter-spacing:-.04em;margin-bottom:1.5rem;}
+.landing-sub{font-size:.95rem;font-weight:400;line-height:1.72;color:var(--mist);max-width:480px;margin:0 auto 2.8rem;}
+.landing-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+.landing-footer{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:.5rem;}
+.landing-footer span{font-size:.55rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(248,240,255,.12);}
+.scroll-line{width:1px;height:28px;background:linear-gradient(to bottom,rgba(123,47,190,.4),transparent);animation:sline 2s ease infinite;}
+@keyframes sline{0%{transform:scaleY(0);transform-origin:top;}50%{transform:scaleY(1);transform-origin:top;}51%{transform-origin:bottom;}100%{transform:scaleY(0);transform-origin:bottom;}}
+
+/* ── Setup ── */
+.setup-box{position:relative;z-index:2;background:var(--surface);border:1px solid rgba(123,47,190,.18);padding:2.5rem;max-width:480px;width:100%;}
+.setup-title{font-size:1.4rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.3rem;}
+.setup-sub{font-size:.82rem;color:var(--mist);margin-bottom:2rem;line-height:1.6;}
+.field{margin-bottom:1.2rem;text-align:left;}
+.field label{display:block;font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(248,240,255,.4);margin-bottom:.4rem;}
+.field input{width:100%;background:rgba(123,47,190,.07);border:1px solid rgba(123,47,190,.18);color:var(--white);font-size:.85rem;padding:.7rem .9rem;outline:none;border-radius:2px;transition:border-color .3s;}
+.field input:focus{border-color:rgba(123,47,190,.4);}
+.field input::placeholder{color:rgba(248,240,255,.18);}
+.field-hint{font-size:.65rem;color:rgba(248,240,255,.18);margin-top:.3rem;line-height:1.45;}
+.player-count{display:flex;gap:.5rem;margin-bottom:1.5rem;}
+.pc-btn{flex:1;padding:.7rem;background:rgba(123,47,190,.06);border:1px solid rgba(123,47,190,.12);color:rgba(248,240,255,.4);font-size:.75rem;font-weight:600;text-align:center;transition:all .3s;border-radius:2px;}
+.pc-btn:hover{border-color:rgba(123,47,190,.25);}
+.pc-btn.active{border-color:var(--magenta);color:var(--white);background:rgba(199,36,177,.1);}
+
+/* ── Game Layout ── */
+#game{padding:0;justify-content:flex-start;align-items:stretch;}
+.game-layout{display:grid;grid-template-columns:260px 1fr;min-height:100vh;width:100%;}
+.game-sidebar{background:var(--surface);border-right:1px solid rgba(123,47,190,.12);display:flex;flex-direction:column;overflow:hidden;}
+.gs-header{padding:1.2rem;border-bottom:1px solid rgba(123,47,190,.08);}
+.gs-brand{font-size:.52rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.1rem;}
+.gs-title{font-size:.9rem;font-weight:800;letter-spacing:-.02em;color:var(--white);}
+.gs-chapters{padding:.8rem 1.2rem;flex:1;}
+.gs-ch-label{font-size:.5rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(248,240,255,.18);margin-bottom:.6rem;}
+.gs-chapter{display:flex;align-items:center;gap:.6rem;padding:.5rem .4rem;margin-bottom:.15rem;border-radius:2px;transition:all .3s;}
+.gs-chapter.active{background:rgba(123,47,190,.1);}
+.gs-ch-dot{width:7px;height:7px;border-radius:50%;border:1.5px solid rgba(248,240,255,.12);flex-shrink:0;transition:all .3s;}
+.gs-chapter.active .gs-ch-dot{background:var(--magenta);border-color:var(--magenta);}
+.gs-chapter.done .gs-ch-dot{background:rgba(123,47,190,.4);border-color:rgba(123,47,190,.4);}
+.gs-ch-name{font-size:.7rem;font-weight:600;color:rgba(248,240,255,.25);transition:color .3s;}
+.gs-chapter.active .gs-ch-name{color:var(--white);}
+.gs-chapter.done .gs-ch-name{color:rgba(248,240,255,.35);}
+.gs-footer{padding:1rem 1.2rem;border-top:1px solid rgba(123,47,190,.06);}
+.gs-player-name{font-size:.7rem;font-weight:600;color:rgba(248,240,255,.35);display:flex;align-items:center;gap:.4rem;}
+.gs-player-dot{width:6px;height:6px;border-radius:50%;background:var(--violet);}
+
+/* ── Main Area ── */
+.game-main{display:flex;flex-direction:column;background:var(--ink);position:relative;overflow:hidden;}
+.game-main::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 20%,rgba(123,47,190,.06) 0%,transparent 60%);pointer-events:none;}
+.gm-header{padding:.7rem 2rem;border-bottom:1px solid rgba(123,47,190,.06);display:flex;align-items:center;justify-content:space-between;z-index:2;position:relative;}
+.gm-chapter-tag{font-size:.56rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.gm-room-tag{font-size:.58rem;font-weight:600;color:rgba(248,240,255,.15);}
+
+/* ── Messages ── */
+.gm-flow{flex:1;overflow-y:auto;padding:1.5rem 2.5rem;display:flex;flex-direction:column;gap:1rem;scroll-behavior:smooth;z-index:2;position:relative;}
+.msg{max-width:660px;animation:msgIn .4s ease;}
+@keyframes msgIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.msg.gm{align-self:flex-start;}
+.msg.player{align-self:flex-end;}
+.msg.system{align-self:center;max-width:520px;}
+.msg-sender{font-size:.5rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;margin-bottom:.25rem;}
+.msg.gm .msg-sender{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.msg.player .msg-sender{text-align:right;color:rgba(248,240,255,.18);}
+.msg-bubble{padding:.85rem 1.15rem;font-size:.84rem;line-height:1.72;}
+.msg.gm .msg-bubble{background:rgba(123,47,190,.05);border:1px solid rgba(123,47,190,.1);border-radius:0 12px 12px 12px;color:rgba(248,240,255,.85);}
+.msg.player .msg-bubble{background:rgba(199,36,177,.06);border:1px solid rgba(199,36,177,.1);border-radius:12px 0 12px 12px;color:rgba(248,240,255,.8);}
+.msg.system .msg-bubble{background:rgba(123,47,190,.04);border:1px solid rgba(123,47,190,.07);border-radius:8px;text-align:center;color:var(--mist);font-size:.78rem;}
+.msg-bubble strong{color:rgba(181,126,255,.95);font-weight:700;}
+.msg-bubble em{color:rgba(248,240,255,.5);font-style:italic;}
+.msg-bubble p{margin-bottom:.5rem;}
+.msg-bubble p:last-child{margin-bottom:0;}
+
+/* ── Typing ── */
+.typing{align-self:flex-start;}
+.typing-dots{display:flex;gap:4px;padding:.65rem .85rem;background:rgba(123,47,190,.05);border:1px solid rgba(123,47,190,.1);border-radius:0 10px 10px 10px;}
+.t-dot{width:5px;height:5px;background:var(--magenta);border-radius:50%;opacity:.3;animation:tdot 1.2s ease infinite;}
+.t-dot:nth-child(2){animation-delay:.2s;}
+.t-dot:nth-child(3){animation-delay:.4s;}
+@keyframes tdot{0%,60%,100%{transform:translateY(0);opacity:.3;}30%{transform:translateY(-5px);opacity:1;}}
+
+/* ── Choices ── */
+.choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin:.6rem 0;max-width:560px;}
+.choice-btn{background:rgba(123,47,190,.05);border:1px solid rgba(123,47,190,.12);color:rgba(248,240,255,.7);padding:.85rem 1rem;font-size:.76rem;font-weight:500;line-height:1.5;text-align:left;transition:all .3s;border-radius:2px;}
+.choice-btn:hover:not(:disabled){border-color:rgba(123,47,190,.35);background:rgba(123,47,190,.1);color:var(--white);}
+.choice-btn.selected{border-color:var(--magenta);background:rgba(199,36,177,.1);color:var(--white);}
+.choice-btn:disabled{cursor:default;}
+
+/* ── Input ── */
+.gm-input{padding:.8rem 2.5rem 1.2rem;border-top:1px solid rgba(123,47,190,.06);z-index:2;position:relative;}
+.gm-input.hidden{display:none;}
+.gm-input-row{display:flex;gap:.5rem;align-items:flex-end;}
+.gm-textarea{flex:1;background:rgba(123,47,190,.04);border:1px solid rgba(123,47,190,.12);color:var(--white);font-size:.84rem;padding:.65rem .85rem;resize:none;min-height:42px;max-height:120px;line-height:1.5;outline:none;border-radius:2px;transition:border-color .3s;}
+.gm-textarea:focus{border-color:rgba(123,47,190,.3);}
+.gm-textarea::placeholder{color:rgba(248,240,255,.15);}
+.gm-send{background:var(--grad);color:var(--white);border:none;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:2px;transition:opacity .3s;flex-shrink:0;}
+.gm-send:hover{opacity:.85;}
+.gm-send:disabled{opacity:.15;cursor:not-allowed;}
+
+/* ── Archetype Map ── */
+.arch-container{max-width:440px;width:100%;margin:.8rem 0;}
+.arch-label{font-size:.52rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;text-align:center;margin-bottom:.3rem;}
+.arch-label.top{color:rgba(123,47,190,.45);}
+.arch-label.bottom{color:rgba(123,47,190,.3);margin-top:.3rem;}
+.arch-label.left,.arch-label.right{writing-mode:vertical-rl;position:absolute;top:50%;transform:translateY(-50%);}
+.arch-wrap{position:relative;padding:0 2rem;}
+.arch-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(123,47,190,.06);}
+.arch-cell{background:var(--ink);padding:.6rem .3rem;text-align:center;font-size:.62rem;font-weight:600;color:rgba(248,240,255,.2);transition:all .6s;}
+.arch-cell.lit{color:var(--white);background:rgba(123,47,190,.12);box-shadow:inset 0 0 20px rgba(123,47,190,.1);}
+.arch-cell.primary{color:var(--white);background:rgba(199,36,177,.15);box-shadow:inset 0 0 30px rgba(199,36,177,.15);font-weight:800;font-size:.7rem;}
+
+/* ── Brand World Cards ── */
+.bw-section{max-width:620px;width:100%;margin:0 auto;}
+.bw-card{background:var(--surface);border:1px solid rgba(123,47,190,.15);padding:1.5rem;margin-bottom:.8rem;transition:border-color .3s;}
+.bw-card:hover{border-color:rgba(123,47,190,.25);}
+.bw-label{font-size:.52rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.4rem;}
+.bw-value{font-size:1.05rem;font-weight:700;color:var(--white);line-height:1.35;}
+.bw-desc{font-size:.8rem;color:var(--mist);line-height:1.65;margin-top:.35rem;}
+.bw-cta{text-align:center;margin-top:1.5rem;padding:1.5rem;border:1px solid rgba(123,47,190,.1);background:rgba(123,47,190,.03);}
+
+/* ── Progress ── */
+.progress-bar{position:fixed;top:0;left:0;right:0;height:3px;z-index:100;}
+.progress-fill{height:100%;background:var(--grad);transition:width .6s ease;width:0%;}
+
+/* ── Continue Button ── */
+.continue-row{display:flex;justify-content:center;margin:.8rem 0;}
+
+/* ── Responsive ── */
+@media(max-width:768px){
+  .game-layout{grid-template-columns:1fr;}
+  .game-sidebar{display:none;}
+  .gm-flow{padding:1rem 1.2rem;}
+  .gm-input{padding:.6rem 1.2rem .8rem;}
+  .choice-grid{grid-template-columns:1fr;}
+  .landing-title{font-size:clamp(2.2rem,10vw,4rem);}
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<!-- ═══ LANDING ═══ -->
+<div class="screen active" id="landing">
+  <div class="landing-bg"></div>
+  <div class="landing-ring"></div><div class="landing-ring"></div><div class="landing-ring"></div>
+  <div class="landing-content">
+    <div class="landing-kicker">A Unicorn Workshop Experience</div>
+    <h1 class="landing-title">Start your<br><span class="grad-text">Story.</span></h1>
+    <p class="landing-sub">A brand workshop, reimagined as a game. Play with your team to discover who you are, what you stand for, and the story only you can tell.</p>
+    <div class="landing-actions">
+      <button class="btn-primary" onclick="showScreen('setup')">Begin the Game</button>
+    </div>
+  </div>
+  <div class="landing-footer">
+    <div class="scroll-line"></div>
+    <span>By Unicorn</span>
+  </div>
+</div>
+
+<!-- ═══ SETUP ═══ -->
+<div class="screen" id="setup">
+  <div class="landing-bg"></div>
+  <div class="setup-box">
+    <div class="stag" style="text-align:center;">Game Setup</div>
+    <h2 class="setup-title" style="text-align:center;">Before we start</h2>
+    <p class="setup-sub" style="text-align:center;">A few details so the Game Master can tailor the experience to you.</p>
+    <div class="field">
+      <label>Your Name</label>
+      <input type="text" id="playerName" placeholder="e.g. Dustin" maxlength="24">
+    </div>
+    <div class="field">
+      <label>Your Company / Brand Name</label>
+      <input type="text" id="brandName" placeholder="e.g. Acme Studios" maxlength="40">
+    </div>
+    <div class="field">
+      <label>Claude API Key <span style="font-weight:400;text-transform:none;letter-spacing:0;color:rgba(248,240,255,.2);">— powers the AI Game Master</span></label>
+      <input type="password" id="apiKey" placeholder="sk-ant-api03-...">
+      <div class="field-hint">Get one at console.anthropic.com. Your key stays in your browser — never stored or sent anywhere except Anthropic.</div>
+    </div>
+    <button class="btn-primary" style="width:100%;justify-content:center;margin-top:.5rem;" onclick="beginGame()">Start your Story</button>
+    <button class="btn-ghost" style="width:100%;margin-top:.6rem;" onclick="showScreen('landing')">Back</button>
+  </div>
+</div>
+
+<!-- ═══ GAME ═══ -->
+<div class="screen" id="game">
+  <div class="game-layout">
+    <div class="game-sidebar">
+      <div class="gs-header">
+        <div class="gs-brand">Unicorn Workshop</div>
+        <div class="gs-title">Start your Story</div>
+      </div>
+      <div class="gs-chapters">
+        <div class="gs-ch-label">Chapters</div>
+        <div class="gs-chapter" id="gsCh1"><div class="gs-ch-dot"></div><div class="gs-ch-name">The World</div></div>
+        <div class="gs-chapter" id="gsCh2"><div class="gs-ch-dot"></div><div class="gs-ch-name">The Players</div></div>
+        <div class="gs-chapter" id="gsCh3"><div class="gs-ch-dot"></div><div class="gs-ch-name">The Quest</div></div>
+        <div class="gs-chapter" id="gsCh4"><div class="gs-ch-dot"></div><div class="gs-ch-name">Trust Trials</div></div>
+        <div class="gs-chapter" id="gsCh5"><div class="gs-ch-dot"></div><div class="gs-ch-name">Your Brand World</div></div>
+      </div>
+      <div class="gs-footer">
+        <div class="gs-player-name"><div class="gs-player-dot"></div><span id="sidebarName">Player</span></div>
+      </div>
+    </div>
+
+    <div class="game-main">
+      <div class="gm-header">
+        <div class="gm-chapter-tag" id="gmChapterTag">Chapter 1 — The World</div>
+        <div class="gm-room-tag" id="gmBrandTag"></div>
+      </div>
+      <div class="gm-flow" id="gmFlow"></div>
+      <div class="gm-input" id="gmInput">
+        <div class="gm-input-row">
+          <textarea class="gm-textarea" id="gmTextarea" placeholder="Type your answer..." rows="1"></textarea>
+          <button class="gm-send" id="gmSend" onclick="submitInput()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
+const G = {
+  playerName: '',
+  brandName: '',
+  apiKey: '',
+  chapter: 0,
+  conv: [],        // full conversation history for AI context
+  world: {},       // chapter 1 data
+  archScores: { power:0, passion:0, progress:0, protection:0 },
+  archetype: null,  // chapter 2 result
+  quest: {},       // chapter 3 data
+  trust: {},       // chapter 4 data
+  onSubmit: null,  // current input handler
+};
+
+const CH_NAMES = [null,'The World','The Players','The Quest','Trust Trials','Your Brand World'];
+const CH_TAGS = [null,'Chapter 1 — The World','Chapter 2 — The Players','Chapter 3 — The Quest','Chapter 4 — Trust Trials','Chapter 5 — Your Brand World'];
+
+// ═══════════════════════════════════════
+// GAME MASTER PROMPT
+// ═══════════════════════════════════════
+const SYS = `You are Dustin, the Game Master of "Start your Story" — a brand workshop game by Unicorn. You're a seasoned brand strategist with deep enterprise experience (BP, Capgemini, EY, Fidelity and more), but you speak with warmth, wit, and zero jargon. You're running a player through a game to discover their brand positioning.
+
+Your personality:
+- Provocative but supportive — challenge assumptions without being harsh
+- Short, punchy sentences mixed with deeper observations
+- Never use bullet points or markdown — speak in natural, flowing conversation
+- Genuinely curious about every business
+- Dry British wit, occasional irreverence
+- Keep things moving briskly
+
+CRITICAL RULES:
+- Keep responses to 2-3 short paragraphs maximum. Often just 1-2.
+- Ask ONE question at a time
+- Never use bullet points, numbered lists, or markdown headers
+- Use <strong> for emphasis when needed, never asterisks or markdown
+- Always end with a clear, specific question for the player
+- Reference what they've actually told you — make it personal
+- Sound like a real person running a workshop, not an AI`;
+
+// ═══════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function setChapter(n) {
+  G.chapter = n;
+  document.getElementById('gmChapterTag').textContent = CH_TAGS[n] || '';
+  document.getElementById('progressFill').style.width = `${(n/5)*100}%`;
+  for (let i = 1; i <= 5; i++) {
+    const el = document.getElementById(`gsCh${i}`);
+    el.classList.remove('active','done');
+    if (i < n) el.classList.add('done');
+    if (i === n) el.classList.add('active');
+  }
+}
+
+// ═══════════════════════════════════════
+// BEGIN
+// ═══════════════════════════════════════
+function beginGame() {
+  G.playerName = document.getElementById('playerName').value.trim() || 'Player';
+  G.brandName = document.getElementById('brandName').value.trim() || 'your brand';
+  G.apiKey = document.getElementById('apiKey').value.trim();
+  if (!G.apiKey) { alert('Please enter a Claude API key to power the Game Master.'); return; }
+
+  document.getElementById('sidebarName').textContent = G.playerName;
+  document.getElementById('gmBrandTag').textContent = G.brandName;
+
+  showScreen('game');
+  setChapter(1);
+  runChapter1();
+}
+
+// ═══════════════════════════════════════
+// AI CALLS
+// ═══════════════════════════════════════
+async function askGM(phasePrompt, extraMessages) {
+  showTyping();
+
+  const messages = [];
+
+  // Add conversation context
+  if (G.world.business) messages.push({ role:'user', content:`[CONTEXT] Business: ${G.world.business}. Market: ${G.world.market||''}. Antagonist: ${G.world.antagonist||''}` });
+  if (G.archetype) messages.push({ role:'user', content:`[CONTEXT] Brand archetype: ${G.archetype.name} (${G.archetype.territory})` });
+  if (G.quest.positioning) messages.push({ role:'user', content:`[CONTEXT] Positioning: ${G.quest.positioning}` });
+
+  // Add extra conversation messages
+  if (extraMessages) messages.push(...extraMessages);
+
+  // If no user messages, add a starter
+  if (!messages.length || messages[messages.length-1].role !== 'user') {
+    messages.push({ role:'user', content:'Begin.' });
+  }
+
+  const sysPrompt = SYS + `\n\nPLAYER: ${G.playerName}\nBRAND: ${G.brandName}\n\nCURRENT PHASE:\n${phasePrompt}`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': G.apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 800,
+        system: sysPrompt,
+        messages
+      })
+    });
+    const data = await res.json();
+    hideTyping();
+
+    if (data.error) {
+      return `Hmm, something went wrong with the AI connection: ${data.error.message}. Check your API key and try refreshing.`;
+    }
+    return data.content?.[0]?.text || 'The Game Master is gathering their thoughts...';
+  } catch(e) {
+    hideTyping();
+    return `Connection issue — ${e.message}. Check your API key is valid and try again.`;
+  }
+}
+
+// ═══════════════════════════════════════
+// CHAPTER 1: THE WORLD
+// ═══════════════════════════════════════
+async function runChapter1() {
+  const flow = el('gmFlow');
+  flow.innerHTML = '';
+  setInput('text','Describe your business — the honest version...');
+
+  addMsg('system', 'Chapter 1 — <strong>The World</strong><br><em>Your market, your people, and the problem you fight.</em>');
+
+  const intro = await askGM(`Welcome the player to the game. You're starting Chapter 1: THE WORLD. Ask them to describe what their business does — not the elevator pitch, just the honest version. Keep it warm and brief.`);
+  addGM(intro);
+
+  const localConv = [{ role:'assistant', content: intro }];
+
+  waitFor(async (a1) => {
+    G.world.business = a1;
+    addPlayer(a1);
+    localConv.push({ role:'user', content: a1 });
+
+    const r2 = await askGM(`The player described their business. Now dig deeper into their market. What's frustrating about their space? Who do they serve? What tension exists? Ask ONE specific, probing question.`, localConv);
+    addGM(r2);
+    localConv.push({ role:'assistant', content: r2 });
+
+    setInput('text','Tell me more...');
+    waitFor(async (a2) => {
+      G.world.market = a2;
+      addPlayer(a2);
+      localConv.push({ role:'user', content: a2 });
+
+      const r3 = await askGM(`Time to NAME THE ANTAGONIST. In every story the hero fights something. The antagonist isn't a competitor — it's the friction, the broken thing, the status quo. Based on what the player shared, propose 2-3 vivid possible antagonists and ask which resonates. Make them specific and characterful.`, localConv);
+      addGM(r3);
+      localConv.push({ role:'assistant', content: r3 });
+
+      setInput('text','Name your antagonist...');
+      waitFor(async (a3) => {
+        G.world.antagonist = a3;
+        addPlayer(a3);
+        localConv.push({ role:'user', content: a3 });
+
+        const r4 = await askGM(`Summarise their World in a vivid 2-3 sentence "opening crawl" — like the setup of a film. Then tell them Chapter 2 is next: discovering what kind of hero their brand is.`, localConv);
+        addGM(r4);
+
+        showContinue(() => { setChapter(2); runChapter2(); });
+      });
+    });
+  });
+}
+
+// ═══════════════════════════════════════
+// CHAPTER 2: THE PLAYERS (Archetype Discovery)
+// ═══════════════════════════════════════
+const SCENARIOS = [
+  { q: "A loyal customer publicly criticises your product on social media. It's unfair, but it's gaining traction. What do you do?",
+    opts: [
+      { label:'A — Stand your ground', desc:'Respond publicly with confident authority. Set the record straight with facts.', map:'A' },
+      { label:'B — Reach out with empathy', desc:'Contact them privately, understand their frustration, fix it personally.', map:'B' },
+      { label:'C — Turn it into fuel', desc:'Acknowledge it publicly and turn it into a product improvement story.', map:'C' },
+      { label:'D — Stay measured', desc:'Let your track record speak. Respond with quiet professionalism.', map:'D' }
+    ]},
+  { q: "You're launching something brand new. How do you approach it?",
+    opts: [
+      { label:'A — Go bold', desc:'A provocative campaign that turns heads, even if it polarises.', map:'A' },
+      { label:'B — Go deep', desc:'Focus on a small group of perfect-fit customers. Make it meaningful.', map:'B' },
+      { label:'C — Go smart', desc:'Lead with innovation. Show how you solve it differently than anyone.', map:'C' },
+      { label:'D — Go steady', desc:'Build trust gradually with proof and testimonials before scaling.', map:'D' }
+    ]},
+  { q: "A much bigger competitor enters your space with deeper pockets. How do you respond?",
+    opts: [
+      { label:'A — Double down', desc:'Amplify what makes you different. Own your territory harder.', map:'A' },
+      { label:'B — Rally your people', desc:'Your community is your moat. Invest in loyalty and relationships.', map:'B' },
+      { label:'C — Out-innovate', desc:'Move faster, find the angles they\'re too big to see.', map:'C' },
+      { label:'D — Stay the course', desc:'Trust your strategy. Focus on execution quality and the long game.', map:'D' }
+    ]}
+];
+
+const ARCH_MAP = { A:{power:2,passion:1,progress:0,protection:0}, B:{power:0,passion:0,progress:0,protection:2}, C:{power:0,passion:2,progress:1,protection:0}, D:{power:0,passion:0,progress:2,protection:1} };
+
+const ARCHETYPES = {
+  power:      { name:'Power',      territory:'Transformation & Creation',   desc:'Bold, commanding, transformative. Your brand leads from the front and isn\'t afraid to shake things up. You create change.' },
+  passion:    { name:'Passion',    territory:'Discovery & Inspiration',     desc:'Innovative, curious, energising. Your brand sparks possibility and invites people on a journey of discovery.' },
+  progress:   { name:'Progress',   territory:'Vision & Authority',          desc:'Strategic, measured, wise. Your brand builds trust through expertise, consistency and a clear long-term vision.' },
+  protection: { name:'Protection', territory:'Compassion & Reassurance',    desc:'Caring, reliable, community-focused. Your brand creates safety and belonging for the people it serves.' }
+};
+
+async function runChapter2() {
+  const flow = el('gmFlow');
+  flow.innerHTML = '';
+  hideInput();
+  G.archScores = { power:0, passion:0, progress:0, protection:0 };
+
+  addMsg('system', 'Chapter 2 — <strong>The Players</strong><br><em>Discovering your brand character through choices.</em>');
+
+  const intro = await askGM(`Start Chapter 2: THE PLAYERS. This is about discovering the brand's character — but DON'T mention "archetypes" directly. Say something about how every story has a distinctive hero, and you're about to find out what kind theirs is through three quick scenarios. Keep it exciting and brief.`);
+  addGM(intro);
+
+  await delay(1200);
+  runScenario(0);
+}
+
+function runScenario(idx) {
+  if (idx >= SCENARIOS.length) { revealArchetype(); return; }
+  const s = SCENARIOS[idx];
+
+  addMsg('system', `<strong>Scenario ${idx+1} of 3</strong>`);
+  addMsg('gm-inline', s.q);
+
+  const choiceDiv = document.createElement('div');
+  choiceDiv.className = 'msg system';
+  choiceDiv.style.maxWidth = '580px';
+  choiceDiv.innerHTML = `<div class="choice-grid">${s.opts.map((o,i) =>
+    `<button class="choice-btn" data-idx="${idx}" data-map="${o.map}" onclick="pickChoice(this,${idx},'${o.map}')"><strong>${o.label}</strong><br><span style="font-size:.72rem;color:var(--mist);">${o.desc}</span></button>`
+  ).join('')}</div>`;
+  el('gmFlow').appendChild(choiceDiv);
+  scrollFlow();
+}
+
+function pickChoice(btn, scenarioIdx, mapKey) {
+  document.querySelectorAll(`[data-idx="${scenarioIdx}"]`).forEach(b => { b.disabled=true; b.style.opacity='.35'; });
+  btn.classList.add('selected');
+  btn.style.opacity='1';
+
+  Object.entries(ARCH_MAP[mapKey]).forEach(([k,v]) => G.archScores[k] += v);
+
+  addPlayer(btn.querySelector('strong').textContent);
+
+  setTimeout(() => runScenario(scenarioIdx + 1), 1000);
+}
+
+async function revealArchetype() {
+  const sorted = Object.entries(G.archScores).sort((a,b) => b[1]-a[1]);
+  const primary = ARCHETYPES[sorted[0][0]];
+  const secondary = ARCHETYPES[sorted[1][0]];
+  G.archetype = primary;
+
+  await delay(800);
+  addMsg('system', '<strong>Your brand character is emerging...</strong>');
+  await delay(1500);
+
+  renderArchetypeMap(sorted[0][0]);
+
+  const reveal = await askGM(`REVEAL THE ARCHETYPE. The player's brand archetype is ${primary.name} (${primary.territory}). Secondary is ${secondary.name}. Scores: ${JSON.stringify(G.archScores)}. Their business: ${G.world.business}. Antagonist: ${G.world.antagonist}.
+
+Reveal this DRAMATICALLY — like a character reveal in a game. Describe what it means for THEIR specific brand. Mention the interesting tension with their secondary archetype. Make it feel like a genuine discovery. 2-3 paragraphs max.`);
+  addGM(reveal);
+
+  showContinue(() => { setChapter(3); runChapter3(); });
+}
+
+function renderArchetypeMap(primaryKey) {
+  const cells = [
+    ['Creation','Discovery','Inspiration',''],
+    ['Transformation','Power','Passion','Compassion'],
+    ['','Progress','Protection',''],
+    ['Vision','Authority','Reassurance','']
+  ];
+  const litMap = {
+    power: ['Creation','Transformation','Power'],
+    passion: ['Discovery','Inspiration','Passion'],
+    progress: ['Vision','Authority','Progress'],
+    protection: ['Compassion','Reassurance','Protection']
+  };
+  const litSet = new Set(litMap[primaryKey] || []);
+
+  const d = document.createElement('div');
+  d.className = 'msg system';
+  d.style.maxWidth = '480px';
+
+  let gridHTML = '';
+  cells.flat().forEach(name => {
+    if (!name) { gridHTML += `<div class="arch-cell"></div>`; return; }
+    const isPrimary = name === ARCHETYPES[primaryKey].name;
+    const isLit = litSet.has(name);
+    gridHTML += `<div class="arch-cell ${isPrimary?'primary':isLit?'lit':''}">${name}</div>`;
+  });
+
+  d.innerHTML = `<div class="arch-container">
+    <div class="arch-label top">Outer Directed — Freedom</div>
+    <div class="arch-grid">${gridHTML}</div>
+    <div class="arch-label bottom" style="margin-top:.4rem;">Inner Directed — Order</div>
+  </div>`;
+  el('gmFlow').appendChild(d);
+  scrollFlow();
+}
+
+// ═══════════════════════════════════════
+// CHAPTER 3: THE QUEST
+// ═══════════════════════════════════════
+async function runChapter3() {
+  const flow = el('gmFlow');
+  flow.innerHTML = '';
+  setInput('text', 'What should people feel or believe about your brand?');
+
+  addMsg('system', 'Chapter 3 — <strong>The Quest</strong><br><em>Defining your brand promise and positioning.</em>');
+
+  const intro = await askGM(`Start Chapter 3: THE QUEST. The hero has a quest — not just what they do, but what they're fighting FOR. Ask the player: what is the ONE thing they want people to feel or believe after experiencing their brand?`);
+  addGM(intro);
+
+  const localConv = [{ role:'assistant', content: intro }];
+
+  waitFor(async (a1) => {
+    G.quest.aspiration = a1;
+    addPlayer(a1);
+    localConv.push({ role:'user', content: a1 });
+
+    const r2 = await askGM(`The player shared their aspiration. Now CHALLENGE it. Is it specific enough? Would a competitor say the same thing? Push back constructively and help them sharpen it. Suggest a tighter version.`, localConv);
+    addGM(r2);
+    localConv.push({ role:'assistant', content: r2 });
+
+    setInput('text','Refine your positioning...');
+    waitFor(async (a2) => {
+      G.quest.positioning = a2;
+      addPlayer(a2);
+      localConv.push({ role:'user', content: a2 });
+
+      const r3 = await askGM(`Now map their quest to Know / Believe / Act:
+- KNOW: What should people clearly understand? (1 sentence)
+- BELIEVE: What should people feel and trust? (1 sentence)
+- ACT: How should people behave differently? (1 sentence)
+Draft these for the player based on everything they've shared, and ask them to react.`, localConv);
+      addGM(r3);
+      localConv.push({ role:'assistant', content: r3 });
+
+      setInput('text','What lands? What needs work?');
+      waitFor(async (a3) => {
+        G.quest.kbaReaction = a3;
+        addPlayer(a3);
+        localConv.push({ role:'user', content: a3 });
+
+        const r4 = await askGM(`Summarise their refined Quest. Then tell them Trust Trials are next — where everything gets stress-tested. Make it sound exciting and slightly daunting.`, localConv);
+        addGM(r4);
+
+        showContinue(() => { setChapter(4); runChapter4(); });
+      });
+    });
+  });
+}
+
+// ═══════════════════════════════════════
+// CHAPTER 4: TRUST TRIALS
+// ═══════════════════════════════════════
+async function runChapter4() {
+  const flow = el('gmFlow');
+  flow.innerHTML = '';
+  setInput('text','Your brand in 10 words or fewer...');
+
+  addMsg('system', 'Chapter 4 — <strong>Trust Trials</strong><br><em>Three trials: Clarity, Connection, Confidence.</em>');
+
+  const intro = await askGM(`Start Chapter 4: TRUST TRIALS. Explain there are three pillars of brand trust and they're about to be tested on each. Start with CLARITY TRIAL: challenge them to explain their brand in 10 words or fewer. No cheating.`);
+  addGM(intro);
+
+  const localConv = [{ role:'assistant', content: intro }];
+
+  // TRIAL 1: CLARITY
+  waitFor(async (a1) => {
+    G.trust.clarity = a1;
+    addPlayer(a1);
+    localConv.push({ role:'user', content: a1 });
+
+    const r2 = await askGM(`Score their clarity attempt. Was it clear, specific, memorable? Could a stranger get it? If too vague, push for another try. Then challenge: "now say it in a way NO competitor could claim." Be honest but constructive.`, localConv);
+    addGM(r2);
+    localConv.push({ role:'assistant', content: r2 });
+
+    // TRIAL 2: CONNECTION
+    setInput('text','Me / Us / We — one benefit for each...');
+    addMsg('system','<strong>Trial 2 — Connection</strong>');
+
+    const r3 = await askGM(`CONNECTION TRIAL. Their brand serves three circles: Me (individual customer), Us (the team/community), We (the wider world). Ask for ONE specific benefit for each circle. Not features — genuine benefits that change something.`, localConv);
+    addGM(r3);
+    localConv.push({ role:'assistant', content: r3 });
+
+    waitFor(async (a2) => {
+      G.trust.connection = a2;
+      addPlayer(a2);
+      localConv.push({ role:'user', content: a2 });
+
+      // TRIAL 3: CONFIDENCE
+      addMsg('system','<strong>Trial 3 — Confidence</strong>');
+
+      const r4 = await askGM(`CONFIDENCE TRIAL. Now role-play as a SKEPTICAL CUSTOMER. Be polite but genuinely challenging: "I've heard similar promises before. Why should I believe you? What proof do you have?" Push them on evidence and track record. Don't be mean, but don't be easy.`, localConv);
+      addGM(r4);
+      localConv.push({ role:'assistant', content: r4 });
+
+      setInput('text','Defend your brand...');
+      waitFor(async (a3) => {
+        G.trust.confidence = a3;
+        addPlayer(a3);
+        localConv.push({ role:'user', content: a3 });
+
+        const r5 = await askGM(`Give their TRUST SCORE. Rate each trial:
+- Clarity: /100 — how clear and distinctive?
+- Connection: /100 — how well they articulate value across Me/Us/We?
+- Confidence: /100 — how convincing is their proof?
+Overall Trust Score is the average. Be fair and honest. Celebrate strengths, flag weaknesses as opportunities. Then transition: "Your Brand World awaits."`, localConv);
+        addGM(r5);
+
+        // Try to extract scores from the response
+        const scoreMatch = r5.match(/(\d{1,3})\/100/g);
+        if (scoreMatch && scoreMatch.length >= 3) {
+          G.trust.scores = {
+            clarity: parseInt(scoreMatch[0]),
+            connection: parseInt(scoreMatch[1]),
+            confidence: parseInt(scoreMatch[2])
+          };
+        }
+
+        showContinue(() => { setChapter(5); runChapter5(); });
+      });
+    });
+  });
+}
+
+// ═══════════════════════════════════════
+// CHAPTER 5: YOUR BRAND WORLD
+// ═══════════════════════════════════════
+async function runChapter5() {
+  const flow = el('gmFlow');
+  flow.innerHTML = '';
+  hideInput();
+
+  addMsg('system', 'Chapter 5 — <strong>Your Brand World</strong><br><em>Everything you\'ve discovered, brought together.</em>');
+
+  const reveal = await askGM(`FINAL CHAPTER. Bring EVERYTHING together. Present the player's complete Brand World:
+
+THE WORLD: ${G.world.business}. Antagonist: ${G.world.antagonist}.
+THE HERO: ${G.archetype?.name} archetype (${G.archetype?.territory}).
+THE QUEST: ${G.quest.positioning || G.quest.aspiration}.
+TRUST: ${JSON.stringify(G.trust.scores || {})}.
+
+Write a vivid, inspiring 2-3 paragraph summary that weaves their world, character, quest and strengths into a compelling brand narrative. End by congratulating them and mentioning they can take these insights deeper at unicorn.agency.`);
+  addGM(reveal);
+
+  await delay(2000);
+  renderBrandWorld();
+}
+
+function renderBrandWorld() {
+  const d = document.createElement('div');
+  d.className = 'bw-section';
+
+  const scores = G.trust.scores || { clarity:75, connection:70, confidence:72 };
+  const avg = Math.round((scores.clarity + scores.connection + scores.confidence) / 3);
+
+  d.innerHTML = `
+    <div class="bw-card">
+      <div class="bw-label">Brand Archetype</div>
+      <div class="bw-value"><span class="grad-text" style="font-size:1.4rem;">${G.archetype?.name || 'Undiscovered'}</span></div>
+      <div class="bw-desc">${G.archetype?.territory || ''} — ${G.archetype?.desc || ''}</div>
+    </div>
+    <div class="bw-card">
+      <div class="bw-label">Your World</div>
+      <div class="bw-value">${G.world.business || ''}</div>
+      <div class="bw-desc">Fighting against: <strong>${G.world.antagonist || 'the status quo'}</strong></div>
+    </div>
+    <div class="bw-card">
+      <div class="bw-label">Your Quest</div>
+      <div class="bw-value">${G.quest.positioning || G.quest.aspiration || ''}</div>
+    </div>
+    <div class="bw-card">
+      <div class="bw-label">Trust Score</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-top:.5rem;">
+        <div><div style="font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(248,240,255,.3);margin-bottom:.3rem;">Clarity</div><div class="grad-text" style="font-size:1.5rem;font-weight:800;">${scores.clarity}</div></div>
+        <div><div style="font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(248,240,255,.3);margin-bottom:.3rem;">Connection</div><div class="grad-text" style="font-size:1.5rem;font-weight:800;">${scores.connection}</div></div>
+        <div><div style="font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(248,240,255,.3);margin-bottom:.3rem;">Confidence</div><div class="grad-text" style="font-size:1.5rem;font-weight:800;">${scores.confidence}</div></div>
+      </div>
+      <div style="margin-top:.8rem;font-size:.75rem;color:var(--mist);">Overall Trust Score: <strong class="grad-text">${avg}/100</strong></div>
+    </div>
+    <div class="bw-cta">
+      <div style="font-size:.58rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(248,240,255,.18);margin-bottom:.8rem;">What's Next?</div>
+      <div style="font-size:.88rem;color:var(--mist);line-height:1.7;max-width:420px;margin:0 auto .8rem;">This is your starting point. Take these insights and build something extraordinary.</div>
+      <div style="font-size:.82rem;color:var(--mist);margin-bottom:1.2rem;">For deeper brand work →</div>
+      <a href="https://unicorn.agency" target="_blank" class="btn-primary" style="display:inline-flex;">Visit Unicorn</a>
+    </div>
+  `;
+  el('gmFlow').appendChild(d);
+  scrollFlow();
+}
+
+// ═══════════════════════════════════════
+// UI HELPERS
+// ═══════════════════════════════════════
+function el(id) { return document.getElementById(id); }
+function scrollFlow() { const f = el('gmFlow'); f.scrollTop = f.scrollHeight; }
+function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+function addMsg(type, html) {
+  const d = document.createElement('div');
+  if (type === 'gm-inline') {
+    d.className = 'msg gm';
+    d.innerHTML = `<div class="msg-sender">Game Master</div><div class="msg-bubble">${html}</div>`;
+  } else if (type === 'system') {
+    d.className = 'msg system';
+    d.innerHTML = `<div class="msg-bubble">${html}</div>`;
+  }
+  el('gmFlow').appendChild(d);
+  scrollFlow();
+}
+
+function addGM(text) {
+  const d = document.createElement('div');
+  d.className = 'msg gm';
+  d.innerHTML = `<div class="msg-sender">Game Master</div><div class="msg-bubble">${formatText(text)}</div>`;
+  el('gmFlow').appendChild(d);
+  scrollFlow();
+}
+
+function addPlayer(text) {
+  const d = document.createElement('div');
+  d.className = 'msg player';
+  d.innerHTML = `<div class="msg-sender">${G.playerName}</div><div class="msg-bubble">${escHtml(text)}</div>`;
+  el('gmFlow').appendChild(d);
+  scrollFlow();
+}
+
+function formatText(t) {
+  return t.replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\*(.*?)\*/g,'<em>$1</em>');
+}
+
+function escHtml(t) {
+  return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function showTyping() {
+  const d = document.createElement('div');
+  d.className = 'typing'; d.id = 'typingEl';
+  d.innerHTML = `<div class="msg-sender" style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-size:.5rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;margin-bottom:.25rem;">Game Master</div><div class="typing-dots"><div class="t-dot"></div><div class="t-dot"></div><div class="t-dot"></div></div>`;
+  el('gmFlow').appendChild(d);
+  scrollFlow();
+}
+
+function hideTyping() { const t = document.getElementById('typingEl'); if(t) t.remove(); }
+
+function setInput(mode, placeholder) {
+  const area = el('gmInput');
+  const ta = el('gmTextarea');
+  if (mode === 'none') { area.classList.add('hidden'); return; }
+  area.classList.remove('hidden');
+  ta.placeholder = placeholder || 'Type your answer...';
+  ta.value = '';
+  setTimeout(() => ta.focus(), 100);
+}
+
+function hideInput() { el('gmInput').classList.add('hidden'); }
+
+function waitFor(handler) { G.onSubmit = handler; }
+
+function submitInput() {
+  const ta = el('gmTextarea');
+  const v = ta.value.trim();
+  if (!v || !G.onSubmit) return;
+  ta.value = '';
+  const h = G.onSubmit;
+  G.onSubmit = null;
+  h(v);
+}
+
+function showContinue(action) {
+  hideInput();
+  const d = document.createElement('div');
+  d.className = 'continue-row';
+  d.innerHTML = `<button class="btn-primary" id="continueBtn">Continue →</button>`;
+  el('gmFlow').appendChild(d);
+  scrollFlow();
+  document.getElementById('continueBtn').onclick = () => { d.remove(); action(); };
+}
+
+// Enter key
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey && document.activeElement === el('gmTextarea')) {
+    e.preventDefault();
+    submitInput();
+  }
+});
+
+// Auto-resize textarea
+el('gmTextarea').addEventListener('input', function() {
+  this.style.height = 'auto';
+  this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+});
+</script>
+</body>
+</html>
