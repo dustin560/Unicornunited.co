@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- TEMPLATE: Replace title with client name -->
+<title>Butterfield Osteopathy &mdash; Fractional Brand Partnership | Unicorn</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --night: #1A0A2E;
+  --violet: #7B2FBE;
+  --magenta: #C724B1;
+  --rose: #E84D8A;
+  --lavender: #F8F0FF;
+  --ink: #0d0818;
+  --surface: #170d2a;
+  --card: #1e1136;
+  --text: rgba(248,240,255,0.75);
+  --text-bright: rgba(248,240,255,0.95);
+  --border: rgba(123,47,190,0.15);
+  --grad: linear-gradient(90deg, var(--violet), var(--magenta));
+  --grad3: linear-gradient(135deg, var(--violet) 0%, var(--magenta) 50%, var(--rose) 100%);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; background: var(--ink); overflow-x: hidden; }
+body {
+  font-family: 'Sora', sans-serif;
+  color: var(--text);
+  background: var(--ink);
+  line-height: 1.7;
+  font-size: 0.92rem;
+  font-weight: 400;
+}
+
+/* ─── LOGO SVG ─── */
+.unicorn-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  text-decoration: none;
+}
+.unicorn-mark { width: 20px; height: 24px; }
+.unicorn-mark-lg { width: 44px; height: 54px; }
+.unicorn-mark-hero { width: 56px; height: 68px; }
+.unicorn-wordmark {
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.unicorn-wordmark-lg {
+  font-size: 2.4rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── NAV ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 1.2rem 4rem;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(13,8,24,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-links { display: flex; gap: 2rem; }
+.nav-links a {
+  color: rgba(248,240,255,0.45); text-decoration: none;
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+  transition: color 0.3s;
+}
+.nav-links a:hover { color: var(--lavender); }
+
+/* ─── SECTIONS ─── */
+section { padding: 7rem 4rem; max-width: 1200px; margin: 0 auto; position: relative; }
+
+/* ─── HERO ─── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
+  padding-top: 8rem; position: relative; overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 50% 40%, rgba(123,47,190,0.18) 0%, transparent 65%),
+              radial-gradient(ellipse 40% 40% at 80% 80%, rgba(199,36,177,0.08) 0%, transparent 60%),
+              var(--ink);
+}
+.hero-ring {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  border-radius: 50%; border: 1px solid rgba(123,47,190,0.08); pointer-events: none;
+}
+.hero-ring:nth-child(2) { width: 500px; height: 500px; animation: hpulse 7s ease infinite; }
+.hero-ring:nth-child(3) { width: 720px; height: 720px; border-color: rgba(199,36,177,0.06); animation: hpulse 7s 2s ease infinite; }
+.hero-ring:nth-child(4) { width: 940px; height: 940px; border-color: rgba(232,77,138,0.03); animation: hpulse 7s 4s ease infinite; }
+@keyframes hpulse {
+  0%,100% { transform: translate(-50%,-50%) scale(1); opacity: 1; }
+  50% { transform: translate(-50%,-50%) scale(1.05); opacity: 0.4; }
+}
+
+.hero-logo-group {
+  display: flex; align-items: center; gap: 1rem;
+  margin-bottom: 3rem; position: relative; z-index: 2;
+}
+
+.hero-label {
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase;
+  color: rgba(248,240,255,0.35); margin-bottom: 2rem; position: relative; z-index: 2;
+  display: inline-flex; align-items: center; gap: 0.6rem;
+}
+.hero-label::before, .hero-label::after {
+  content: ''; display: block; width: 24px; height: 1px; background: rgba(248,240,255,0.25);
+}
+
+.hero h1 {
+  font-size: clamp(2.5rem, 5.5vw, 4rem); font-weight: 800; letter-spacing: -0.02em; line-height: 1.1;
+  margin-bottom: 1.5rem; position: relative; z-index: 2;
+  background: var(--grad3); background-size: 300% 300%;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  animation: grad-ripple 8s ease infinite;
+}
+@keyframes grad-ripple {
+  0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; }
+}
+.hero-sub {
+  font-size: 1.1rem; font-weight: 400; color: rgba(248,240,255,0.5);
+  max-width: 500px; margin-bottom: 1rem; position: relative; z-index: 2;
+}
+.hero-tagline {
+  font-size: 0.85rem; font-style: italic; color: rgba(248,240,255,0.35);
+  position: relative; z-index: 2; margin-bottom: 3rem;
+}
+.scroll-indicator {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+  color: rgba(248,240,255,0.25); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase;
+}
+.scroll-line {
+  width: 1px; height: 40px;
+  background: linear-gradient(to bottom, var(--violet), transparent);
+  animation: sl 2s ease infinite;
+}
+@keyframes sl {
+  0% { transform: scaleY(0); transform-origin: top; opacity: 1; }
+  50% { transform: scaleY(1); transform-origin: top; opacity: 1; }
+  51% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; opacity: 1; }
+}
+
+/* ─── BODY ─── */
+.section-label {
+  font-size: 0.6rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--magenta); margin-bottom: 1.5rem;
+}
+h2 {
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 800; color: var(--text-bright);
+  letter-spacing: -0.01em; line-height: 1.15; margin-bottom: 2rem;
+}
+h3 { font-size: 1.1rem; font-weight: 700; color: var(--text-bright); margin-bottom: 0.8rem; }
+.body-text { max-width: 680px; margin-bottom: 1.5rem; line-height: 1.75; }
+.highlight-block {
+  border-left: 3px solid var(--violet); padding: 1.5rem 2rem; margin: 2.5rem 0;
+  background: rgba(123,47,190,0.06); border-radius: 0 4px 4px 0; max-width: 720px;
+}
+.highlight-block p { font-size: 1.05rem; font-weight: 500; color: var(--text-bright); line-height: 1.7; font-style: italic; }
+
+/* ─── STATS ─── */
+.stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin: 3rem 0; }
+.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 2rem; text-align: center; }
+.stat-number {
+  font-size: 2.2rem; font-weight: 800; line-height: 1.2;
+  background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.stat-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; color: rgba(248,240,255,0.4); margin-top: 0.5rem; }
+
+/* ─── INTERACTIVE KBA ─── */
+.kba-section { text-align: center; padding: 8rem 4rem; }
+
+.kba-bar {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;
+  margin: 4rem 0 0; position: relative;
+}
+.kba-btn {
+  padding: 2rem 1.5rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  transition: all 0.4s ease;
+  position: relative;
+  text-align: center;
+}
+.kba-btn:first-child { border-radius: 4px 0 0 4px; }
+.kba-btn:last-child { border-radius: 0 4px 4px 0; }
+.kba-btn:hover { background: rgba(123,47,190,0.08); }
+.kba-btn.active { background: rgba(123,47,190,0.1); }
+.kba-btn.active::after {
+  content: ''; position: absolute; bottom: -1px; left: 20%; right: 20%; height: 2px;
+}
+.kba-btn:nth-child(1).active::after { background: var(--violet); }
+.kba-btn:nth-child(2).active::after { background: var(--magenta); }
+.kba-btn:nth-child(3).active::after { background: var(--rose); }
+
+.kba-btn-stage {
+  font-size: 0.55rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase;
+  margin-bottom: 0.6rem; transition: color 0.3s;
+}
+.kba-btn:nth-child(1) .kba-btn-stage { color: var(--violet); }
+.kba-btn:nth-child(2) .kba-btn-stage { color: var(--magenta); }
+.kba-btn:nth-child(3) .kba-btn-stage { color: var(--rose); }
+
+.kba-btn-title {
+  font-size: 1.8rem; font-weight: 800; transition: color 0.3s;
+}
+.kba-btn:nth-child(1) .kba-btn-title { color: var(--violet); }
+.kba-btn:nth-child(2) .kba-btn-title { color: var(--magenta); }
+.kba-btn:nth-child(3) .kba-btn-title { color: var(--rose); }
+
+.kba-btn-sub {
+  font-size: 0.78rem; color: rgba(248,240,255,0.4); margin-top: 0.3rem; font-weight: 500;
+}
+.kba-btn-arrow {
+  display: inline-block; margin-top: 0.8rem; font-size: 0.6rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: rgba(248,240,255,0.25); transition: all 0.3s;
+}
+.kba-btn:hover .kba-btn-arrow { color: rgba(248,240,255,0.5); }
+.kba-btn.active .kba-btn-arrow { transform: rotate(180deg); }
+
+/* Dropdown panels */
+.kba-panel {
+  max-height: 0; overflow: hidden; transition: max-height 0.6s ease, padding 0.4s ease, opacity 0.4s ease;
+  opacity: 0;
+  border: 1px solid var(--border); border-top: none;
+  border-radius: 0 0 4px 4px;
+  background: var(--surface);
+  text-align: left;
+}
+.kba-panel.open {
+  max-height: 800px; opacity: 1; padding: 3rem;
+}
+.kba-panel-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;
+}
+.kba-panel h3 { margin-top: 1.5rem; }
+.kba-panel h3:first-child { margin-top: 0; }
+.kba-panel .body-text { max-width: none; font-size: 0.85rem; }
+
+.kba-deliverables {
+  background: rgba(123,47,190,0.04);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1.8rem;
+  align-self: start;
+}
+.kba-deliverables h4 {
+  font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(248,240,255,0.35); margin-bottom: 1rem;
+}
+.kba-del-item {
+  display: flex; align-items: flex-start; gap: 0.7rem;
+  margin-bottom: 0.7rem; font-size: 0.8rem;
+}
+.kba-del-check {
+  width: 14px; height: 14px; border-radius: 2px; border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 3px; font-size: 0.6rem;
+}
+.kba-btn:nth-child(1) ~ .kba-panel .kba-del-check { color: var(--violet); }
+
+.kba-check-know { color: var(--violet); }
+.kba-check-believe { color: var(--magenta); }
+.kba-check-act { color: var(--rose); }
+
+/* ─── HOURS TABLE ─── */
+.hours-section { padding: 6rem 4rem; }
+.hours-table { width: 100%; border-collapse: collapse; margin: 2.5rem 0; font-size: 0.82rem; }
+.hours-table th {
+  text-align: left; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
+  color: rgba(248,240,255,0.35); padding: 1rem 1.2rem; border-bottom: 1px solid var(--border);
+}
+.hours-table th:last-child { text-align: right; }
+.hours-table td {
+  padding: 0.8rem 1.2rem; border-bottom: 1px solid rgba(123,47,190,0.06); vertical-align: top;
+}
+.hours-table td:last-child { text-align: right; font-weight: 600; }
+.hours-table tr:hover td { background: rgba(123,47,190,0.03); }
+.stage-tag {
+  display: inline-block; font-size: 0.55rem; font-weight: 700; letter-spacing: 0.15em;
+  text-transform: uppercase; padding: 0.2rem 0.6rem; border-radius: 2px; margin-right: 0.5rem;
+}
+.stage-tag.know { background: rgba(123,47,190,0.15); color: var(--violet); }
+.stage-tag.believe { background: rgba(199,36,177,0.15); color: var(--magenta); }
+.stage-tag.act { background: rgba(232,77,138,0.15); color: var(--rose); }
+.hours-total { border-top: 2px solid var(--violet); }
+.hours-total td { font-weight: 700; color: var(--text-bright); padding-top: 1.2rem; }
+
+/* Investment cards */
+.investment-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin: 3rem 0; }
+.invest-card {
+  text-align: center; padding: 2.5rem 2rem;
+  border: 1px solid var(--border); border-radius: 4px; position: relative; overflow: hidden;
+}
+.invest-card.primary {
+  background: linear-gradient(135deg, rgba(123,47,190,0.12), rgba(199,36,177,0.08));
+  border-color: rgba(123,47,190,0.3);
+}
+.invest-label {
+  font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(248,240,255,0.35); margin-bottom: 0.8rem;
+}
+.invest-value { font-size: 2rem; font-weight: 800; color: var(--text-bright); }
+.invest-value.gradient {
+  background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.invest-note { font-size: 0.72rem; color: rgba(248,240,255,0.35); margin-top: 0.5rem; }
+
+/* ─── WHY / CTA / FOOTER ─── */
+.why-section { text-align: center; padding: 8rem 4rem; }
+.manifesto-quote {
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem); font-weight: 600; font-style: italic;
+  max-width: 650px; margin: 2rem auto; line-height: 1.6;
+  background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.cta-section { text-align: center; padding: 6rem 4rem 4rem; position: relative; }
+.cta-section::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+.btn-primary {
+  display: inline-block; padding: 0.9rem 2.5rem;
+  background: var(--grad); color: var(--lavender);
+  font-family: 'Sora', sans-serif; font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none;
+  border-radius: 2px; transition: opacity 0.3s; border: none; cursor: pointer;
+}
+.btn-primary:hover { opacity: 0.85; }
+.btn-ghost {
+  display: inline-block; padding: 0.9rem 2rem;
+  border: 1px solid rgba(248,240,255,0.12); color: rgba(248,240,255,0.5);
+  font-family: 'Sora', sans-serif; font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none;
+  border-radius: 2px; transition: all 0.3s; margin-left: 1rem;
+}
+.btn-ghost:hover { color: var(--lavender); border-color: rgba(248,240,255,0.3); }
+
+footer {
+  text-align: center; padding: 3rem 4rem;
+  border-top: 1px solid var(--border); max-width: 1200px; margin: 0 auto;
+}
+.footer-tagline { font-size: 0.75rem; font-style: italic; color: rgba(248,240,255,0.3); margin: 0.5rem 0 0.3rem; }
+.footer-link { font-size: 0.72rem; color: var(--violet); text-decoration: none; }
+
+.section-divider {
+  height: 1px; max-width: 1200px; margin: 0 auto;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+
+/* ─── ONGOING TABLE ─── */
+.ongoing-table { width: 100%; border-collapse: collapse; margin: 2.5rem 0; font-size: 0.82rem; }
+.ongoing-table th {
+  text-align: left; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
+  color: rgba(248,240,255,0.35); padding: 1rem 1.2rem; border-bottom: 1px solid var(--border);
+}
+.ongoing-table td {
+  padding: 0.8rem 1.2rem; border-bottom: 1px solid rgba(123,47,190,0.06); vertical-align: top;
+}
+.ongoing-table tr:hover td { background: rgba(123,47,190,0.03); }
+
+/* ─── SCROLL ANIMATION ─── */
+.fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 900px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  section, .hours-section, .kba-section, .why-section, .cta-section { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .hero { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .hero h1 { font-size: 2.2rem; }
+  .stats-row, .investment-grid { grid-template-columns: 1fr; }
+  .kba-bar { grid-template-columns: 1fr; }
+  .kba-btn:first-child { border-radius: 4px 4px 0 0; }
+  .kba-btn:last-child { border-radius: 0 0 4px 4px; }
+  .kba-panel-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .kba-panel.open { padding: 2rem 1.5rem; }
+  .hours-table { font-size: 0.72rem; }
+  .hours-table td, .hours-table th { padding: 0.6rem 0.8rem; }
+  .ongoing-table { font-size: 0.72rem; }
+  .ongoing-table td, .ongoing-table th { padding: 0.6rem 0.8rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="unicorn-logo" href="https://unicornunited.co" target="_blank">
+    <svg class="unicorn-mark" viewBox="0 0 120 148" fill="none"><defs><linearGradient id="nav-ug" x1="60" y1="148" x2="60" y2="0"><stop offset="0%" stop-color="#C724B1"/><stop offset="100%" stop-color="#7B2FBE"/></linearGradient><clipPath id="nav-uc"><path d="M4,8 L30,136 L60,60 L90,136 L116,8 Z"/></clipPath></defs><rect width="120" height="148" fill="url(#nav-ug)" clip-path="url(#nav-uc)"/></svg>
+    <span class="unicorn-wordmark">UNICORN</span>
+  </a>
+  <!-- TEMPLATE: Adjust nav links to match your sections -->
+  <div class="nav-links">
+    <a href="#partnership">Partnership</a>
+    <a href="#completed">What We've Built</a>
+    <a href="#rollout">Rollout Plan</a>
+    <a href="#investment">Investment</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<!-- TEMPLATE: Replace client name, subtitle, tagline -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-ring"></div>
+  <div class="hero-ring"></div>
+  <div class="hero-ring"></div>
+
+  <div class="hero-label">Fractional Brand Partnership</div>
+  <h1>Butterfield Osteopathy</h1>
+  <p class="hero-sub">Your dedicated brand partner. Strategy, identity, and rollout &mdash; as if you had a brand director on your team.</p>
+  <p class="hero-tagline">Prepared for Maria Larraine &mdash; March 2026</p>
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- THE PARTNERSHIP -->
+<!-- TEMPLATE: Adjust partnership model description for client type -->
+<section id="partnership" class="fade-up">
+  <div class="section-label">How It Works</div>
+  <h2>A brand director on your team.<br>Without the overhead.</h2>
+  <p class="body-text">Unicorn operates as your dedicated brand partner &mdash; embedded in your business, not parachuted in for projects. Think of it as having a brand director on your team 4 days a month: someone who knows the practice, understands the philosophy, and owns the brand the way you own the clinical work.</p>
+  <p class="body-text">This isn&rsquo;t a retainer for ad-hoc requests. It&rsquo;s a structured partnership with a clear rhythm: fortnightly planning sprints, monthly reviews, and a shared roadmap that evolves as the practice grows.</p>
+
+  <div class="highlight-block">
+    <p>The best brands aren&rsquo;t built in bursts. They&rsquo;re built by someone who&rsquo;s there &mdash; who sees what&rsquo;s working, what&rsquo;s drifting, and what to do next.</p>
+  </div>
+
+  <!-- TEMPLATE: Adjust days/month and descriptions -->
+  <div class="stats-row">
+    <div class="stat-card fade-up">
+      <div class="stat-number">4 days</div>
+      <div class="stat-label">Per month &mdash; strategy, creative direction, production</div>
+    </div>
+    <div class="stat-card fade-up">
+      <div class="stat-number">Fortnightly</div>
+      <div class="stat-label">Sprint rhythm &mdash; plan, execute, review every two weeks</div>
+    </div>
+    <div class="stat-card fade-up">
+      <div class="stat-number">Ongoing</div>
+      <div class="stat-label">Partnership &mdash; not a project, a relationship</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- WHAT WE'VE BUILT -->
+<!-- TEMPLATE: Replace completed work items for each client -->
+<section id="completed" class="kba-section fade-up">
+  <div class="section-label">Work Completed</div>
+  <h2>The foundation is in place.</h2>
+  <p class="body-text" style="max-width:600px; margin: 0 auto;">Before the retainer begins, we&rsquo;ve already done the deep strategic work &mdash; defining who Butterfield is, what it believes, and how it should look and feel in the world. This work was delivered as part of establishing the partnership.</p>
+
+  <div class="kba-bar">
+    <div class="kba-btn active" data-panel="panel-strategy" onclick="togglePanel(this, 'panel-strategy')">
+      <div class="kba-btn-stage">Foundation</div>
+      <div class="kba-btn-title">Strategy</div>
+      <div class="kba-btn-sub">Brand concept &amp; positioning</div>
+      <div class="kba-btn-arrow">&#9662;</div>
+    </div>
+    <div class="kba-btn" data-panel="panel-identity" onclick="togglePanel(this, 'panel-identity')">
+      <div class="kba-btn-stage">Foundation</div>
+      <div class="kba-btn-title">Identity</div>
+      <div class="kba-btn-sub">Visual &amp; verbal system</div>
+      <div class="kba-btn-arrow">&#9662;</div>
+    </div>
+    <div class="kba-btn" data-panel="panel-planning" onclick="togglePanel(this, 'panel-planning')">
+      <div class="kba-btn-stage">In Progress</div>
+      <div class="kba-btn-title">Planning</div>
+      <div class="kba-btn-sub">Engagement &amp; comms &mdash; pending approval</div>
+      <div class="kba-btn-arrow">&#9662;</div>
+    </div>
+  </div>
+
+  <!-- STRATEGY PANEL -->
+  <div class="kba-panel open" id="panel-strategy">
+    <div class="kba-panel-grid">
+      <div>
+        <h3>The Meeting</h3>
+        <p class="body-text">The central organising idea of the brand. Where practitioner and patient meet &mdash; and what changes between them. Not a marketing concept. A clinical philosophy that happens to make exceptional marketing.</p>
+
+        <h3>The Threshold Device</h3>
+        <p class="body-text">The brand&rsquo;s signature creative framework: an above/below line device that captures the patient journey. &lsquo;What you arrived carrying&rsquo; above the line. &lsquo;What becomes possible&rsquo; below. Used across every touchpoint from social media to the treatment room door.</p>
+      </div>
+      <div class="kba-deliverables">
+        <h4>Delivered</h4>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-know">&check;</div><span>Brand concept: &lsquo;The Meeting&rsquo;</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-know">&check;</div><span>The Threshold Device framework</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-know">&check;</div><span>Brand philosophy &amp; positioning narrative</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-know">&check;</div><span>Brand filter: &lsquo;Does this make someone feel seen?&rsquo;</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- IDENTITY PANEL -->
+  <div class="kba-panel" id="panel-identity">
+    <div class="kba-panel-grid">
+      <div>
+        <h3>Visual Identity</h3>
+        <p class="body-text">Logo, colour palette (white, linen, warm grey, stone, oak, terracotta, sage, ink), and a two-typeface system &mdash; Jost for structural precision, Cormorant Garamond for literary warmth.</p>
+
+        <h3>Tone of Voice</h3>
+        <p class="body-text">Precise, warm, never precious. Written like the best literary non-fiction: specific, empathetic, structurally clear. Never clinical. Never wellness. Every sentence should make someone feel seen.</p>
+      </div>
+      <div class="kba-deliverables">
+        <h4>Delivered</h4>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-believe">&check;</div><span>Brand guidelines document (approved v1.0)</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-believe">&check;</div><span>Logo &amp; visual identity system</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-believe">&check;</div><span>Colour palette &amp; typography specifications</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-believe">&check;</div><span>Tone of voice framework with do/don&rsquo;t examples</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-believe">&check;</div><span>Photography &amp; art direction guidelines</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-believe">&check;</div><span>Application specs (web, social, print, signage)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLANNING PANEL -->
+  <div class="kba-panel" id="panel-planning">
+    <div class="kba-panel-grid">
+      <div>
+        <h3>Practitioner Engagement</h3>
+        <p class="body-text">A complete strategy for bringing the team on the journey &mdash; from WhatsApp messaging to brand induction to a monthly rhythm of prompts. Practitioners as co-authors, not recipients.</p>
+
+        <h3>Marketing-Comms Plan</h3>
+        <p class="body-text">Every initiative aligned to &lsquo;The Meeting&rsquo;. Content ratio (40/35/25), social templates, CTA language, patient experience redesign, and a review-gathering strategy woven into clinical care.</p>
+
+        <p class="body-text" style="font-size: 0.78rem; font-style: italic; opacity: 0.6; margin-top: 1rem;">These plans are drafted and under review. Final versions will be confirmed together before Sprint 1 begins.</p>
+      </div>
+      <div class="kba-deliverables">
+        <h4>Pending Approval</h4>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-act" style="opacity:0.5;">&#9675;</div><span>Practitioner Engagement Plan (WhatsApp rhythm)</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-act" style="opacity:0.5;">&#9675;</div><span>Patient Experience Map &amp; review strategy</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-act" style="opacity:0.5;">&#9675;</div><span>Marketing-communications plan</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-act" style="opacity:0.5;">&#9675;</div><span>Threshold Templates (White, Linen, Ink variants)</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ROLLOUT PLAN -->
+<!-- TEMPLATE: Adjust sprint dates and deliverables for each client -->
+<section id="rollout" class="kba-section fade-up">
+  <div class="section-label">Brand Rollout</div>
+  <h2>From guidelines to the real world.</h2>
+  <p class="body-text" style="max-width:600px; margin: 0 auto;">Three fortnightly sprints, working backwards from May 10th &mdash; Butterfield&rsquo;s birthday and the public launch date. Each sprint has clear deliverables, with a check-in at the midpoint and a review at the close.</p>
+
+  <div class="kba-bar">
+    <div class="kba-btn active" data-panel="panel-sprint1" onclick="togglePanel(this, 'panel-sprint1')">
+      <div class="kba-btn-stage">Mar 31 &ndash; Apr 13</div>
+      <div class="kba-btn-title">Build</div>
+      <div class="kba-btn-sub">Build the engine</div>
+      <div class="kba-btn-arrow">&#9662;</div>
+    </div>
+    <div class="kba-btn" data-panel="panel-sprint2" onclick="togglePanel(this, 'panel-sprint2')">
+      <div class="kba-btn-stage">Apr 14 &ndash; Apr 27</div>
+      <div class="kba-btn-title">Dress</div>
+      <div class="kba-btn-sub">Dress the practice</div>
+      <div class="kba-btn-arrow">&#9662;</div>
+    </div>
+    <div class="kba-btn" data-panel="panel-sprint3" onclick="togglePanel(this, 'panel-sprint3')">
+      <div class="kba-btn-stage">Apr 28 &ndash; May 10</div>
+      <div class="kba-btn-title">Launch</div>
+      <div class="kba-btn-sub">Go live</div>
+      <div class="kba-btn-arrow">&#9662;</div>
+    </div>
+  </div>
+
+  <!-- SPRINT 1 -->
+  <div class="kba-panel open" id="panel-sprint1">
+    <div class="kba-panel-grid">
+      <div>
+        <h3>Priority: Digital Foundation</h3>
+        <p class="body-text">Get the website live and the core digital presence in place. This is the backbone everything else hangs on.</p>
+
+        <h3>Website</h3>
+        <p class="body-text">Single-page responsive site. Hero with threshold device. Interactive Threshold Finder. Full Library grid with Doctify integration. Split-column layouts. Sticky white nav with Terracotta CTA. Scroll-triggered reveals.</p>
+
+        <h3>Brand Induction</h3>
+        <p class="body-text">1-hour session with practitioners introducing &lsquo;The Meeting&rsquo; and the Threshold Device as a clinical philosophy first, a marketing strategy second. Practitioners need to feel the brand is about their work.</p>
+      </div>
+      <div class="kba-deliverables">
+        <h4>Deliverables</h4>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-know">&check;</div><span>Website designed, built &amp; live</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-know">&check;</div><span>Social media template set (3 variants)</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-know">&check;</div><span>Brand induction session delivered</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-know">&check;</div><span>Google Business Profile updated</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-know">&check;</div><span>Email signature templates</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SPRINT 2 -->
+  <div class="kba-panel" id="panel-sprint2">
+    <div class="kba-panel-grid">
+      <div>
+        <h3>Priority: Physical Touchpoints</h3>
+        <p class="body-text">The practice should feel like the brand when you walk through the door. Every surface, every piece of paper, every interaction aligned to &lsquo;The Meeting&rsquo;.</p>
+
+        <h3>Patient Materials</h3>
+        <p class="body-text">Welcome pack, aftercare sheets, referral letters &mdash; all using the threshold line as section dividers. Jost for instructions and clinical detail. Cormorant for introductory and closing copy.</p>
+
+        <h3>Content Calendar</h3>
+        <p class="body-text">First month of social media planned using the 40/35/25 content ratio. Posts mapped to the three template variants (White, Linen, Ink). All booking CTAs read: &lsquo;Your body has a story. Let&rsquo;s rewrite it.&rsquo;</p>
+      </div>
+      <div class="kba-deliverables">
+        <h4>Deliverables</h4>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-believe">&check;</div><span>Business cards (designed + print-ready)</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-believe">&check;</div><span>Welcome pack for new patients</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-believe">&check;</div><span>Aftercare sheet templates</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-believe">&check;</div><span>Referral letter template (Annotated Letter format)</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-believe">&check;</div><span>Clinic signage specifications</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-believe">&check;</div><span>Stationery suite (letterhead, compliment slips)</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-believe">&check;</div><span>Social media content calendar (month 1)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SPRINT 3 -->
+  <div class="kba-panel" id="panel-sprint3">
+    <div class="kba-panel-grid">
+      <div>
+        <h3>Priority: Go Live</h3>
+        <p class="body-text">Everything aligns for the birthday launch on May 10th. The brand steps into the world &mdash; digitally, physically, and in the room.</p>
+
+        <h3>The Threshold Map</h3>
+        <p class="body-text">The signature clinical artefact: designed and printed on parchment-style paper (terracotta and ink). Practitioners use the above/below framing at the close of first sessions: &lsquo;This is what you arrived carrying. This is what becomes possible.&rsquo;</p>
+
+        <h3>Launch Sequence</h3>
+        <p class="body-text">Social media launch posts, email announcement, in-clinic presence. First Monthly Rhythm WhatsApp prompt sent to practitioners. Review gathering sequence activated with Day 3 and Day 7 follow-ups.</p>
+      </div>
+      <div class="kba-deliverables">
+        <h4>Deliverables</h4>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-act">&check;</div><span>Social media launch posts (first 2 weeks)</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-act">&check;</div><span>The Threshold Map (printed artefact)</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-act">&check;</div><span>Redesigned intake forms</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-act">&check;</div><span>Practitioner profile copy for website</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-act">&check;</div><span>Launch announcement (email + social)</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-act">&check;</div><span>Review sequence templates activated</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-act">&check;</div><span>Monthly Rhythm WhatsApp prompt #1</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- AFTER LAUNCH -->
+<section class="fade-up" style="padding: 6rem 4rem;">
+  <div class="section-label">After Launch</div>
+  <h2>This is where the partnership<br>earns its keep.</h2>
+  <p class="body-text">The launch is the beginning, not the destination. The monthly retainer ensures the brand keeps evolving &mdash; not just maintained, but actively directed.</p>
+
+  <table class="ongoing-table">
+    <thead>
+      <tr><th>Cadence</th><th>Activity</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="stage-tag know">Monthly</span></td><td>Brand direction + content strategy (social posts, patient materials, seasonal campaigns)</td></tr>
+      <tr><td><span class="stage-tag know">Monthly</span></td><td>1:1 brand review with Maria Larraine &mdash; what&rsquo;s working, what needs adjusting</td></tr>
+      <tr><td><span class="stage-tag believe">Monthly</span></td><td>WhatsApp rhythm management &mdash; practitioner engagement prompts</td></tr>
+      <tr><td><span class="stage-tag act">Quarterly</span></td><td>Co-creation meeting with practitioners + brand performance review</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- INVESTMENT -->
+<!-- TEMPLATE: Replace retainer amount, days, and terms -->
+<section id="investment" class="hours-section fade-up">
+  <div class="section-label">Investment</div>
+  <h2>Simple. Monthly. Predictable.</h2>
+  <p class="body-text">The retainer covers 4 days of dedicated brand partnership per month &mdash; strategic direction, creative production, practitioner engagement support, and ongoing brand management. Work is planned in fortnightly sprints and reviewed together.</p>
+
+  <div class="investment-grid">
+    <div class="invest-card">
+      <div class="invest-label">Dedicated Time</div>
+      <div class="invest-value gradient">4 days</div>
+      <div class="invest-note">Per month &mdash; your brand time</div>
+    </div>
+    <div class="invest-card primary">
+      <div class="invest-label">Monthly Retainer</div>
+      <div class="invest-value gradient">&pound;1,250</div>
+      <div class="invest-note">Fixed monthly fee, no surprises</div>
+    </div>
+    <div class="invest-card">
+      <div class="invest-label">Commitment</div>
+      <div class="invest-value gradient">Rolling</div>
+      <div class="invest-note">30-day notice &mdash; no lock-in</div>
+    </div>
+  </div>
+
+  <p class="body-text" style="font-size: 0.78rem; opacity: 0.5; margin-top: 1rem;">Foundation work (brand strategy, identity, and guidelines) has been delivered as part of establishing this partnership.</p>
+
+  <p class="body-text" style="font-size: 0.78rem; opacity: 0.5; margin-top: 0.5rem;">The retainer covers strategic direction, creative development, and brand management. Production of materials &mdash; both printed (business cards, signage, stationery) and digital (website build, hosting) &mdash; is not included and will be quoted separately as required. Where existing suppliers are in place (e.g. your current web company), we will co-ordinate directly with them on your behalf.</p>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- WHY UNICORN -->
+<section class="why-section fade-up">
+  <div class="section-label">Why Unicorn</div>
+  <h2>Enterprise-quality thinking.<br>Independent-practice heart.</h2>
+  <p class="body-text" style="max-width:600px; margin: 0 auto 2rem;">Butterfield deserves the same strategic rigour that Fortune 500 companies get from their brand agencies &mdash; but delivered by someone who understands that a five-person osteopathy practice in East London runs on trust, not on decks. AI tooling means the production that would normally take weeks happens in days.</p>
+  <div class="manifesto-quote">Every practice has a story. Most never get told properly.</div>
+</section>
+
+<!-- CTA -->
+<!-- TEMPLATE: Replace CTA text and link -->
+<section class="cta-section">
+  <h2>Let&rsquo;s make May 10th count.</h2>
+  <p class="body-text" style="max-width:500px; margin: 0 auto 2.5rem; text-align:center;">The rollout starts this week. Let&rsquo;s build something Butterfield can feel.</p>
+  <a href="https://calendly.com/dl-unicornunited" target="_blank" class="btn-primary">Let&rsquo;s go</a>
+  <a href="https://unicornunited.co" class="btn-ghost" target="_blank">unicornunited.co</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a class="unicorn-logo" href="https://unicornunited.co" target="_blank" style="justify-content:center; margin-bottom: 0.5rem;">
+    <svg class="unicorn-mark" viewBox="0 0 120 148" fill="none"><defs><linearGradient id="ft-ug" x1="60" y1="148" x2="60" y2="0"><stop offset="0%" stop-color="#C724B1"/><stop offset="100%" stop-color="#7B2FBE"/></linearGradient><clipPath id="ft-uc"><path d="M4,8 L30,136 L60,60 L90,136 L116,8 Z"/></clipPath></defs><rect width="120" height="148" fill="url(#ft-ug)" clip-path="url(#ft-uc)"/></svg>
+    <span class="unicorn-wordmark">UNICORN</span>
+  </a>
+  <div class="footer-tagline">Your brand deserves an owner.</div>
+  <a href="https://unicornunited.co" class="footer-link">unicornunited.co</a>
+</footer>
+
+<!-- SCRIPTS -->
+<script>
+// Interactive KBA panels
+function togglePanel(btn, panelId) {
+  const allBtns = document.querySelectorAll('.kba-btn');
+  const allPanels = document.querySelectorAll('.kba-panel');
+  const targetPanel = document.getElementById(panelId);
+  const isAlreadyOpen = btn.classList.contains('active');
+
+  // Close all
+  allBtns.forEach(b => b.classList.remove('active'));
+  allPanels.forEach(p => p.classList.remove('open'));
+
+  // If wasn't already open, open this one
+  if (!isAlreadyOpen) {
+    btn.classList.add('active');
+    targetPanel.classList.add('open');
+  }
+}
+
+// Scroll-triggered animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
