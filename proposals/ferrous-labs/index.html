@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ferrous Labs — Brand Identity Proposal | Unicorn</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --night: #1A0A2E;
+  --violet: #7B2FBE;
+  --magenta: #C724B1;
+  --rose: #E84D8A;
+  --lavender: #F8F0FF;
+  --ink: #0d0818;
+  --surface: #170d2a;
+  --card: #1e1136;
+  --text: rgba(248,240,255,0.75);
+  --text-bright: rgba(248,240,255,0.95);
+  --border: rgba(123,47,190,0.15);
+  --grad: linear-gradient(90deg, var(--violet), var(--magenta));
+  --grad3: linear-gradient(135deg, var(--violet) 0%, var(--magenta) 50%, var(--rose) 100%);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; background: var(--ink); overflow-x: hidden; }
+body {
+  font-family: 'Sora', sans-serif;
+  color: var(--text);
+  background: var(--ink);
+  line-height: 1.7;
+  font-size: 0.92rem;
+  font-weight: 400;
+}
+
+/* ─── LOGO SVG ─── */
+.unicorn-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  text-decoration: none;
+}
+.unicorn-mark { width: 20px; height: 24px; }
+.unicorn-mark-lg { width: 44px; height: 54px; }
+.unicorn-mark-hero { width: 56px; height: 68px; }
+.unicorn-wordmark {
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.unicorn-wordmark-lg {
+  font-size: 2.4rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── NAV ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 1.2rem 4rem;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(13,8,24,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-links { display: flex; gap: 2rem; }
+.nav-links a {
+  color: rgba(248,240,255,0.45); text-decoration: none;
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+  transition: color 0.3s;
+}
+.nav-links a:hover { color: var(--lavender); }
+
+/* ─── SECTIONS ─── */
+section { padding: 7rem 4rem; max-width: 1200px; margin: 0 auto; position: relative; }
+
+/* ─── HERO ─── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
+  padding-top: 8rem; position: relative; overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 50% 40%, rgba(123,47,190,0.18) 0%, transparent 65%),
+              radial-gradient(ellipse 40% 40% at 80% 80%, rgba(199,36,177,0.08) 0%, transparent 60%),
+              var(--ink);
+}
+.hero-ring {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  border-radius: 50%; border: 1px solid rgba(123,47,190,0.08); pointer-events: none;
+}
+.hero-ring:nth-child(2) { width: 500px; height: 500px; animation: hpulse 7s ease infinite; }
+.hero-ring:nth-child(3) { width: 720px; height: 720px; border-color: rgba(199,36,177,0.06); animation: hpulse 7s 2s ease infinite; }
+.hero-ring:nth-child(4) { width: 940px; height: 940px; border-color: rgba(232,77,138,0.03); animation: hpulse 7s 4s ease infinite; }
+@keyframes hpulse {
+  0%,100% { transform: translate(-50%,-50%) scale(1); opacity: 1; }
+  50% { transform: translate(-50%,-50%) scale(1.05); opacity: 0.4; }
+}
+
+.hero-logo-group {
+  display: flex; align-items: center; gap: 1rem;
+  margin-bottom: 3rem; position: relative; z-index: 2;
+}
+
+.hero-label {
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase;
+  color: rgba(248,240,255,0.35); margin-bottom: 2rem; position: relative; z-index: 2;
+  display: inline-flex; align-items: center; gap: 0.6rem;
+}
+.hero-label::before, .hero-label::after {
+  content: ''; display: block; width: 24px; height: 1px; background: rgba(248,240,255,0.25);
+}
+
+.hero h1 {
+  font-size: clamp(2.5rem, 5.5vw, 4rem); font-weight: 800; letter-spacing: -0.02em; line-height: 1.1;
+  margin-bottom: 1.5rem; position: relative; z-index: 2;
+  background: var(--grad3); background-size: 300% 300%;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  animation: grad-ripple 8s ease infinite;
+}
+@keyframes grad-ripple {
+  0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; }
+}
+.hero-sub {
+  font-size: 1.1rem; font-weight: 400; color: rgba(248,240,255,0.5);
+  max-width: 500px; margin-bottom: 1rem; position: relative; z-index: 2;
+}
+.hero-tagline {
+  font-size: 0.85rem; font-style: italic; color: rgba(248,240,255,0.35);
+  position: relative; z-index: 2; margin-bottom: 3rem;
+}
+.scroll-indicator {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+  color: rgba(248,240,255,0.25); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase;
+}
+.scroll-line {
+  width: 1px; height: 40px;
+  background: linear-gradient(to bottom, var(--violet), transparent);
+  animation: sl 2s ease infinite;
+}
+@keyframes sl {
+  0% { transform: scaleY(0); transform-origin: top; opacity: 1; }
+  50% { transform: scaleY(1); transform-origin: top; opacity: 1; }
+  51% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; opacity: 1; }
+}
+
+/* ─── BODY ─── */
+.section-label {
+  font-size: 0.6rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--magenta); margin-bottom: 1.5rem;
+}
+h2 {
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 800; color: var(--text-bright);
+  letter-spacing: -0.01em; line-height: 1.15; margin-bottom: 2rem;
+}
+h3 { font-size: 1.1rem; font-weight: 700; color: var(--text-bright); margin-bottom: 0.8rem; }
+.body-text { max-width: 680px; margin-bottom: 1.5rem; line-height: 1.75; }
+.highlight-block {
+  border-left: 3px solid var(--violet); padding: 1.5rem 2rem; margin: 2.5rem 0;
+  background: rgba(123,47,190,0.06); border-radius: 0 4px 4px 0; max-width: 720px;
+}
+.highlight-block p { font-size: 1.05rem; font-weight: 500; color: var(--text-bright); line-height: 1.7; font-style: italic; }
+
+/* ─── STATS ─── */
+.stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin: 3rem 0; }
+.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 2rem; text-align: center; }
+.stat-number {
+  font-size: 2.2rem; font-weight: 800; line-height: 1.2;
+  background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.stat-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; color: rgba(248,240,255,0.4); margin-top: 0.5rem; }
+
+/* ─── INTERACTIVE KBA ─── */
+.kba-section { text-align: center; padding: 8rem 4rem; }
+
+.kba-bar {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;
+  margin: 4rem 0 0; position: relative;
+}
+.kba-btn {
+  padding: 2rem 1.5rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  transition: all 0.4s ease;
+  position: relative;
+  text-align: center;
+}
+.kba-btn:first-child { border-radius: 4px 0 0 4px; }
+.kba-btn:last-child { border-radius: 0 4px 4px 0; }
+.kba-btn:hover { background: rgba(123,47,190,0.08); }
+.kba-btn.active { background: rgba(123,47,190,0.1); }
+.kba-btn.active::after {
+  content: ''; position: absolute; bottom: -1px; left: 20%; right: 20%; height: 2px;
+}
+.kba-btn:nth-child(1).active::after { background: var(--violet); }
+.kba-btn:nth-child(2).active::after { background: var(--magenta); }
+.kba-btn:nth-child(3).active::after { background: var(--rose); }
+
+.kba-btn-stage {
+  font-size: 0.55rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase;
+  margin-bottom: 0.6rem; transition: color 0.3s;
+}
+.kba-btn:nth-child(1) .kba-btn-stage { color: var(--violet); }
+.kba-btn:nth-child(2) .kba-btn-stage { color: var(--magenta); }
+.kba-btn:nth-child(3) .kba-btn-stage { color: var(--rose); }
+
+.kba-btn-title {
+  font-size: 1.8rem; font-weight: 800; transition: color 0.3s;
+}
+.kba-btn:nth-child(1) .kba-btn-title { color: var(--violet); }
+.kba-btn:nth-child(2) .kba-btn-title { color: var(--magenta); }
+.kba-btn:nth-child(3) .kba-btn-title { color: var(--rose); }
+
+.kba-btn-sub {
+  font-size: 0.78rem; color: rgba(248,240,255,0.4); margin-top: 0.3rem; font-weight: 500;
+}
+.kba-btn-arrow {
+  display: inline-block; margin-top: 0.8rem; font-size: 0.6rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: rgba(248,240,255,0.25); transition: all 0.3s;
+}
+.kba-btn:hover .kba-btn-arrow { color: rgba(248,240,255,0.5); }
+.kba-btn.active .kba-btn-arrow { transform: rotate(180deg); }
+
+/* Dropdown panels */
+.kba-panel {
+  max-height: 0; overflow: hidden; transition: max-height 0.6s ease, padding 0.4s ease, opacity 0.4s ease;
+  opacity: 0;
+  border: 1px solid var(--border); border-top: none;
+  border-radius: 0 0 4px 4px;
+  background: var(--surface);
+  text-align: left;
+}
+.kba-panel.open {
+  max-height: 800px; opacity: 1; padding: 3rem;
+}
+.kba-panel-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;
+}
+.kba-panel h3 { margin-top: 1.5rem; }
+.kba-panel h3:first-child { margin-top: 0; }
+.kba-panel .body-text { max-width: none; font-size: 0.85rem; }
+
+.kba-deliverables {
+  background: rgba(123,47,190,0.04);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1.8rem;
+  align-self: start;
+}
+.kba-deliverables h4 {
+  font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(248,240,255,0.35); margin-bottom: 1rem;
+}
+.kba-del-item {
+  display: flex; align-items: flex-start; gap: 0.7rem;
+  margin-bottom: 0.7rem; font-size: 0.8rem;
+}
+.kba-del-check {
+  width: 14px; height: 14px; border-radius: 2px; border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 3px; font-size: 0.6rem;
+}
+.kba-btn:nth-child(1) ~ .kba-panel .kba-del-check { color: var(--violet); }
+
+.kba-check-know { color: var(--violet); }
+.kba-check-believe { color: var(--magenta); }
+.kba-check-act { color: var(--rose); }
+
+/* ─── HOURS TABLE ─── */
+.hours-section { padding: 6rem 4rem; }
+.hours-table { width: 100%; border-collapse: collapse; margin: 2.5rem 0; font-size: 0.82rem; }
+.hours-table th {
+  text-align: left; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
+  color: rgba(248,240,255,0.35); padding: 1rem 1.2rem; border-bottom: 1px solid var(--border);
+}
+.hours-table th:last-child { text-align: right; }
+.hours-table td {
+  padding: 0.8rem 1.2rem; border-bottom: 1px solid rgba(123,47,190,0.06); vertical-align: top;
+}
+.hours-table td:last-child { text-align: right; font-weight: 600; }
+.hours-table tr:hover td { background: rgba(123,47,190,0.03); }
+.stage-tag {
+  display: inline-block; font-size: 0.55rem; font-weight: 700; letter-spacing: 0.15em;
+  text-transform: uppercase; padding: 0.2rem 0.6rem; border-radius: 2px; margin-right: 0.5rem;
+}
+.stage-tag.explore { background: rgba(123,47,190,0.15); color: var(--violet); }
+.stage-tag.define { background: rgba(199,36,177,0.15); color: var(--magenta); }
+.stage-tag.deliver { background: rgba(232,77,138,0.15); color: var(--rose); }
+.hours-total { border-top: 2px solid var(--violet); }
+.hours-total td { font-weight: 700; color: var(--text-bright); padding-top: 1.2rem; }
+
+/* Investment cards */
+.investment-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin: 3rem 0; }
+.invest-card {
+  text-align: center; padding: 2.5rem 2rem;
+  border: 1px solid var(--border); border-radius: 4px; position: relative; overflow: hidden;
+}
+.invest-card.primary {
+  background: linear-gradient(135deg, rgba(123,47,190,0.12), rgba(199,36,177,0.08));
+  border-color: rgba(123,47,190,0.3);
+}
+.invest-label {
+  font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(248,240,255,0.35); margin-bottom: 0.8rem;
+}
+.invest-value { font-size: 2rem; font-weight: 800; color: var(--text-bright); }
+.invest-value.gradient {
+  background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.invest-note { font-size: 0.72rem; color: rgba(248,240,255,0.35); margin-top: 0.5rem; }
+
+/* ─── WHY / CTA / FOOTER ─── */
+.why-section { text-align: center; padding: 8rem 4rem; }
+.manifesto-quote {
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem); font-weight: 600; font-style: italic;
+  max-width: 650px; margin: 2rem auto; line-height: 1.6;
+  background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.cta-section { text-align: center; padding: 6rem 4rem 4rem; position: relative; }
+.cta-section::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+.btn-primary {
+  display: inline-block; padding: 0.9rem 2.5rem;
+  background: var(--grad); color: var(--lavender);
+  font-family: 'Sora', sans-serif; font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none;
+  border-radius: 2px; transition: opacity 0.3s; border: none; cursor: pointer;
+}
+.btn-primary:hover { opacity: 0.85; }
+.btn-ghost {
+  display: inline-block; padding: 0.9rem 2rem;
+  border: 1px solid rgba(248,240,255,0.12); color: rgba(248,240,255,0.5);
+  font-family: 'Sora', sans-serif; font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none;
+  border-radius: 2px; transition: all 0.3s; margin-left: 1rem;
+}
+.btn-ghost:hover { color: var(--lavender); border-color: rgba(248,240,255,0.3); }
+
+footer {
+  text-align: center; padding: 3rem 4rem;
+  border-top: 1px solid var(--border); max-width: 1200px; margin: 0 auto;
+}
+.footer-tagline { font-size: 0.75rem; font-style: italic; color: rgba(248,240,255,0.3); margin: 0.5rem 0 0.3rem; }
+.footer-link { font-size: 0.72rem; color: var(--violet); text-decoration: none; }
+
+.section-divider {
+  height: 1px; max-width: 1200px; margin: 0 auto;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+
+/* ─── SCROLL ANIMATION ─── */
+.fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 900px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  section, .hours-section, .kba-section, .why-section, .cta-section { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .hero { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .hero h1 { font-size: 2.2rem; }
+  .stats-row, .investment-grid { grid-template-columns: 1fr; }
+  .kba-bar { grid-template-columns: 1fr; }
+  .kba-btn:first-child { border-radius: 4px 4px 0 0; }
+  .kba-btn:last-child { border-radius: 0 0 4px 4px; }
+  .kba-panel-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .kba-panel.open { padding: 2rem 1.5rem; }
+  .hours-table { font-size: 0.72rem; }
+  .hours-table td, .hours-table th { padding: 0.6rem 0.8rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="unicorn-logo" href="https://unicornunited.co" target="_blank">
+    <svg class="unicorn-mark" viewBox="0 0 120 148" fill="none"><defs><linearGradient id="nav-ug" x1="60" y1="148" x2="60" y2="0"><stop offset="0%" stop-color="#C724B1"/><stop offset="100%" stop-color="#7B2FBE"/></linearGradient><clipPath id="nav-uc"><path d="M4,8 L30,136 L60,60 L90,136 L116,8 Z"/></clipPath></defs><rect width="120" height="148" fill="url(#nav-ug)" clip-path="url(#nav-uc)"/></svg>
+    <span class="unicorn-wordmark">UNICORN</span>
+  </a>
+  <div class="nav-links">
+    <a href="#opportunity">Opportunity</a>
+    <a href="#approach">Approach</a>
+    <a href="#investment">Investment</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-ring"></div>
+  <div class="hero-ring"></div>
+  <div class="hero-ring"></div>
+
+  <div class="hero-label">Brand Identity Proposal</div>
+  <h1>Ferrous Labs</h1>
+  <p class="hero-sub">See your vision scale.</p>
+  <p class="hero-tagline">Prepared for Elliot Prince &mdash; March 2026</p>
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- OPPORTUNITY -->
+<section id="opportunity" class="fade-up">
+  <div class="section-label">The Opportunity</div>
+  <h2>From expertise to enterprise.</h2>
+  <p class="body-text">Ferrous Labs has built a reputation for turning complex expertise into software. But the market is shifting — organisations need more than software builds. They need a strategic partner who can harness their data to unlock innovation and drive transformation. The current brand was built for the old positioning. The new ambition needs a new identity.</p>
+
+  <div class="highlight-block">
+    <p>The Future Architect territory positions Ferrous Labs as a boutique data consultancy that draws order from complexity — transforming uncertainty into direction, and data into decisive competitive advantage.</p>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card fade-up">
+      <div class="stat-number">Evolution → Revolution</div>
+      <div class="stat-label">The spectrum</div>
+    </div>
+    <div class="stat-card fade-up">
+      <div class="stat-number">2 days</div>
+      <div class="stat-label">AI-powered delivery</div>
+    </div>
+    <div class="stat-card fade-up">
+      <div class="stat-number">3 concepts</div>
+      <div class="stat-label">Presented for Phase 1</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- INTERACTIVE KBA -->
+<section id="approach" class="kba-section fade-up">
+  <div class="section-label">Our Approach</div>
+  <h2>How we architect the future.</h2>
+  <p class="body-text" style="max-width:600px; margin: 0 auto;">Two focused days to evolve or revolutionise your brand. We explore the spectrum, define the direction, and deliver a complete identity system. Click each stage to explore.</p>
+
+  <!-- Horizontal bar / buttons -->
+  <div class="kba-bar">
+    <div class="kba-btn active" data-panel="panel-explore" onclick="togglePanel(this, 'panel-explore')">
+      <div class="kba-btn-stage">Stage 1</div>
+      <div class="kba-btn-title">Explore</div>
+      <div class="kba-btn-sub">Discovery</div>
+      <div class="kba-btn-arrow">&#9662;</div>
+    </div>
+    <div class="kba-btn" data-panel="panel-define" onclick="togglePanel(this, 'panel-define')">
+      <div class="kba-btn-stage">Stage 2</div>
+      <div class="kba-btn-title">Define</div>
+      <div class="kba-btn-sub">Direction</div>
+      <div class="kba-btn-arrow">&#9662;</div>
+    </div>
+    <div class="kba-btn" data-panel="panel-deliver" onclick="togglePanel(this, 'panel-deliver')">
+      <div class="kba-btn-stage">Stage 3</div>
+      <div class="kba-btn-title">Deliver</div>
+      <div class="kba-btn-sub">Identity</div>
+      <div class="kba-btn-arrow">&#9662;</div>
+    </div>
+  </div>
+
+  <!-- EXPLORE PANEL -->
+  <div class="kba-panel open" id="panel-explore">
+    <div class="kba-panel-grid">
+      <div>
+        <h3>Prototype Concept</h3>
+        <p class="body-text">Brand exploration along the evolution to revolution spectrum. From a subtle refresh of the existing Ferrous Labs identity to a completely new name and concept. We develop the Future Architect territory into 2-3 distinct brand concept routes.</p>
+
+        <h3>Each Route Includes</h3>
+        <p class="body-text">Name direction (evolution or new), tagline, positioning statement, and visual mood board showing the aesthetic direction, tone, and brand personality.</p>
+      </div>
+      <div class="kba-deliverables">
+        <h4>Deliverables</h4>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-know">&check;</div><span>Current brand audit</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-know">&check;</div><span>Strategic gap analysis</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-know">&check;</div><span>Evolution-to-revolution spectrum map</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-know">&check;</div><span>2-3 concept routes with mood boards</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-know">&check;</div><span>Verbal direction for each route</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-know">&check;</div><span>Recommendation with rationale</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DEFINE PANEL -->
+  <div class="kba-panel" id="panel-define">
+    <div class="kba-panel-grid">
+      <div>
+        <h3>Finalisation</h3>
+        <p class="body-text">Your chosen direction is refined and completed. We develop a full verbal identity system and complete visual identity ready for application.</p>
+
+        <h3>Complete Brand System</h3>
+        <p class="body-text">Name (if new), tagline, positioning statement, messaging pillars, tone of voice framework. Logo design, colour system, typography selection, graphic language, and brand guidelines document covering all elements.</p>
+      </div>
+      <div class="kba-deliverables">
+        <h4>Deliverables</h4>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-believe">&check;</div><span>Verbal identity system</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-believe">&check;</div><span>Logo design (primary + variants)</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-believe">&check;</div><span>Colour system specification</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-believe">&check;</div><span>Typography and graphic elements</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-believe">&check;</div><span>Brand guidelines document</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DELIVER PANEL -->
+  <div class="kba-panel" id="panel-deliver">
+    <div class="kba-panel-grid">
+      <div>
+        <h3>Guidelines & Application</h3>
+        <p class="body-text">Everything packaged into a single source of truth. A comprehensive brand guidelines document and application mockups showing the identity in context across key touchpoints.</p>
+
+        <h3>Brand in Context</h3>
+        <p class="body-text">Website hero mockup, business card design, and presentation slide template demonstrate how the brand system works in practice and ensures consistency across all applications.</p>
+      </div>
+      <div class="kba-deliverables">
+        <h4>Deliverables</h4>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-act">&check;</div><span>Comprehensive brand guidelines document (PDF)</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-act">&check;</div><span>Website hero mockup</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-act">&check;</div><span>Business card design</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-act">&check;</div><span>Presentation slide template</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- INVESTMENT -->
+<section id="investment" class="hours-section fade-up">
+  <div class="section-label">Investment</div>
+  <h2>2 days. 18.5 hours.<br>One transformed brand.</h2>
+  <p class="body-text">AI tooling compresses what would traditionally be 2-3 weeks into 2 focused days. Intensive thinking. Rapid iteration. Complete brand system delivered.</p>
+
+  <table class="hours-table">
+    <thead>
+      <tr><th>Stage</th><th>Activity</th><th style="text-align:right">Hours</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="stage-tag explore">Explore</span></td><td>Current brand audit + strategic gap analysis</td><td>1.5</td></tr>
+      <tr><td></td><td>Future Architect territory development</td><td>2</td></tr>
+      <tr><td></td><td>Concept route creation (2-3 routes)</td><td>3</td></tr>
+      <tr><td></td><td>Mood boards + visual direction</td><td>2</td></tr>
+      <tr><td><span class="stage-tag define">Define</span></td><td>Verbal identity system</td><td>2</td></tr>
+      <tr><td></td><td>Visual identity (logo, colour, type)</td><td>3</td></tr>
+      <tr><td><span class="stage-tag deliver">Deliver</span></td><td>Brand guidelines document</td><td>1.5</td></tr>
+      <tr><td></td><td>Application mockups</td><td>1.5</td></tr>
+      <tr><td></td><td>Final review + client presentation</td><td>1.5</td></tr>
+      <tr class="hours-total"><td></td><td><strong>Total</strong></td><td><strong>18.5</strong></td></tr>
+    </tbody>
+  </table>
+
+  <div class="investment-grid">
+    <div class="invest-card">
+      <div class="invest-label">Total Days</div>
+      <div class="invest-value gradient">2</div>
+      <div class="invest-note">Focused delivery</div>
+    </div>
+    <div class="invest-card primary">
+      <div class="invest-label">Project Fee</div>
+      <div class="invest-value gradient">&pound;600</div>
+      <div class="invest-note">Fixed price</div>
+    </div>
+    <div class="invest-card">
+      <div class="invest-label">AI Advantage</div>
+      <div class="invest-value gradient">18.5 hrs</div>
+      <div class="invest-note">2-3 weeks compressed</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- WHY UNICORN -->
+<section class="why-section fade-up">
+  <div class="section-label">Why Unicorn</div>
+  <h2>Enterprise-quality thinking.<br>Boutique delivery.</h2>
+  <p class="body-text" style="max-width:600px; margin: 0 auto 2rem;">Ferrous Labs helps organisations see clearly through their data. Unicorn does the same with brand — drawing out the story that makes complex capability feel inevitable. AI tooling means we can explore more territory in two days than most agencies cover in a month.</p>
+  <div class="manifesto-quote">Every line a decision. Every shape a signal.</div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2>Ready to architect the future?</h2>
+  <p class="body-text" style="max-width:500px; margin: 0 auto 2.5rem; text-align:center;">Two days. One transformed brand. Let's start.</p>
+  <a href="https://calendly.com/dl-unicornunited" target="_blank" class="btn-primary">Let's talk</a>
+  <a href="https://unicornunited.co" class="btn-ghost" target="_blank">unicornunited.co</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a class="unicorn-logo" href="https://unicornunited.co" target="_blank" style="justify-content:center; margin-bottom: 0.5rem;">
+    <svg class="unicorn-mark" viewBox="0 0 120 148" fill="none"><defs><linearGradient id="ft-ug" x1="60" y1="148" x2="60" y2="0"><stop offset="0%" stop-color="#C724B1"/><stop offset="100%" stop-color="#7B2FBE"/></linearGradient><clipPath id="ft-uc"><path d="M4,8 L30,136 L60,60 L90,136 L116,8 Z"/></clipPath></defs><rect width="120" height="148" fill="url(#ft-ug)" clip-path="url(#ft-uc)"/></svg>
+    <span class="unicorn-wordmark">UNICORN</span>
+  </a>
+  <div class="footer-tagline">Your brand deserves an owner.</div>
+  <a href="https://unicornunited.co" class="footer-link">unicornunited.co</a>
+</footer>
+
+<!-- SCRIPTS -->
+<script>
+// Interactive KBA panels
+function togglePanel(btn, panelId) {
+  const allBtns = document.querySelectorAll('.kba-btn');
+  const allPanels = document.querySelectorAll('.kba-panel');
+  const targetPanel = document.getElementById(panelId);
+  const isAlreadyOpen = btn.classList.contains('active');
+
+  // Close all
+  allBtns.forEach(b => b.classList.remove('active'));
+  allPanels.forEach(p => p.classList.remove('open'));
+
+  // If wasn't already open, open this one
+  if (!isAlreadyOpen) {
+    btn.classList.add('active');
+    targetPanel.classList.add('open');
+  }
+}
+
+// Scroll-triggered animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
