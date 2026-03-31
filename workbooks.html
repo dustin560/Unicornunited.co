@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free AI Workbooks — Unicorn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#1A0A2E;--violet:#7B2FBE;--magenta:#C724B1;--rose:#E84D8A;
+  --lavender:#F8F0FF;--ink:#0d0818;--surface:#170d2a;--card:#1e1136;
+  --mist:rgba(248,240,255,.55);--soft:rgba(248,240,255,.35);--white:#fff;
+  --grad:linear-gradient(90deg,var(--violet),var(--magenta));
+  --grad3:linear-gradient(135deg,var(--violet) 0%,var(--magenta) 50%,var(--rose) 100%);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Sora',sans-serif;background:var(--ink);color:var(--white);overflow-x:hidden;}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.2rem 4rem;transition:background .4s;}
+nav.scrolled{background:rgba(13,8,24,.97);border-bottom:1px solid rgba(123,47,190,.15);}
+.nav-logo{display:flex;align-items:center;gap:.55rem;text-decoration:none;}
+.nav-mark{width:20px;height:24px;}
+.nav-name{font-size:.88rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:linear-gradient(90deg,var(--violet),var(--magenta));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.nav-links{display:flex;gap:2rem;list-style:none;}
+.nav-links a{font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(248,240,255,.45);text-decoration:none;transition:color .3s;}
+.nav-links a:hover{color:var(--lavender);}
+.nav-links a.active{color:var(--lavender);}
+.nav-cta{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--grad);color:var(--white);padding:.55rem 1.4rem;text-decoration:none;border-radius:2px;transition:opacity .3s;}
+.nav-cta:hover{opacity:.85;}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:8rem 4rem 6rem;text-align:center;}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 40%,rgba(123,47,190,.18) 0%,transparent 65%),radial-gradient(ellipse 40% 40% at 80% 80%,rgba(199,36,177,.08) 0%,transparent 60%),var(--ink);}
+.hero-ring{position:absolute;border-radius:50%;border:1px solid rgba(123,47,190,.1);top:50%;left:50%;transform:translate(-50%,-50%);z-index:0;}
+.hero-ring:nth-child(1){width:500px;height:500px;animation:hpulse 7s ease infinite;}
+.hero-ring:nth-child(2){width:720px;height:720px;border-color:rgba(199,36,177,.06);animation:hpulse 7s 2s ease infinite;}
+.hero-ring:nth-child(3){width:940px;height:940px;border-color:rgba(232,77,138,.03);animation:hpulse 7s 4s ease infinite;}
+@keyframes hpulse{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:1;}50%{transform:translate(-50%,-50%) scale(1.05);opacity:.5;}}
+.hero-kicker{display:inline-flex;align-items:center;gap:.6rem;font-size:.65rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(248,240,255,.55);margin-bottom:1.8rem;position:relative;z-index:2;}
+.hero-kicker::before,.hero-kicker::after{content:'';display:block;width:24px;height:1px;background:rgba(248,240,255,.25);}
+.hero-title{font-size:clamp(3rem,8vw,7rem);font-weight:800;line-height:1;letter-spacing:-.04em;color:var(--white);position:relative;z-index:2;}
+.hero-title .g{background:var(--grad3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block;}
+.hero-sub{max-width:540px;font-size:.98rem;font-weight:400;line-height:1.72;color:rgba(248,240,255,.75);margin:1.8rem auto 2.8rem;position:relative;z-index:2;}
+
+/* ── SHARED ── */
+.stag{font-size:.6rem;font-weight:700;letter-spacing:.25em;text-transform:uppercase;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block;margin-bottom:.9rem;}
+.sh2{font-size:clamp(2rem,4vw,3.2rem);font-weight:800;line-height:1.05;letter-spacing:-.03em;color:var(--white);}
+.sh2 .g{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.sbody{font-size:.88rem;line-height:1.75;color:var(--mist);}
+.abar{width:32px;height:3px;background:var(--grad);border-radius:2px;}
+
+/* ── WORKBOOKS ── */
+.workbooks{padding:7rem 4rem;background:var(--ink);position:relative;}
+.workbooks::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 0%,rgba(123,47,190,.07) 0%,transparent 60%);}
+.wb-inner{max-width:1300px;margin:0 auto;position:relative;}
+.wb-intro{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:end;margin-bottom:3rem;}
+.wb-lead{font-size:clamp(2rem,4vw,3rem);font-weight:800;letter-spacing:-.03em;line-height:1.05;color:var(--white);}
+.wb-lead .g{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.wb-body{font-size:.85rem;line-height:1.75;color:var(--mist);}
+.wb-body p{margin-bottom:.6rem;}
+.wb-body strong{color:var(--white);font-weight:600;}
+.wb-how{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:3.5rem;}
+.wb-hs{padding:1.25rem;border:1px solid rgba(123,47,190,.1);}
+.wb-hs-n{font-size:1.8rem;font-weight:800;letter-spacing:-.04em;color:rgba(181,126,255,.5);margin-bottom:.5rem;}
+.wb-hs-t{font-size:.74rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--white);margin-bottom:.3rem;}
+.wb-hs-d{font-size:.76rem;line-height:1.58;color:var(--mist);}
+.wb-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.2rem;}
+.wb-card{border:1px solid rgba(123,47,190,.12);position:relative;overflow:hidden;cursor:pointer;transition:border-color .35s,transform .3s;}
+.wb-card:hover{border-color:rgba(199,36,177,.3);transform:translateY(-2px);}
+.wb-card-top{height:2px;background:var(--grad);}
+.wb-card-body{padding:2rem;}
+.wb-badge{display:inline-flex;align-items:center;gap:.4rem;font-size:.58rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;border:1px solid rgba(123,47,190,.22);color:rgba(181,126,255,.65);padding:.25rem .65rem;margin-bottom:1.1rem;}
+.wb-title{font-size:1.5rem;font-weight:800;letter-spacing:-.03em;color:var(--white);margin-bottom:.25rem;line-height:1.1;}
+.wb-sub{font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(181,126,255,.4);margin-bottom:.9rem;}
+.wb-desc{font-size:.8rem;line-height:1.68;color:var(--mist);margin-bottom:1.3rem;}
+.wb-meta{display:flex;gap:1.6rem;margin-bottom:1.3rem;}
+.wb-mi{font-size:.7rem;color:rgba(248,240,255,.38);}
+.wb-mi span{display:block;font-size:.56rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(181,126,255,.35);margin-bottom:.12rem;}
+.wb-out{background:rgba(123,47,190,.06);border:1px solid rgba(123,47,190,.13);padding:.8rem 1rem;margin-bottom:1.3rem;}
+.wb-out-l{font-size:.56rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.28rem;}
+.wb-out p{font-size:.76rem;color:var(--mist);line-height:1.5;}
+.wb-cta-lnk{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:flex;align-items:center;gap:.35rem;transition:gap .3s;}
+.wb-card:hover .wb-cta-lnk{gap:.8rem;}
+.wb-free{position:absolute;top:1.1rem;right:1.1rem;font-size:.56rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;background:rgba(123,47,190,.18);color:rgba(181,126,255,.75);padding:.22rem .6rem;border:1px solid rgba(123,47,190,.22);}
+
+/* ── CTA ── */
+.cta-sec{padding:6rem 4rem;background:var(--surface);text-align:center;}
+.cta-sec h2{font-size:clamp(2rem,5vw,3.8rem);font-weight:800;letter-spacing:-.04em;color:var(--white);margin-bottom:1rem;line-height:1.05;}
+.cta-sec h2 .g{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.cta-sec p{font-size:.9rem;line-height:1.7;color:var(--mist);max-width:460px;margin:0 auto 2.2rem;}
+.cta-btns{display:flex;gap:1.1rem;justify-content:center;flex-wrap:wrap;}
+.btn-p{background:var(--grad);color:var(--white);font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.85rem 2rem;text-decoration:none;border-radius:2px;transition:opacity .3s;border:none;cursor:pointer;font-family:'Sora',sans-serif;}
+.btn-p:hover{opacity:.85;}
+.btn-g{color:rgba(248,240,255,.5);font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;display:flex;align-items:center;gap:.45rem;transition:color .3s;background:none;border:1px solid rgba(248,240,255,.12);padding:.85rem 1.8rem;cursor:pointer;font-family:'Sora',sans-serif;border-radius:2px;}
+.btn-g:hover{color:var(--lavender);border-color:rgba(248,240,255,.25);}
+
+/* ── FOOTER ── */
+footer{padding:2.2rem 4rem;border-top:1px solid rgba(123,47,190,.1);display:flex;justify-content:space-between;align-items:center;}
+.footer-name{font-size:.88rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:linear-gradient(90deg,var(--violet),var(--magenta));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.footer-parent{font-size:.6rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:rgba(248,240,255,.18);margin-top:.2rem;}
+.footer-parent a{color:rgba(248,240,255,.3);text-decoration:none;transition:color .3s;}
+.footer-parent a:hover{color:rgba(181,126,255,.6);}
+.footer-links{display:flex;gap:1.6rem;list-style:none;}
+.footer-links a{font-size:.62rem;font-weight:600;color:rgba(248,240,255,.22);text-decoration:none;letter-spacing:.08em;text-transform:uppercase;transition:color .3s;}
+.footer-links a:hover{color:rgba(181,126,255,.6);}
+.footer-copy{font-size:.6rem;color:rgba(248,240,255,.12);font-weight:500;}
+
+/* ════════════════════════════════
+   WORKBOOK MODAL
+   ════════════════════════════════ */
+.wb-overlay{position:fixed;inset:0;z-index:1000;background:rgba(13,8,24,.98);display:none;opacity:0;transition:opacity .4s;}
+.wb-overlay.open{display:flex;opacity:1;}
+.wb-modal{display:grid;grid-template-columns:300px 1fr;height:100vh;width:100%;}
+.wm-left{background:var(--surface);border-right:1px solid rgba(123,47,190,.12);display:flex;flex-direction:column;overflow:hidden;}
+.wml-hdr{padding:1.6rem;border-bottom:1px solid rgba(123,47,190,.08);}
+.wml-back{display:flex;align-items:center;gap:.5rem;font-size:.62rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:rgba(248,240,255,.25);cursor:pointer;background:none;border:none;font-family:'Sora',sans-serif;padding:0;margin-bottom:1.1rem;transition:color .3s;}
+.wml-back:hover{color:rgba(181,126,255,.7);}
+.wml-brand{font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.2rem;}
+.wml-title{font-size:1.1rem;font-weight:800;letter-spacing:-.02em;color:var(--white);line-height:1.15;margin-bottom:.25rem;}
+.wml-tagline{font-size:.72rem;color:var(--mist);}
+.wml-prog{padding:1.1rem 1.6rem;border-bottom:1px solid rgba(123,47,190,.07);}
+.wml-prog-lbl{font-size:.56rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(248,240,255,.22);margin-bottom:.65rem;}
+.wml-stages{display:flex;flex-direction:column;gap:.48rem;}
+.wml-stage{display:flex;align-items:center;gap:.6rem;font-size:.76rem;color:rgba(248,240,255,.22);transition:color .3s;}
+.wml-stage.active{color:var(--white);}
+.wml-stage.done{color:rgba(181,126,255,.45);}
+.wml-dot{width:6px;height:6px;border-radius:50%;border:1px solid currentColor;flex-shrink:0;transition:background .3s;}
+.wml-stage.active .wml-dot{background:var(--magenta);border-color:var(--magenta);}
+.wml-stage.done .wml-dot{background:rgba(123,47,190,.5);border-color:rgba(123,47,190,.5);}
+.wml-fw{padding:1.1rem 1.6rem;flex:1;overflow-y:auto;}
+.wml-fw-lbl{font-size:.56rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(248,240,255,.22);margin-bottom:.6rem;}
+.wml-fw-intro{font-size:.75rem;line-height:1.58;color:rgba(248,240,255,.3);margin-bottom:.9rem;}
+.kba-m{display:flex;flex-direction:column;gap:.38rem;}
+.kba-mi{display:flex;align-items:center;gap:.6rem;padding:.48rem .65rem;border-left:2px solid rgba(123,47,190,.12);transition:all .3s;}
+.kba-mi.hl{border-left-color:var(--magenta);background:rgba(199,36,177,.05);}
+.kba-mi-w{font-size:.78rem;font-weight:800;}
+.kba-mi:nth-child(1) .kba-mi-w{color:rgba(248,240,255,.3);}
+.kba-mi:nth-child(2) .kba-mi-w{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.kba-mi:nth-child(3) .kba-mi-w{color:rgba(248,240,255,.3);}
+.kba-mi-d{font-size:.67rem;color:rgba(248,240,255,.25);}
+.kba-mi.hl .kba-mi-d{color:rgba(248,240,255,.55);}
+.wml-foot{padding:1rem 1.6rem;border-top:1px solid rgba(123,47,190,.07);}
+.wml-disc{font-size:.65rem;line-height:1.5;color:rgba(248,240,255,.16);}
+.wm-right{display:flex;flex-direction:column;background:var(--ink);}
+.wmr-hdr{padding:1rem 2.5rem;border-bottom:1px solid rgba(123,47,190,.1);display:flex;align-items:center;justify-content:space-between;}
+.wmr-status{display:flex;align-items:center;gap:.6rem;}
+.wmr-dot{width:7px;height:7px;background:#7dc98f;border-radius:50%;animation:spulse 2s infinite;}
+@keyframes spulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+.wmr-stxt{font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(248,240,255,.28);}
+.wmr-dl{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(248,240,255,.28);cursor:pointer;background:none;border:1px solid rgba(123,47,190,.18);padding:.32rem .85rem;font-family:'Sora',sans-serif;transition:all .3s;display:none;}
+.wmr-dl:hover{color:rgba(181,126,255,.7);border-color:rgba(123,47,190,.38);}
+.wmr-msgs{flex:1;overflow-y:auto;padding:1.8rem 2.5rem;display:flex;flex-direction:column;gap:1.2rem;scroll-behavior:smooth;}
+.msg{max-width:660px;}
+.msg.ai{align-self:flex-start;}
+.msg.user{align-self:flex-end;}
+.msg-snd{font-size:.56rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.38rem;}
+.msg.ai .msg-snd{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.msg.user .msg-snd{text-align:right;color:rgba(248,240,255,.22);}
+.msg-bub{padding:.9rem 1.2rem;font-size:.85rem;line-height:1.7;}
+.msg.ai .msg-bub{background:rgba(123,47,190,.06);border:1px solid rgba(123,47,190,.12);color:var(--white);border-radius:0 10px 10px 10px;}
+.msg.user .msg-bub{background:rgba(199,36,177,.07);border:1px solid rgba(199,36,177,.13);color:var(--white);border-radius:10px 0 10px 10px;}
+.msg-bub strong{color:rgba(181,126,255,.9);font-weight:600;}
+.msg-bub em{color:var(--mist);font-style:italic;}
+.msg-bub p{margin-bottom:.45rem;}.msg-bub p:last-child{margin-bottom:0;}
+.typing-w{align-self:flex-start;}
+.typing-i{display:flex;align-items:center;gap:4px;padding:.75rem .95rem;background:rgba(123,47,190,.06);border:1px solid rgba(123,47,190,.12);border-radius:0 10px 10px 10px;}
+.td{width:5px;height:5px;background:var(--magenta);border-radius:50%;opacity:.35;animation:tb 1.2s ease infinite;}
+.td:nth-child(2){animation-delay:.2s;}.td:nth-child(3){animation-delay:.4s;}
+@keyframes tb{0%,60%,100%{transform:translateY(0);opacity:.35;}30%{transform:translateY(-5px);opacity:1;}}
+.api-notice{background:rgba(123,47,190,.06);border:1px solid rgba(123,47,190,.16);padding:.8rem 1.1rem;margin:0 2.5rem .6rem;font-size:.77rem;color:var(--mist);line-height:1.55;display:none;}
+.api-notice a{color:rgba(181,126,255,.75);text-decoration:none;}
+.api-key-row{display:none;gap:.65rem;margin:0 2.5rem .6rem;}
+.api-key-in{flex:1;background:rgba(123,47,190,.06);border:1px solid rgba(123,47,190,.18);color:var(--white);font-family:'Sora',sans-serif;font-size:.8rem;padding:.52rem .85rem;outline:none;border-radius:2px;}
+.api-key-in:focus{border-color:rgba(123,47,190,.38);}
+.api-key-btn{background:rgba(123,47,190,.18);color:rgba(181,126,255,.85);border:1px solid rgba(123,47,190,.28);font-family:'Sora',sans-serif;font-size:.72rem;font-weight:700;padding:.52rem 1rem;cursor:pointer;border-radius:2px;transition:all .3s;}
+.api-key-btn:hover{background:rgba(123,47,190,.3);}
+.wmr-inp{padding:1rem 2.5rem;border-top:1px solid rgba(123,47,190,.1);}
+.wmr-inp-row{display:flex;gap:.75rem;align-items:flex-end;}
+.wmr-ta{flex:1;background:rgba(123,47,190,.05);border:1px solid rgba(123,47,190,.14);color:var(--white);font-family:'Sora',sans-serif;font-size:.85rem;padding:.8rem .95rem;resize:none;min-height:44px;max-height:108px;line-height:1.5;outline:none;transition:border-color .3s;border-radius:2px;}
+.wmr-ta:focus{border-color:rgba(123,47,190,.32);}
+.wmr-ta::placeholder{color:rgba(248,240,255,.18);}
+.wmr-send{background:var(--grad);color:var(--white);border:none;width:42px;height:42px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:opacity .3s;flex-shrink:0;border-radius:2px;}
+.wmr-send:hover{opacity:.85;}
+.wmr-send:disabled{opacity:.2;cursor:not-allowed;}
+.wmr-hint{font-size:.62rem;font-weight:500;color:rgba(248,240,255,.18);margin-top:.5rem;}
+
+/* ── SCROLL REVEAL ── */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1);}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.reveal-d1{transition-delay:.1s;}
+.reveal-d2{transition-delay:.2s;}
+.reveal-d3{transition-delay:.3s;}
+.reveal-d4{transition-delay:.35s;}
+.reveal-d5{transition-delay:.4s;}
+.reveal-d6{transition-delay:.45s;}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none;}}
+
+/* ── GRADIENT RIPPLE ── */
+@keyframes grad-ripple{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+.hero-title .g{background:linear-gradient(135deg,var(--violet) 0%,var(--magenta) 25%,var(--rose) 50%,var(--magenta) 75%,var(--violet) 100%);background-size:300% 300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block;animation:grad-ripple 8s ease infinite;}
+.wb-lead .g{background:linear-gradient(90deg,var(--violet) 0%,var(--magenta) 25%,var(--violet) 50%,var(--magenta) 75%,var(--violet) 100%);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:grad-ripple 8s ease infinite;}
+.cta-sec h2 .g{background:linear-gradient(90deg,var(--violet) 0%,var(--magenta) 25%,var(--violet) 50%,var(--magenta) 75%,var(--violet) 100%);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:grad-ripple 8s ease infinite;}
+.nav-name{background:linear-gradient(90deg,var(--violet) 0%,var(--magenta) 25%,var(--violet) 50%,var(--magenta) 75%,var(--violet) 100%);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:grad-ripple 10s ease infinite;}
+.footer-name{background:linear-gradient(90deg,var(--violet) 0%,var(--magenta) 25%,var(--violet) 50%,var(--magenta) 75%,var(--violet) 100%);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:grad-ripple 10s ease infinite;}
+@media(prefers-reduced-motion:reduce){.hero-title .g,.wb-lead .g,.cta-sec h2 .g,.nav-name,.footer-name{animation:none;}}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  nav{padding:1rem 1.5rem;}.nav-links{display:none;}
+  .hero,.workbooks,.cta-sec{padding:5rem 1.5rem;}
+  .wb-grid{grid-template-columns:1fr;}
+  .wb-how{grid-template-columns:1fr 1fr;}
+  .wb-intro{grid-template-columns:1fr;}
+  .wb-modal{grid-template-columns:1fr;}.wm-left{display:none;}
+  footer{flex-direction:column;gap:1.2rem;text-align:center;padding:2rem 1.5rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a href="index.html" class="nav-logo">
+    <svg class="nav-mark" viewBox="0 0 120 148" fill="none">
+      <defs>
+        <linearGradient id="nmg" x1="0" y1="148" x2="120" y2="0">
+          <stop offset="0%" stop-color="#7B2FBE"/><stop offset="100%" stop-color="#C724B1"/>
+        </linearGradient>
+        <clipPath id="nmc"><path d="M4,8 L30,136 L60,60 L90,136 L116,8 Z"/></clipPath>
+      </defs>
+      <rect width="120" height="148" fill="url(#nmg)" clip-path="url(#nmc)"/>
+    </svg>
+    <span class="nav-name">Unicorn</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="ai.html">AI for Business</a></li>
+    <li><a href="workbooks.html" class="active">Free Workbooks</a></li>
+    <li><a href="https://start-your-story-production.up.railway.app" target="_blank">Start Your Story</a></li>
+  </ul>
+  <a href="mailto:hello@unicornbrand.co" class="nav-cta">Talk to Us</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="workbooks">
+  <div class="hero-bg"></div>
+  <div class="hero-ring"></div><div class="hero-ring"></div><div class="hero-ring"></div>
+  <div class="hero-kicker">Free AI Workbooks · Build Your Brand</div>
+  <h1 class="hero-title">Work through your brand. <span class="g">Right now.</span></h1>
+  <p class="hero-sub">Our guided workbooks are powered by AI trained in our Know · Believe · Act approach. Each one is a real working session — the right questions, useful thinking, something to take away. No brand knowledge needed.</p>
+</section>
+
+<!-- WORKBOOKS SECTION -->
+<div class="workbooks">
+  <div class="wb-inner">
+    <div class="wb-intro">
+      <h2 class="wb-lead">How It <span class="g">Works</span></h2>
+      <div class="wb-body">
+        <p>A genuine first step. And a taste of what working with Unicorn feels like.</p>
+      </div>
+    </div>
+    <div class="wb-how">
+      <div class="wb-hs"><div class="wb-hs-n">01</div><div class="wb-hs-t">Pick a workbook</div><p class="wb-hs-d">Choose the one that matches where you are right now.</p></div>
+      <div class="wb-hs"><div class="wb-hs-n">02</div><div class="wb-hs-t">Answer honestly</div><p class="wb-hs-d">The AI asks what a good coach would ask. No wrong answers.</p></div>
+      <div class="wb-hs"><div class="wb-hs-n">03</div><div class="wb-hs-t">Get your output</div><p class="wb-hs-d">Something real and specific to you — not generic.</p></div>
+      <div class="wb-hs"><div class="wb-hs-n">04</div><div class="wb-hs-t">Go deeper</div><p class="wb-hs-d">Use it as the starting point for a proper session with us.</p></div>
+    </div>
+    <div class="wb-grid">
+
+      <div class="wb-card" onclick="openWb('seed')">
+        <div class="wb-card-top"></div>
+        <div class="wb-card-body">
+          <div class="wb-free">Free</div>
+          <div class="wb-badge">🌱 Know · Step 1</div>
+          <h3 class="wb-title">What Do You Actually Stand For?</h3>
+          <p class="wb-sub">Finding Your Purpose</p>
+          <p class="wb-desc">Most businesses can say what they do. Very few can clearly say why — in a way that resonates. This session helps you find the truth at the heart of your business.</p>
+          <div class="wb-meta"><div class="wb-mi"><span>Time</span>15–20 min</div><div class="wb-mi"><span>Format</span>Guided chat</div><div class="wb-mi"><span>Best for</span>Founders</div></div>
+          <div class="wb-out"><div class="wb-out-l">What you get</div><p>A clear purpose statement — the real reason your business exists — plus 3 directions to build from.</p></div>
+          <div class="wb-cta-lnk">Start now →</div>
+        </div>
+      </div>
+
+      <div class="wb-card" onclick="openWb('map')">
+        <div class="wb-card-top"></div>
+        <div class="wb-card-body">
+          <div class="wb-badge">🗺 Know + Believe + Act</div>
+          <h3 class="wb-title">Build Your Full Brand Picture</h3>
+          <p class="wb-sub">Purpose · Principles · Value</p>
+          <p class="wb-desc">A deeper session covering all three pillars — why you exist, how you operate, and what makes you the right choice. Clear, simple, usable.</p>
+          <div class="wb-meta"><div class="wb-mi"><span>Time</span>30–40 min</div><div class="wb-mi"><span>Format</span>Deep-dive chat</div><div class="wb-mi"><span>Best for</span>Founders & leads</div></div>
+          <div class="wb-out"><div class="wb-out-l">What you get</div><p>A one-page brand picture — purpose, principles, and value proposition — ready to share with your team.</p></div>
+          <div class="wb-cta-lnk">Start now →</div>
+        </div>
+      </div>
+
+      <div class="wb-card" onclick="openWb('mirror')">
+        <div class="wb-card-top" style="background:linear-gradient(90deg,#C724B1,#E84D8A);"></div>
+        <div class="wb-card-body">
+          <div class="wb-badge" style="border-color:rgba(199,36,177,.22);color:rgba(232,77,138,.6);">🪞 Reality Check</div>
+          <h3 class="wb-title">Does the World See You the Way You See Yourself?</h3>
+          <p class="wb-sub">Closing the Gap</p>
+          <p class="wb-desc">There's often a gap between what a business thinks it stands for and what customers actually experience. This session helps you see it — and close it.</p>
+          <div class="wb-meta"><div class="wb-mi"><span>Time</span>20–30 min</div><div class="wb-mi"><span>Format</span>Diagnostic chat</div><div class="wb-mi"><span>Best for</span>Established businesses</div></div>
+          <div class="wb-out"><div class="wb-out-l">What you get</div><p>A Brand Alignment Score, your three biggest gaps, and three clear actions.</p></div>
+          <div class="wb-cta-lnk" style="background:linear-gradient(90deg,#C724B1,#E84D8A);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Start now →</div>
+        </div>
+      </div>
+
+      <div class="wb-card" onclick="openWb('culture')">
+        <div class="wb-card-top" style="background:linear-gradient(90deg,#7B2FBE,#E84D8A);"></div>
+        <div class="wb-card-body">
+          <div class="wb-badge" style="border-color:rgba(232,77,138,.2);color:rgba(232,77,138,.55);">🧭 Your Team</div>
+          <h3 class="wb-title">Is Your Team Living Your Brand or Contradicting It?</h3>
+          <p class="wb-sub">Culture & People</p>
+          <p class="wb-desc">Your employees are either your most powerful brand asset or your biggest brand problem. This session helps you honestly assess where things are and what to do next.</p>
+          <div class="wb-meta"><div class="wb-mi"><span>Time</span>20–25 min</div><div class="wb-mi"><span>Format</span>Assessment chat</div><div class="wb-mi"><span>Best for</span>Leaders & managers</div></div>
+          <div class="wb-out"><div class="wb-out-l">What you get</div><p>A Culture-Brand Score, your top 3 team strengths, and a focused action plan.</p></div>
+          <div class="wb-cta-lnk" style="background:linear-gradient(90deg,#7B2FBE,#E84D8A);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Start now →</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<section class="cta-sec" id="contact">
+  <span class="stag" style="text-align:center;">Ready to Go Deeper?</span>
+  <h2>Let's work on your <span class="g">brand</span> together.</h2>
+  <p>Start with a free workbook, then get in touch to explore what's possible. Every step forward matters.</p>
+  <div class="cta-btns">
+    <a href="mailto:hello@unicornbrand.co" class="btn-p">Talk to us</a>
+    <button class="btn-g" onclick="openWb('seed')">Try a free workbook</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div style="display:flex;align-items:center;gap:.65rem;">
+    <svg width="18" height="22" viewBox="0 0 120 148" fill="none">
+      <defs>
+        <linearGradient id="fmg" x1="0" y1="148" x2="120" y2="0">
+          <stop offset="0%" stop-color="#7B2FBE"/><stop offset="100%" stop-color="#C724B1"/>
+        </linearGradient>
+        <clipPath id="fmc"><path d="M4,8 L30,136 L60,60 L90,136 L116,8 Z"/></clipPath>
+      </defs>
+      <rect width="120" height="148" fill="url(#fmg)" clip-path="url(#fmc)"/>
+    </svg>
+    <div>
+      <div class="footer-name">Unicorn</div>
+      <div class="footer-parent" style="display:flex;align-items:center;gap:.35rem;">A <svg width="10" height="12" viewBox="0 0 120 148" fill="none" style="flex-shrink:0;"><defs><linearGradient id="fmc-mcg" x1="0" y1="148" x2="120" y2="0"><stop offset="0%" stop-color="#ff6b2b"/><stop offset="100%" stop-color="#ffad3b"/></linearGradient><clipPath id="fmc-mcc"><path d="M4,140 L30,12 L60,88 L90,12 L116,140 Z"/></clipPath></defs><rect width="120" height="148" fill="url(#fmc-mcg)" clip-path="url(#fmc-mcc)"/></svg> <a href="https://missionctrl.com" target="_blank">MissionCTRL</a> company</div>
+    </div>
+  </div>
+  <ul class="footer-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="ai.html">AI for Business</a></li>
+    <li><a href="workbooks.html">Free Workbooks</a></li>
+    <li><a href="https://start-your-story-production.up.railway.app" target="_blank">Start Your Story</a></li>
+    <li><a href="mailto:hello@unicornbrand.co">Contact</a></li>
+  </ul>
+  <div class="footer-copy">© 2026 Unicorn</div>
+</footer>
+
+<!-- ════════════════════════════════
+     WORKBOOK MODAL
+     ════════════════════════════════ -->
+<div class="wb-overlay" id="wbModal">
+  <div class="wb-modal">
+    <div class="wm-left">
+      <div class="wml-hdr">
+        <button class="wml-back" onclick="closeWb()">← Back to site</button>
+        <div class="wml-brand">Unicorn · Free Workbook</div>
+        <div class="wml-title" id="wmlTitle">—</div>
+        <div class="wml-tagline" id="wmlTagline">—</div>
+      </div>
+      <div class="wml-prog">
+        <div class="wml-prog-lbl">Your Progress</div>
+        <div class="wml-stages" id="wmlStages"></div>
+      </div>
+      <div class="wml-fw">
+        <div class="wml-fw-lbl">Know · Believe · Act</div>
+        <div class="wml-fw-intro">Every question in this session is rooted in our framework — helping you move from knowing what you stand for, to believing it, to acting on it.</div>
+        <div class="kba-m" id="kbaM">
+          <div class="kba-mi" id="kl0"><div class="kba-mi-w">Know</div><div class="kba-mi-d">Get clear on what you stand for</div></div>
+          <div class="kba-mi" id="kl1"><div class="kba-mi-w">Believe</div><div class="kba-mi-d">Turn clarity into conviction</div></div>
+          <div class="kba-mi" id="kl2"><div class="kba-mi-w">Act</div><div class="kba-mi-d">Show up consistently</div></div>
+        </div>
+      </div>
+      <div class="wml-foot"><div class="wml-disc">Your answers are used only within this session. We may follow up to offer support based on what you share.</div></div>
+    </div>
+    <div class="wm-right">
+      <div class="wmr-hdr">
+        <div class="wmr-status"><div class="wmr-dot"></div><div class="wmr-stxt" id="wmrStatus">Session Active</div></div>
+        <button class="wmr-dl" id="wmrDl" onclick="dlOut()">↓ Save Output</button>
+      </div>
+      <div class="api-notice" id="apiNotice">
+        <strong style="color:rgba(181,126,255,.9);">Connect the AI</strong> — Enter your Anthropic API key to activate this workbook. Stays in this tab only, never stored. <a href="https://console.anthropic.com/" target="_blank">Get a free key →</a>
+      </div>
+      <div class="api-key-row" id="apiKeyRow">
+        <input type="password" class="api-key-in" id="apiKeyIn" placeholder="sk-ant-...">
+        <button class="api-key-btn" onclick="setKey()">Activate</button>
+      </div>
+      <div class="wmr-msgs" id="wmrMsgs"></div>
+      <div class="wmr-inp">
+        <div class="wmr-inp-row">
+          <textarea class="wmr-ta" id="wmrTa" placeholder="Type your answer here…" rows="1" onkeydown="handleKey(event)" oninput="autoRes(this)"></textarea>
+          <button class="wmr-send" id="wmrSend" onclick="sendMsg()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+        <div class="wmr-hint">Enter to send · Shift+Enter for new line</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════
+//  WORKBOOK SYSTEM
+// ════════════════════════════════════════
+const WBS={
+  seed:{title:"What Do You Actually Stand For?",tagline:"Finding Your Purpose",stages:["Welcome","Your Story","The Truth","Test It","Your Statement"],kl:0,
+  sys:`You are the Unicorn AI — a warm, direct brand coach working for Unicorn, a fractional brand partner for growing businesses. You're guiding a session called "What Do You Actually Stand For?" to help them find their purpose: the real truth at the heart of their business that makes people genuinely connect with them, not just buy from them.
+
+APPROACH — Know · Believe · Act:
+This session focuses on KNOW — getting clear on purpose (the WHY). You talk to people who are NOT brand experts. Plain, direct language only. No jargon. Think trusted advisor, not consultant.
+
+VOICE: Warm, curious, direct. Push past surface answers gently. If they say "great service" ask: "Everyone says that — what's the real reason you started this?" ONE question per message. Keep messages focused and conversational.
+
+STAGES:
+1. WELCOME: Introduce yourself as the Unicorn AI. Explain this session finds the clear truth at the heart of their business. Ask their name and what their business does.
+2. ORIGIN: Why did they actually start? The human truth, not the business plan version.
+3. THE TRUTH: Push deeper. "If your business disappeared tomorrow, what idea would need to go back into the world?" Challenge vague answers.
+4. TEST IT: Would they hold this belief even if it cost them customers? Is it genuinely theirs?
+5. OUTPUT:
+---
+✅ YOUR PURPOSE STATEMENT
+[Single clear sentence starting "We exist because..." or "We believe that..." — specific to them]
+
+🚀 THREE DIRECTIONS TO BUILD FROM
+1. [Name]: [One sentence — how this could come to life]
+2. [Name]: [One sentence]
+3. [Name]: [One sentence]
+
+⚡ YOUR NEXT STEP
+[One honest, specific recommendation]
+
+This is your Know. From here, Unicorn can help you build the Believe and Act: the story, the culture, the way you show up.
+---`},
+  map:{title:"Build Your Full Brand Picture",tagline:"Purpose · Principles · Value",stages:["Purpose","Principles","Value","Your Picture"],kl:1,
+  sys:`You are the Unicorn AI — a warm, direct brand coach for Unicorn, a fractional brand partner for growing businesses. You're guiding a session called "Build Your Full Brand Picture" covering the three pillars of Know · Believe · Act.
+
+THREE PILLARS:
+1. PURPOSE (WHY): Why the business exists beyond money. The Know.
+2. PRINCIPLES (HOW): Values that make culture real — actual behaviours and decisions, not aspirational words. The Believe foundation.
+3. VALUE (WHAT): Why customers choose them — their distinct proposition. The Act layer.
+
+Audience: NOT brand experts. Plain language. ONE question per message. Challenge generic answers with real examples.
+
+For PRINCIPLES: "Give me a real decision that cost you something but proved this was actually a value." Generic = doesn't count.
+For VALUE: "A potential customer is comparing you to three competitors right now. What's the honest reason to choose you?"
+
+OUTPUT:
+---
+✅ YOUR BRAND PICTURE
+
+WHY YOU EXIST (Purpose): [One clear sentence]
+
+HOW YOU OPERATE (Principles):
+1. [Name]: [One-line definition from what they said]
+2. [Name]: [Definition]
+3. [Name]: [Definition]
+
+WHAT MAKES YOU THE RIGHT CHOICE (Value): [One or two clear sentences — customer focused]
+
+⭐ THE ONE THING
+[Your most important observation — specific to them. The most valuable part.]
+
+⚡ YOUR NEXT STEP [One specific action for the next two weeks]
+---`},
+  mirror:{title:"Does the World See You the Way You See Yourself?",tagline:"Closing the Gap",stages:["Self-Image","Customer Reality","Your Team","The Gap","Actions"],kl:1,
+  sys:`You are the Unicorn AI — a warm but honest brand coach for Unicorn, a fractional brand partner for growing businesses. Guiding "Does the World See You the Way You See Yourself?" — an honest diagnostic of the gap between how they think they come across and how customers actually experience them.
+
+Audience: SMB owners and leaders. NOT brand experts. Be honest but constructive. ONE question per message.
+
+FOUR GAPS (explore these naturally — don't name them to the user):
+1. STORY: What they say they stand for vs. what customers believe
+2. EXPERIENCE: Intended experience vs. actual experience
+3. CULTURE: Claimed values vs. actual team behaviour
+4. MESSAGE: How they describe themselves vs. how customers describe them
+
+Ask for specifics always: "What do customers actually say?" not "What do you think they feel?"
+
+OUTPUT:
+---
+🪞 YOUR ALIGNMENT SCORES (out of 10)
+Story: X/10 — [one sentence]
+Experience: X/10 — [one sentence]
+Culture: X/10 — [one sentence]
+Message: X/10 — [one sentence]
+
+⚠️ YOUR THREE BIGGEST GAPS
+1. [Name the gap]: [What's intended vs. what's real]
+2. [Gap]: [Observation]
+3. [Gap]: [Observation]
+
+✅ THREE THINGS TO DO NOW
+1. [Specific action by impact]
+2. [Action]
+3. [Action]
+
+💡 THE HONEST INSIGHT [The one thing they most need to hear — kind but clear]
+---`},
+  culture:{title:"Is Your Team Living Your Brand or Contradicting It?",tagline:"Culture & People",stages:["Brand Clarity","Team Awareness","Real Behaviour","Gaps","Your Plan"],kl:2,
+  sys:`You are the Unicorn AI — a warm, direct brand coach for Unicorn, a fractional brand partner for growing businesses. Guiding "Is Your Team Living Your Brand or Contradicting It?" — an honest assessment of whether culture genuinely reflects the brand.
+
+Audience: Business leaders and managers. NOT brand experts. Empathetic — culture is hard. Push for real examples. ONE question per message.
+
+Key idea: Employees ARE the brand in every interaction. When culture and brand align, the team becomes the most powerful asset. When not — no marketing fixes it.
+
+Push for specifics: "What actually happened last time a customer had a bad experience?" not "How do you handle complaints in theory?"
+
+OUTPUT:
+---
+🧭 YOUR CULTURE-BRAND SCORES (out of 10)
+Team Awareness: X/10
+Values in Real Life: X/10
+Customer Consistency: X/10
+Team Pride & Advocacy: X/10
+
+💪 THREE THINGS YOUR CULTURE IS ALREADY DOING WELL
+1. [Specific strength — something they may be undervaluing]
+2. [Strength]
+3. [Strength]
+
+🎯 YOUR ACTION PLAN
+Priority 1: [Most impactful — specific]
+Priority 2: [Action]
+Priority 3: [Action]
+
+🌱 THE BIG QUESTION [How clearly does the founding purpose live inside the culture today?]
+---`}
+};
+
+let curWb=null,hist=[],sessOut='',apiKey='',loading=false;
+
+function openWb(id){
+  curWb=id;hist=[];sessOut='';
+  const wb=WBS[id];
+  document.getElementById('wmlTitle').textContent=wb.title;
+  document.getElementById('wmlTagline').textContent=wb.tagline;
+  document.getElementById('wmrMsgs').innerHTML='';
+  document.getElementById('wmrDl').style.display='none';
+  document.getElementById('wmrStatus').textContent='Session Active';
+  for(let i=0;i<3;i++) document.getElementById('kl'+i).classList.toggle('hl',i===wb.kl);
+  document.getElementById('wmlStages').innerHTML=wb.stages.map((s,i)=>
+    `<div class="wml-stage${i===0?' active':''}" id="ws${i}"><div class="wml-dot"></div>${s}</div>`).join('');
+  const o=document.getElementById('wbModal');
+  o.style.display='flex';requestAnimationFrame(()=>o.style.opacity='1');
+  document.body.style.overflow='hidden';
+  if(!apiKey){
+    document.getElementById('apiNotice').style.display='block';
+    document.getElementById('apiKeyRow').style.display='flex';
+    document.getElementById('wmrStatus').textContent='API Key Needed';
+    showDemo(id);
+  } else startSess();
+}
+function closeWb(){
+  const o=document.getElementById('wbModal');
+  o.style.opacity='0';setTimeout(()=>{o.style.display='none';},400);
+  document.body.style.overflow='';
+}
+function setKey(){
+  const v=document.getElementById('apiKeyIn').value.trim();
+  if(!v.startsWith('sk-')){document.getElementById('apiKeyIn').style.borderColor='#e84d8a';return;}
+  apiKey=v;
+  document.getElementById('apiNotice').style.display='none';
+  document.getElementById('apiKeyRow').style.display='none';
+  document.getElementById('wmrMsgs').innerHTML='';
+  hist=[];startSess();
+}
+function showDemo(id){
+  const d={
+    seed:`Hi — I'm the Unicorn AI. I'm here to help you find the real truth at the heart of your business.\n\nNot the polished pitch version — the honest, human reason you started and why you keep going.\n\n**Enter your API key above to activate the full session.** No brand knowledge needed. Just honesty.`,
+    map:`Hi — I'm the Unicorn AI.\n\nThis session will help you build a clear, simple brand picture — your purpose, how you operate, and what makes you the right choice for your customers.\n\nEnter your API key above to get started.`,
+    mirror:`Hi — I'm the Unicorn AI.\n\nThis session asks an honest question: *Is the world seeing you the way you see yourself?*\n\nThe gap between intention and reality is where the most useful work happens. Enter your API key above to begin.`,
+    culture:`Hi — I'm the Unicorn AI.\n\nThis session is about your team — your biggest and most underused brand asset.\n\nWe'll look honestly at whether your culture reflects what your business stands for. Enter your API key above to get started.`
+  };
+  addMsg('ai',d[id]);
+}
+async function startSess(){
+  document.getElementById('wmrStatus').textContent='Session Active';
+  await callAI('Begin the session now. Introduce yourself briefly and warmly as the Unicorn AI. In two or three short sentences explain what this session will help with and what they\'ll walk away with. Then ask your very first question.',true);
+}
+async function sendMsg(){
+  if(loading||!apiKey)return;
+  const ta=document.getElementById('wmrTa');
+  const txt=ta.value.trim();if(!txt)return;
+  ta.value='';autoRes(ta);
+  addMsg('user',txt);hist.push({role:'user',content:txt});
+  await callAI(null,false);
+}
+function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}}
+function autoRes(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,108)+'px';}
+async function callAI(ov,isInit){
+  if(!apiKey)return;
+  loading=true;document.getElementById('wmrSend').disabled=true;
+  const t=addTyping();
+  const msgs=isInit?[{role:'user',content:ov}]:[...hist];
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:WBS[curWb].sys,messages:msgs})
+    });
+    const d=await r.json();removeTyping(t);
+    if(d.error){addMsg('ai','⚠️ '+(d.error.message||'Error. Check your API key.'));}
+    else{
+      const reply=d.content?.[0]?.text||'';
+      hist.push({role:'assistant',content:reply});
+      addMsg('ai',reply);updProg();
+      const hasOut=reply.includes('✅ YOUR PURPOSE')||reply.includes('✅ YOUR BRAND')||reply.includes('🪞 YOUR ALIGNMENT')||reply.includes('🧭 YOUR CULTURE');
+      if(hasOut){sessOut=reply;document.getElementById('wmrDl').style.display='block';document.getElementById('wmrStatus').textContent='Output Ready';}
+    }
+  }catch(e){removeTyping(t);addMsg('ai','⚠️ Connection error. Check your API key.');}
+  loading=false;document.getElementById('wmrSend').disabled=false;
+}
+function updProg(){
+  const wb=WBS[curWb];
+  const ai=hist.filter(m=>m.role==='assistant').length;
+  const si=Math.min(Math.floor((ai-1)/1.5),wb.stages.length-1);
+  wb.stages.forEach((_,i)=>{const el=document.getElementById('ws'+i);if(!el)return;el.className='wml-stage'+(i<si?' done':i===si?' active':'');});
+}
+function addMsg(role,text){
+  const c=document.getElementById('wmrMsgs');
+  const d=document.createElement('div');d.className=`msg ${role}`;
+  d.innerHTML=`<div class="msg-snd">${role==='ai'?'Unicorn AI':'You'}</div><div class="msg-bub">${fmt(text)}</div>`;
+  c.appendChild(d);c.scrollTop=c.scrollHeight;
+}
+function fmt(t){
+  return t.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\*(.*?)\*/g,'<em>$1</em>')
+    .split('\n\n').map(p=>p.trim()?`<p>${p.replace(/\n/g,'<br>')}</p>`:'').join('');
+}
+function addTyping(){
+  const c=document.getElementById('wmrMsgs');
+  const d=document.createElement('div');d.className='typing-w';
+  d.innerHTML='<div class="typing-i"><div class="td"></div><div class="td"></div><div class="td"></div></div>';
+  c.appendChild(d);c.scrollTop=c.scrollHeight;return d;
+}
+function removeTyping(el){if(el?.parentNode)el.parentNode.removeChild(el);}
+function dlOut(){
+  if(!sessOut)return;
+  const wb=WBS[curWb];
+  const plain=sessOut.replace(/\*\*(.*?)\*\*/g,'$1').replace(/\*(.*?)\*/g,'$1');
+  const blob=new Blob([`UNICORN\nFractional Brand Partner for Growing Businesses\n${wb.title.toUpperCase()}\n${'─'.repeat(44)}\n\n${plain}\n\n${'─'.repeat(44)}\nGenerated by Unicorn AI · Know · Believe · Act\nunicornbrand.co`],{type:'text/plain'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`unicorn-${curWb}.txt`;a.click();
+}
+
+// ════════════════════════════════════════
+//  SMOOTH SCROLL & NAV
+// ════════════════════════════════════════
+document.querySelectorAll('a[href^="#"]').forEach(function(a){
+  a.addEventListener('click',function(e){
+    var id=a.getAttribute('href');
+    if(id.length>1){
+      var el=document.querySelector(id);
+      if(el){e.preventDefault();el.scrollIntoView({behavior:'smooth',block:'start'});}
+    }
+  });
+});
+
+// ════════════════════════════════════════
+//  NAV SCROLL STATE
+// ════════════════════════════════════════
+(function(){
+  var nav=document.getElementById('mainNav');
+  function checkScroll(){nav.classList.toggle('scrolled',window.scrollY>60);}
+  window.addEventListener('scroll',checkScroll,{passive:true});
+  checkScroll();
+})();
+
+// ════════════════════════════════════════
+//  SCROLL-TRIGGERED REVEAL ANIMATIONS
+// ════════════════════════════════════════
+(function(){
+  var selectors=[
+    '.wb-intro','.wb-how .wb-hs','.wb-grid .wb-card',
+    '.cta-sec h2','.cta-sec p','.cta-btns'
+  ];
+  selectors.forEach(function(sel){
+    document.querySelectorAll(sel).forEach(function(el){el.classList.add('reveal');});
+  });
+
+  function stagger(parent,child){
+    document.querySelectorAll(parent).forEach(function(g){
+      g.querySelectorAll(child).forEach(function(el,i){
+        if(i>0) el.classList.add('reveal-d'+Math.min(i,6));
+      });
+    });
+  }
+  stagger('.wb-how','.wb-hs');
+  stagger('.wb-grid','.wb-card');
+
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  },{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+
+  document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el);});
+})();
+</script>
+</body>
+</html>
