@@ -170,18 +170,27 @@ nav.scrolled{background:rgba(13,8,24,.97);border-bottom:1px solid rgba(123,47,19
 .cta-btns{display:flex;gap:1.1rem;justify-content:center;flex-wrap:wrap;}
 
 /* ── FOOTER ── */
-footer{padding:2.2rem 4rem;border-top:1px solid rgba(123,47,190,.1);display:flex;justify-content:space-between;align-items:flex-start;gap:2rem;}
-.footer-name{font-size:.88rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:linear-gradient(90deg,var(--violet),var(--magenta));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.footer-parent{font-size:.6rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:rgba(248,240,255,.18);margin-top:.2rem;}
-.footer-parent a{color:rgba(248,240,255,.3);text-decoration:none;transition:color .3s;}
-.footer-parent a:hover{color:rgba(181,126,255,.6);}
-.footer-links{display:flex;gap:1.6rem;list-style:none;}
-.footer-links a{font-size:.62rem;font-weight:600;color:rgba(248,240,255,.22);text-decoration:none;letter-spacing:.08em;text-transform:uppercase;transition:color .3s;}
-.footer-links a:hover{color:rgba(181,126,255,.6);}
-.footer-copy{font-size:.6rem;color:rgba(248,240,255,.12);font-weight:500;}
-.footer-legal{font-size:.55rem;color:rgba(248,240,255,.15);font-weight:400;display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;margin-top:.3rem;}
-.footer-linkedin{display:inline-flex;align-items:center;gap:.3rem;color:rgba(248,240,255,.22);text-decoration:none;transition:color .3s;}
-.footer-linkedin:hover{color:rgba(181,126,255,.6);}
+footer{background:var(--ink);border-top:1px solid rgba(123,47,190,.1);padding:3.5rem 5% 2rem;}
+.footer-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:40px;max-width:1200px;margin:0 auto;padding-bottom:32px;}
+.footer-col h4{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(248,240,255,.4);margin-bottom:18px;}
+.footer-col p{font-size:.82rem;line-height:1.7;color:rgba(248,240,255,.4);}
+.footer-brand-name{font-size:1.1rem;font-weight:800;letter-spacing:-.02em;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px;}
+.footer-brand-tagline{font-size:.78rem;color:rgba(248,240,255,.35);margin-top:6px;display:flex;align-items:center;gap:6px;}
+.footer-brand-desc{font-size:.76rem;line-height:1.65;color:rgba(248,240,255,.3);margin-top:10px;}
+.footer-nav-list{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.footer-nav-list a{font-size:.82rem;color:rgba(248,240,255,.4);transition:color .2s;text-decoration:none;}
+.footer-nav-list a:hover{color:var(--violet);}
+.footer-connect-item{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.footer-connect-item svg{flex-shrink:0;}
+.footer-connect-item a{font-size:.82rem;color:rgba(248,240,255,.4);transition:color .2s;text-decoration:none;}
+.footer-connect-item a:hover{color:var(--violet);}
+.footer-linkedin-btn{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;background:var(--grad);border-radius:6px;transition:opacity .3s;}
+.footer-linkedin-btn:hover{opacity:.8;}
+.footer-linkedin-btn svg{fill:var(--white);}
+.footer-legal{max-width:1200px;margin:0 auto;padding-top:24px;border-top:1px solid rgba(248,240,255,.06);font-size:.72rem;color:rgba(248,240,255,.2);line-height:1.8;}
+.footer-legal a{color:rgba(248,240,255,.3);transition:color .2s;text-decoration:none;}
+.footer-legal a:hover{color:var(--violet);}
+@media(max-width:768px){.footer-grid{grid-template-columns:1fr;gap:32px;}}
 
 /* ════════════════════════════════════
    LEAD CAPTURE MODAL (Services only)
@@ -239,9 +248,9 @@ footer{padding:2.2rem 4rem;border-top:1px solid rgba(123,47,190,.1);display:flex
 .cta-sec h2 .g{background:linear-gradient(90deg,var(--violet) 0%,var(--magenta) 25%,var(--violet) 50%,var(--magenta) 75%,var(--violet) 100%);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:grad-ripple 8s ease infinite;}
 .kba-col.believe .kba-word{background:linear-gradient(135deg,var(--violet) 0%,var(--magenta) 25%,var(--rose) 50%,var(--magenta) 75%,var(--violet) 100%);background-size:300% 300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:grad-ripple 8s ease infinite;}
 .nav-name{background:linear-gradient(90deg,var(--violet) 0%,var(--magenta) 25%,var(--violet) 50%,var(--magenta) 75%,var(--violet) 100%);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:grad-ripple 10s ease infinite;}
-.footer-name{background:linear-gradient(90deg,var(--violet) 0%,var(--magenta) 25%,var(--violet) 50%,var(--magenta) 75%,var(--violet) 100%);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:grad-ripple 10s ease infinite;}
+.footer-brand-name{background:linear-gradient(90deg,var(--violet) 0%,var(--magenta) 25%,var(--violet) 50%,var(--magenta) 75%,var(--violet) 100%);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:grad-ripple 10s ease infinite;}
 .sys-title .g{background:linear-gradient(135deg,var(--violet) 0%,var(--magenta) 25%,var(--rose) 50%,var(--magenta) 75%,var(--violet) 100%);background-size:300% 300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:grad-ripple 8s ease infinite;}
-@media(prefers-reduced-motion:reduce){.hero-title .g,.sh2 .g,.mq .g,.cta-sec h2 .g,.kba-col.believe .kba-word,.nav-name,.footer-name,.sys-title .g{animation:none;}}
+@media(prefers-reduced-motion:reduce){.hero-title .g,.sh2 .g,.mq .g,.cta-sec h2 .g,.kba-col.believe .kba-word,.nav-name,.footer-brand-name,.sys-title .g{animation:none;}}
 
 /* ── KBA ANIMATIONS ── */
 @keyframes kba-float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
@@ -291,7 +300,7 @@ footer{padding:2.2rem 4rem;border-top:1px solid rgba(123,47,190,.1);display:flex
   .svc-grid{grid-template-columns:1fr;}
   .svc.featured{grid-column:1;grid-template-columns:1fr;}
   .mc-bridge-inner{grid-template-columns:1fr;gap:2.5rem;}
-  footer{flex-direction:column;gap:1.2rem;text-align:center;padding:2rem 1.5rem;}
+  .footer-grid{grid-template-columns:1fr;gap:32px;}
   .contact-box{margin:1rem;}
   .lc-box{margin:1rem;}
 }
@@ -315,10 +324,9 @@ footer{padding:2.2rem 4rem;border-top:1px solid rgba(123,47,190,.1);display:flex
   </a>
   <ul class="nav-links">
     <li><a href="#how-it-works">How It Works</a></li>
-    <li><a href="#services">Services</a></li>
+    <li><a href="#products">Services</a></li>
     <li><a href='/ai'>AI for Business</a></li>
     <li><a href='/workbooks'>Workbooks</a></li>
-    <li><a href="#products">Shop</a></li>
     <li><a href="https://start-your-story-production-75f3.up.railway.app" target="_blank">Start Your Story</a></li>
   </ul>
   <a href="#" class="nav-cta" onclick="openContact();return false;">Let's Talk</a>
@@ -333,8 +341,6 @@ footer{padding:2.2rem 4rem;border-top:1px solid rgba(123,47,190,.1);display:flex
   <p class="hero-sub">Most small businesses are great at what they do. The ones that grow into something special make people genuinely believe in them — their team, their customers, and the world. That's what Unicorn does.</p>
   <div style="font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:1.6rem;position:relative;z-index:2;">Your brand deserves an owner.</div>
   <div class="hero-actions">
-    <button class='btn-p' onclick="openWaitlist();return false;">Join the waitlist</button>
-    <button class="btn-g" onclick="document.getElementById('how-it-works').scrollIntoView({behavior:'smooth'})">See how it works</button>
   </div>
   <div class="scroll-hint"><div class="scroll-line"></div>Scroll</div>
 </section>
@@ -598,42 +604,48 @@ footer{padding:2.2rem 4rem;border-top:1px solid rgba(123,47,190,.1);display:flex
 
 <!-- FOOTER -->
 <footer>
-  <div style="display:flex;align-items:center;gap:.65rem;flex:1;">
-    <svg width="18" height="22" viewBox="0 0 120 148" fill="none">
-      <defs>
-        <linearGradient id="fmg" x1="0" y1="148" x2="120" y2="0">
-          <stop offset="0%" stop-color="#7B2FBE"/><stop offset="100%" stop-color="#C724B1"/>
-        </linearGradient>
-        <clipPath id="fmc"><path d="M4,8 L30,136 L60,60 L90,136 L116,8 Z"/></clipPath>
-      </defs>
-      <rect width="120" height="148" fill="url(#fmg)" clip-path="url(#fmc)"/>
-    </svg>
-    <div>
-      <div class="footer-name">Unicorn</div>
-      <div class="portfolio-connection" style="margin-top:.8rem;">
-        <p style="font-size:.75rem;color:rgba(248,240,255,.5);line-height:1.5;margin-bottom:.5rem;">Part of the MissionCTRL portfolio — bringing enterprise-grade brand methodology to growing businesses.</p>
-        <p style="font-size:.65rem;color:rgba(248,240,255,.4);letter-spacing:.05em;">
-          <a href="https://missionctrl.agency" target="_blank" style="color: #C724B1;text-decoration:none;transition:opacity .3s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">MissionCTRL</a> · Enterprise brand advisory &nbsp;|&nbsp;
-          <a href="https://trustos.missionctrl.agency" target="_blank" style="color: #5A8A9A;text-decoration:none;transition:opacity .3s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">TrustOS</a> · Trust measurement intelligence
-        </p>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+        <svg width="24" height="30" viewBox="0 0 120 148" fill="none">
+          <defs>
+            <linearGradient id="ft-ug" x1="0" y1="148" x2="120" y2="0"><stop offset="0%" stop-color="#7B2FBE"/><stop offset="100%" stop-color="#C724B1"/></linearGradient>
+            <clipPath id="ft-uc"><path d="M4,8 L30,136 L60,60 L90,136 L116,8 Z"/></clipPath>
+          </defs>
+          <rect width="120" height="148" fill="url(#ft-ug)" clip-path="url(#ft-uc)"/>
+        </svg>
+        <span class="footer-brand-name">Unicorn</span>
+      </div>
+      <p class="footer-brand-tagline">
+        <svg width="10" height="12" viewBox="0 0 120 148" fill="none"><defs><linearGradient id="ft-mg" x1="0" y1="148" x2="120" y2="0"><stop offset="0%" stop-color="#ff6b2b"/><stop offset="100%" stop-color="#ffad3b"/></linearGradient><clipPath id="ft-mlc"><path d="M4,140 L30,12 L60,88 L90,12 L116,140 Z"/></clipPath></defs><rect width="120" height="148" fill="url(#ft-mg)" clip-path="url(#ft-mlc)"/></svg>
+        A MissionCTRL company
+      </p>
+      <p class="footer-brand-desc">Unicorn brings enterprise-grade brand methodology to growing businesses — fractional brand partnership built on MissionCTRL's Know · Believe · Act framework. <a href="https://missionctrl.agency" style="color:var(--violet);text-decoration:underline;" target="_blank" rel="noopener">Learn more at missionctrl.agency</a></p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <ul class="footer-nav-list">
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#products">Services</a></li>
+        <li><a href="/ai">AI for Business</a></li>
+        <li><a href="/workbooks">Workbooks</a></li>
+        <li><a href="https://start-your-story-production-75f3.up.railway.app" target="_blank">Start Your Story</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <div class="footer-connect-item">
+        <a href="https://www.linkedin.com/company/unicorn-united" target="_blank" rel="noopener" class="footer-linkedin-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+      </div>
+      <div class="footer-connect-item">
+        <a href="mailto:hello@unicornbrand.co">hello@unicornbrand.co</a>
       </div>
     </div>
   </div>
-  <ul class="footer-links">
-    <li><a href='/'>Home</a></li>
-    <li><a href="#how-it-works">How It Works</a></li>
-    <li><a href="#services">Services</a></li>
-    <li><a href='/ai'>AI for Business</a></li>
-    <li><a href='/workbooks'>Workbooks</a></li>
-    <li><a href="https://start-your-story-production-75f3.up.railway.app" target="_blank">Start Your Story</a></li>
-  </ul>
-  <div class="footer-copy">© 2026 Unicorn</div>
   <div class="footer-legal">
-    <span>Unicorn United LTD · Company number 09522884 · Registered in England &amp; Wales</span>
-    <a href="https://www.linkedin.com/company/unicorn-united" target="_blank" rel="noopener" class="footer-linkedin">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-      LinkedIn
-    </a>
+    &copy; 2026 Unicorn &middot; Unicorn United LTD &middot; Company No. 09522884 &middot; Registered in England &amp; Wales &middot; <a href="#">Privacy Policy</a> &middot; <a href="#">Cookie Policy</a>
   </div>
 </footer>
 
