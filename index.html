@@ -844,6 +844,14 @@ footer{background:var(--ink);border-top:1px solid rgba(123,47,190,.1);padding:3.
 
 <script>
 // ════════════════════════════════════════
+//  FORCE SCROLL TO TOP ON LOAD
+// ════════════════════════════════════════
+if(!window.location.hash || window.location.hash==='#'){
+  window.scrollTo(0,0);
+  if('scrollRestoration' in history) history.scrollRestoration='manual';
+}
+
+// ════════════════════════════════════════
 //  SERVICE FILTER
 // ════════════════════════════════════════
 (function(){
