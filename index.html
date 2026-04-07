@@ -49,15 +49,27 @@ nav.scrolled{background:rgba(13,8,24,.97);border-bottom:1px solid rgba(123,47,19
 .btn-p:hover{opacity:.85;}
 .btn-g{color:rgba(248,240,255,.5);font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;display:flex;align-items:center;gap:.45rem;transition:color .3s;background:none;border:1px solid rgba(248,240,255,.12);padding:.85rem 1.8rem;cursor:pointer;font-family:'Sora',sans-serif;border-radius:2px;}
 .btn-g:hover{color:var(--lavender);border-color:rgba(248,240,255,.25);}
-.hero-needs-wrap{position:relative;z-index:2;margin-top:2.5rem;padding-top:2rem;}
-.hero-needs-wrap::before{content:'';display:block;width:1px;height:28px;background:linear-gradient(to bottom,transparent,rgba(123,47,190,.4));margin:0 auto 1.2rem;}
-.hero-needs-label{font-size:.65rem;font-weight:500;letter-spacing:.08em;color:rgba(248,240,255,.3);margin-bottom:1.2rem;text-align:center;}
-.hero-needs-grid{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;max-width:680px;margin:0 auto;}
-.hero-pill{position:relative;font-size:.68rem;font-weight:600;letter-spacing:.02em;color:rgba(248,240,255,.65);text-decoration:none;padding:.6rem 1.3rem;background:rgba(123,47,190,.06);border:1px solid rgba(123,47,190,.18);border-radius:2px;transition:all .35s;white-space:nowrap;overflow:hidden;}
-.hero-pill::before{content:'';position:absolute;inset:0;background:var(--grad);opacity:0;transition:opacity .35s;}
-.hero-pill:hover{color:var(--white);border-color:rgba(123,47,190,.4);transform:translateY(-1px);box-shadow:0 4px 20px rgba(123,47,190,.2);}
-.hero-pill:hover::before{opacity:.15;}
-.hero-pill span{position:relative;z-index:1;}
+/* ── HERO CHAT ── */
+.hero-chat{position:relative;z-index:2;margin-top:2.5rem;width:100%;max-width:480px;}
+.hero-chat::before{content:'';display:block;width:1px;height:28px;background:linear-gradient(to bottom,transparent,rgba(123,47,190,.4));margin:0 auto 1.2rem;}
+.hc-box{position:relative;background:rgba(123,47,190,.06);border:1px solid rgba(123,47,190,.22);border-radius:3px;transition:border-color .3s,box-shadow .3s;}
+.hc-box.focus{border-color:rgba(123,47,190,.45);box-shadow:0 0 30px rgba(123,47,190,.12);}
+.hc-input-row{display:flex;align-items:center;padding:.2rem .3rem .2rem .9rem;}
+.hc-input{flex:1;background:none;border:none;outline:none;color:var(--white);font-family:'Sora',sans-serif;font-size:.82rem;font-weight:400;padding:.7rem 0;letter-spacing:-.01em;}
+.hc-input::placeholder{color:rgba(248,240,255,.3);}
+.hc-send{background:var(--grad);border:none;color:var(--white);width:34px;height:34px;border-radius:2px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:opacity .3s;flex-shrink:0;}
+.hc-send:hover{opacity:.8;}
+.hc-send svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.hc-suggestions{padding:.5rem .6rem .6rem;display:flex;flex-wrap:wrap;gap:.4rem;border-top:1px solid rgba(123,47,190,.1);}
+.hc-sug{font-size:.62rem;font-weight:600;letter-spacing:.02em;color:rgba(248,240,255,.45);background:rgba(123,47,190,.08);border:1px solid rgba(123,47,190,.12);padding:.35rem .7rem;border-radius:2px;cursor:pointer;transition:all .25s;white-space:nowrap;font-family:'Sora',sans-serif;}
+.hc-sug:hover{color:var(--lavender);background:rgba(123,47,190,.15);border-color:rgba(123,47,190,.3);}
+.hc-result{display:none;padding:.8rem;border-top:1px solid rgba(123,47,190,.1);}
+.hc-result.visible{display:block;}
+.hc-result-link{display:flex;align-items:center;gap:.7rem;padding:.6rem .7rem;background:rgba(123,47,190,.08);border:1px solid rgba(123,47,190,.15);border-radius:2px;text-decoration:none;transition:all .3s;cursor:pointer;}
+.hc-result-link:hover{background:rgba(123,47,190,.14);border-color:rgba(123,47,190,.3);}
+.hc-result-name{font-size:.78rem;font-weight:700;color:var(--white);line-height:1.2;}
+.hc-result-desc{font-size:.62rem;color:rgba(248,240,255,.4);line-height:1.4;margin-top:.15rem;}
+.hc-result-arrow{margin-left:auto;color:rgba(248,240,255,.25);font-size:.8rem;flex-shrink:0;}
 .scroll-hint{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;color:rgba(248,240,255,.3);font-size:.58rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;z-index:2;}
 .scroll-line{width:1px;height:32px;background:linear-gradient(to bottom,rgba(123,47,190,.5),transparent);animation:sl 2s ease infinite;}
 @keyframes sl{0%{transform:scaleY(0);transform-origin:top;}50%{transform:scaleY(1);transform-origin:top;}51%{transform:scaleY(1);transform-origin:bottom;}100%{transform:scaleY(0);transform-origin:bottom;}}
@@ -349,14 +361,20 @@ footer{background:var(--ink);border-top:1px solid rgba(123,47,190,.1);padding:3.
   <h1 class="hero-title">We help you<br><span class="g">build belief.</span></h1>
   <p class="hero-sub">Most small businesses are great at what they do. The ones that grow into something special make people genuinely believe in them — their team, their customers, and the world. That's what Unicorn does.</p>
   <div style="font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:1.6rem;position:relative;z-index:2;">Your brand deserves an owner.</div>
-  <div class="hero-needs-wrap">
-    <div class="hero-needs-label">What do you need most?</div>
-    <div class="hero-needs-grid">
-      <a href="/ai" class="hero-pill"><span>I need to use AI</span></a>
-      <a href="/brand-to-market" class="hero-pill"><span>I need to launch</span></a>
-      <a href="#" class="hero-pill" onclick="openLC('partner');return false;"><span>I need brand leadership</span></a>
-      <a href="#" class="hero-pill" onclick="openContact();return false;"><span>I need my team aligned</span></a>
-      <a href="#" class="hero-pill" onclick="openContact();return false;"><span>I need brand foundations</span></a>
+  <div class="hero-chat" id="heroChat">
+    <div class="hc-box" id="hcBox">
+      <div class="hc-input-row">
+        <input class="hc-input" id="hcInput" type="text" placeholder="How can we help?" autocomplete="off">
+        <button class="hc-send" id="hcSend" aria-label="Go"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+      </div>
+      <div class="hc-suggestions" id="hcSugs">
+        <span class="hc-sug" data-q="I need to use AI">Use AI</span>
+        <span class="hc-sug" data-q="I need to launch">Launch a brand</span>
+        <span class="hc-sug" data-q="I need brand leadership">Brand leadership</span>
+        <span class="hc-sug" data-q="I need my team aligned">Align my team</span>
+        <span class="hc-sug" data-q="I need brand foundations">Brand foundations</span>
+      </div>
+      <div class="hc-result" id="hcResult"></div>
     </div>
   </div>
   <div class="scroll-hint"><div class="scroll-line"></div>Scroll</div>
@@ -1056,6 +1074,82 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){
   },{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
 
   document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el);});
+})();
+
+// ════════════════════════════════════════
+//  HERO CHAT — NEED-BASED ROUTING
+// ════════════════════════════════════════
+(function(){
+  var offers = [
+    {keys:['ai','artificial','automat','chatgpt','gpt','machine','tech'],name:'AI for Business',desc:'Practical AI strategy for your brand and operations',url:'/ai',action:'link'},
+    {keys:['launch','market','product','dtc','revenue','start','sell','go to market','validate'],name:'Brand to Market',desc:'From positioning to first revenue — validated',url:'/brand-to-market',action:'link'},
+    {keys:['leader','partner','fractional','strateg','direction','ongoing','month','cmo','dedicated'],name:'Dedicated Brand Partner',desc:'Ongoing strategy, coaching, and creative direction',url:null,action:'partner'},
+    {keys:['team','align','internal','culture','workshop','staff','onboard','employ','get on board'],name:'Brand Workshop',desc:'Get your whole team behind your brand',url:null,action:'contact'},
+    {keys:['foundation','toolkit','basics','identity','logo','guid','asset','brand kit','start from scratch'],name:'Brand Toolkit',desc:'The foundations your brand needs to grow',url:null,action:'contact'}
+  ];
+
+  var input=document.getElementById('hcInput');
+  var box=document.getElementById('hcBox');
+  var result=document.getElementById('hcResult');
+  var sugs=document.getElementById('hcSugs');
+  var sendBtn=document.getElementById('hcSend');
+  if(!input||!box) return;
+
+  function matchOffer(q){
+    q=q.toLowerCase();
+    var best=null,bestScore=0;
+    offers.forEach(function(o){
+      var score=0;
+      o.keys.forEach(function(k){if(q.indexOf(k)!==-1) score++;});
+      if(score>bestScore){bestScore=score;best=o;}
+    });
+    return best;
+  }
+
+  function showResult(offer){
+    if(!offer){result.className='hc-result';result.innerHTML='';return;}
+    sugs.style.display='none';
+    result.className='hc-result visible';
+    result.innerHTML='<a class="hc-result-link" id="hcGo" href="'+(offer.url||'#')+'"><div><div class="hc-result-name">'+offer.name+'</div><div class="hc-result-desc">'+offer.desc+'</div></div><span class="hc-result-arrow">→</span></a>';
+    var link=document.getElementById('hcGo');
+    link.addEventListener('click',function(e){
+      if(offer.action==='partner'){e.preventDefault();if(window.openLC)openLC('partner');}
+      else if(offer.action==='contact'){e.preventDefault();if(window.openContact)openContact();}
+    });
+  }
+
+  function handleQuery(){
+    var q=input.value.trim();
+    if(!q) return;
+    var offer=matchOffer(q);
+    if(offer) showResult(offer);
+    else showResult(null);
+  }
+
+  input.addEventListener('focus',function(){box.classList.add('focus');});
+  input.addEventListener('blur',function(){setTimeout(function(){box.classList.remove('focus');},200);});
+
+  input.addEventListener('input',function(){
+    var q=input.value.trim();
+    if(q.length<2){
+      result.className='hc-result';result.innerHTML='';
+      sugs.style.display='flex';
+      return;
+    }
+    var offer=matchOffer(q);
+    if(offer) showResult(offer);
+    else{result.className='hc-result';result.innerHTML='';sugs.style.display='flex';}
+  });
+
+  input.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();handleQuery();}});
+  sendBtn.addEventListener('click',handleQuery);
+
+  document.querySelectorAll('.hc-sug').forEach(function(s){
+    s.addEventListener('click',function(){
+      input.value=s.dataset.q;
+      input.dispatchEvent(new Event('input'));
+    });
+  });
 })();
 </script>
 </body>
