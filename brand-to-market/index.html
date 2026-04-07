@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brand to Market — Unicorn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#1A0A2E;--violet:#7B2FBE;--magenta:#C724B1;--rose:#E84D8A;
+  --lavender:#F8F0FF;--ink:#0d0818;--surface:#170d2a;--card:#1e1136;
+  --mist:rgba(248,240,255,.55);--soft:rgba(248,240,255,.35);--white:#fff;
+  --grad:linear-gradient(90deg,var(--violet),var(--magenta));
+  --grad3:linear-gradient(135deg,var(--violet) 0%,var(--magenta) 50%,var(--rose) 100%);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Sora',sans-serif;background:var(--ink);color:var(--white);overflow-x:hidden;}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.2rem 4rem;background:rgba(13,8,24,.97);border-bottom:1px solid rgba(123,47,190,.15);}
+.nav-logo{display:flex;align-items:center;gap:.55rem;text-decoration:none;}
+.nav-mark{width:20px;height:24px;}
+.nav-name{font-size:.88rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:linear-gradient(90deg,var(--violet),var(--magenta));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.nav-links{display:flex;gap:2rem;list-style:none;}
+.nav-links a{font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(248,240,255,.45);text-decoration:none;transition:color .3s;}
+.nav-links a:hover{color:var(--lavender);}
+.nav-cta{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--grad);color:var(--white);padding:.55rem 1.4rem;text-decoration:none;border-radius:2px;transition:opacity .3s;}
+.nav-cta:hover{opacity:.85;}
+
+/* ── HERO ── */
+.btm-hero{min-height:85vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:10rem 4rem 6rem;text-align:center;}
+.btm-hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 40%,rgba(123,47,190,.2) 0%,transparent 65%),radial-gradient(ellipse 40% 40% at 75% 75%,rgba(199,36,177,.1) 0%,transparent 60%),var(--ink);}
+.btm-kicker{display:inline-flex;align-items:center;gap:.6rem;font-size:.6rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(248,240,255,.5);margin-bottom:1.5rem;position:relative;z-index:2;}
+.btm-kicker::before,.btm-kicker::after{content:'';display:block;width:20px;height:1px;background:rgba(248,240,255,.2);}
+.btm-title{font-size:clamp(2.8rem,7vw,5.5rem);font-weight:800;line-height:1;letter-spacing:-.04em;color:var(--white);position:relative;z-index:2;}
+.btm-title .g{background:linear-gradient(135deg,var(--violet) 0%,var(--magenta) 25%,var(--rose) 50%,var(--magenta) 75%,var(--violet) 100%);background-size:300% 300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:grad-ripple 8s ease infinite;}
+.btm-sub{max-width:600px;font-size:1rem;font-weight:400;line-height:1.7;color:rgba(248,240,255,.7);margin:1.8rem auto 2.5rem;position:relative;z-index:2;}
+.btm-tags{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;position:relative;z-index:2;margin-bottom:2.5rem;}
+.btm-tag{font-size:.58rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:.35rem .8rem;border:1px solid rgba(123,47,190,.2);color:rgba(248,240,255,.4);border-radius:1px;}
+.btn-p{background:var(--grad);color:var(--white);font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.85rem 2rem;text-decoration:none;border-radius:2px;transition:opacity .3s;display:inline-flex;align-items:center;gap:.5rem;}
+.btn-p:hover{opacity:.85;}
+.btn-g{color:rgba(248,240,255,.5);font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;display:inline-flex;align-items:center;gap:.45rem;transition:color .3s;border:1px solid rgba(248,240,255,.12);padding:.85rem 1.8rem;border-radius:2px;}
+.btn-g:hover{color:var(--lavender);border-color:rgba(248,240,255,.25);}
+.hero-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;position:relative;z-index:2;}
+
+@keyframes grad-ripple{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+
+/* ── SHARED ── */
+.stag{font-size:.6rem;font-weight:700;letter-spacing:.25em;text-transform:uppercase;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block;margin-bottom:.9rem;}
+.sh2{font-size:clamp(2rem,4vw,3rem);font-weight:800;line-height:1.1;letter-spacing:-.03em;color:var(--white);}
+.sh2 .g{background:linear-gradient(90deg,var(--violet),var(--magenta));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.sbody{font-size:.88rem;line-height:1.75;color:var(--mist);}
+section{padding:6rem 4rem;}
+.container{max-width:1060px;margin:0 auto;}
+
+/* ── PHASES ── */
+.phases{background:var(--surface);position:relative;overflow:hidden;}
+.phases::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);background-size:60px 60px;}
+.phase-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;position:relative;z-index:2;}
+.phase-card{padding:2.2rem;border:1px solid rgba(123,47,190,.12);background:rgba(13,8,24,.4);position:relative;transition:border-color .4s;}
+.phase-card:hover{border-color:rgba(123,47,190,.3);}
+.phase-num{font-size:.55rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(181,126,255,.5);margin-bottom:.7rem;}
+.phase-name{font-size:1.15rem;font-weight:800;letter-spacing:-.02em;color:var(--white);margin-bottom:.5rem;line-height:1.2;}
+.phase-desc{font-size:.82rem;line-height:1.68;color:var(--mist);margin-bottom:1.2rem;}
+.phase-items{list-style:none;display:flex;flex-direction:column;gap:.4rem;}
+.phase-items li{font-size:.76rem;color:rgba(248,240,255,.45);display:flex;align-items:flex-start;gap:.5rem;line-height:1.5;}
+.phase-items li::before{content:'→';color:var(--violet);opacity:.6;flex-shrink:0;font-size:.7rem;margin-top:.1rem;}
+.phase-gate{font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(199,36,177,.6);margin-top:1.2rem;padding-top:.8rem;border-top:1px solid rgba(199,36,177,.15);}
+.phase-connector{display:flex;align-items:center;justify-content:center;gap:.8rem;margin:1.5rem 0;position:relative;z-index:2;}
+.phase-connector-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(123,47,190,.3),transparent);}
+.phase-connector-dot{width:8px;height:8px;border-radius:50%;background:var(--grad);flex-shrink:0;}
+
+/* ── WHO IT'S FOR ── */
+.who-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;}
+.who-card{padding:2.2rem;border:1px solid rgba(123,47,190,.1);background:var(--surface);transition:border-color .4s;}
+.who-card:hover{border-color:rgba(123,47,190,.25);}
+.who-label{font-size:.58rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(181,126,255,.5);margin-bottom:.6rem;}
+.who-title{font-size:1.1rem;font-weight:800;letter-spacing:-.02em;color:var(--white);margin-bottom:.6rem;line-height:1.2;}
+.who-desc{font-size:.82rem;line-height:1.68;color:var(--mist);margin-bottom:1rem;}
+.who-examples{font-size:.72rem;color:rgba(248,240,255,.3);line-height:1.55;font-style:italic;}
+
+/* ── HOW IT WORKS ── */
+.how-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;}
+.how-step{text-align:center;padding:1.5rem 1rem;}
+.how-step-num{font-size:1.8rem;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.5rem;}
+.how-step-title{font-size:.78rem;font-weight:700;letter-spacing:.06em;color:var(--white);margin-bottom:.4rem;}
+.how-step-desc{font-size:.72rem;line-height:1.6;color:rgba(248,240,255,.4);}
+
+/* ── WHAT YOU GET ── */
+.deliverables{background:var(--surface);}
+.del-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.2rem;}
+.del-item{display:flex;align-items:flex-start;gap:1rem;padding:1.5rem;border:1px solid rgba(123,47,190,.08);transition:border-color .3s;}
+.del-item:hover{border-color:rgba(123,47,190,.2);}
+.del-icon{width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:rgba(123,47,190,.12);flex-shrink:0;border-radius:2px;}
+.del-icon svg{width:18px;height:18px;stroke:rgba(181,126,255,.7);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.del-title{font-size:.82rem;font-weight:700;color:var(--white);margin-bottom:.3rem;}
+.del-desc{font-size:.75rem;line-height:1.6;color:rgba(248,240,255,.4);}
+
+/* ── VALIDATION ── */
+.val-bar{background:linear-gradient(135deg,rgba(123,47,190,.1),rgba(199,36,177,.05));border:1px solid rgba(123,47,190,.15);padding:2.5rem;text-align:center;margin-top:2rem;}
+.val-bar p{font-size:.88rem;line-height:1.7;color:rgba(248,240,255,.6);max-width:700px;margin:0 auto;}
+.val-bar strong{color:var(--white);font-weight:700;}
+
+/* ── CTA ── */
+.cta-sec{text-align:center;padding:6rem 4rem;background:var(--ink);}
+.cta-sec h2{font-size:clamp(2rem,5vw,3.4rem);font-weight:800;letter-spacing:-.04em;color:var(--white);margin-bottom:1rem;line-height:1.05;}
+.cta-sec h2 .g{background:linear-gradient(90deg,var(--violet),var(--magenta));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.cta-sec p{font-size:.9rem;line-height:1.7;color:var(--mist);max-width:500px;margin:0 auto 2.2rem;}
+.cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+
+/* ── FOOTER ── */
+footer{padding:2.2rem 4rem;border-top:1px solid rgba(123,47,190,.1);display:flex;justify-content:space-between;align-items:center;}
+.footer-name{font-size:.88rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:linear-gradient(90deg,var(--violet),var(--magenta));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.footer-parent{font-size:.6rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:rgba(248,240,255,.18);margin-top:.2rem;}
+.footer-copy{font-size:.6rem;color:rgba(248,240,255,.12);font-weight:500;}
+
+/* ── SCROLL REVEAL ── */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1);}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.reveal-d1{transition-delay:.1s;}
+.reveal-d2{transition-delay:.2s;}
+.reveal-d3{transition-delay:.3s;}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none;}}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .phase-grid{grid-template-columns:1fr;}
+  .who-grid{grid-template-columns:1fr;}
+  .how-steps{grid-template-columns:repeat(2,1fr);}
+  .del-grid{grid-template-columns:1fr;}
+  nav{padding:1rem 1.5rem;}
+  section{padding:4rem 1.5rem;}
+  .btm-hero{padding:8rem 1.5rem 4rem;}
+}
+@media(max-width:600px){
+  .how-steps{grid-template-columns:1fr;}
+  .hero-actions{flex-direction:column;align-items:center;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">
+    <svg class="nav-mark" viewBox="0 0 120 148" fill="none"><defs><clipPath id="uc"><path d="M4,140 L30,12 L60,88 L90,12 L116,140 Z"/></clipPath></defs><rect width="120" height="148" fill="url(#ug)" clip-path="url(#uc)"/><linearGradient id="ug" x1="0" y1="0" x2="120" y2="148" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#7B2FBE"/><stop offset="100%" stop-color="#C724B1"/></linearGradient></svg>
+    <span class="nav-name">Unicorn</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/#services">Services</a></li>
+    <li><a href="/#contact">Contact</a></li>
+  </ul>
+  <a href="/#contact" class="nav-cta">Let's talk</a>
+</nav>
+
+<!-- HERO -->
+<section class="btm-hero">
+  <div class="btm-hero-bg"></div>
+  <div class="btm-kicker">New Offer</div>
+  <h1 class="btm-title">Brand to<br><span class="g">Market</span></h1>
+  <p class="btm-sub">Define your brand, validate it with real audiences, and launch with confidence. One structured engagement that takes you from positioning to first revenue.</p>
+  <div class="btm-tags">
+    <span class="btm-tag">DTC Products</span>
+    <span class="btm-tag">Business Services</span>
+    <span class="btm-tag">Pre-launch & Pivot</span>
+  </div>
+  <div class="hero-actions">
+    <a href="/#contact" class="btn-p">Get a quote →</a>
+    <a href="#phases" class="btn-g">See how it works ↓</a>
+  </div>
+</section>
+
+<!-- THE THREE PHASES -->
+<section class="phases" id="phases">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:3rem;" class="reveal">
+      <span class="stag">The Framework</span>
+      <h2 class="sh2">Three phases.<br>One clear <span class="g">path to market</span></h2>
+      <p class="sbody" style="max-width:580px;margin:1rem auto 0;">Each phase builds on the last. You only move forward when the evidence says you should.</p>
+    </div>
+
+    <div class="phase-grid">
+
+      <div class="phase-card reveal reveal-d1">
+        <div class="phase-num">Phase 1</div>
+        <div class="phase-name">Brand Definition</div>
+        <div class="phase-desc">Establish your positioning, messaging, and creative direction — then validate it with a real audience before spending on campaigns.</div>
+        <ul class="phase-items">
+          <li>Start Your Story brand game</li>
+          <li>Positioning statement and messaging</li>
+          <li>Creative concept development</li>
+          <li>Panel survey with message testing</li>
+          <li>Product vs creative diagnostic</li>
+        </ul>
+        <div class="phase-gate">Gate → Client approves positioning + survey confirms direction</div>
+      </div>
+
+      <div class="phase-card reveal reveal-d2">
+        <div class="phase-num">Phase 2</div>
+        <div class="phase-name">Campaign Validation</div>
+        <div class="phase-desc">Build the channels, produce the creative, and test with real audiences. Paid media validates whether the positioning holds in the real world.</div>
+        <ul class="phase-items">
+          <li>Landing page build</li>
+          <li>Social channel setup and management</li>
+          <li>Creative variant production</li>
+          <li>Paid campaign testing</li>
+          <li>Validation scorecard and recommendation</li>
+        </ul>
+        <div class="phase-gate">Gate → Validation score determines whether to launch or refine</div>
+      </div>
+
+      <div class="phase-card reveal reveal-d3">
+        <div class="phase-num">Phase 2b</div>
+        <div class="phase-name">Launch Activation</div>
+        <div class="phase-desc">Convert validation momentum directly into your first sale. Conditional on strong validation — the channels are already live, the audience is already warm.</div>
+        <ul class="phase-items">
+          <li>E-commerce or booking setup</li>
+          <li>Launch campaign creative</li>
+          <li>Email nurture sequence</li>
+          <li>Paid promotion of launch</li>
+          <li>Post-launch analysis and final scorecard</li>
+        </ul>
+        <div class="phase-gate">Conditional → Only activates on strong validation score</div>
+      </div>
+
+    </div>
+
+    <div class="phase-connector reveal">
+      <div class="phase-connector-line"></div>
+      <div class="phase-connector-dot"></div>
+      <div class="phase-connector-line"></div>
+    </div>
+
+    <div class="val-bar reveal">
+      <p>Every phase is evidence-led. We score validation across <strong>seven behavioural signals</strong> — from landing page conversion and ad engagement to purchase intent and sell-through rate. You always know exactly where you stand and what to do next.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHO IT'S FOR -->
+<section>
+  <div class="container">
+    <div style="text-align:center;margin-bottom:3rem;" class="reveal">
+      <span class="stag">Who It's For</span>
+      <h2 class="sh2">Works for products.<br>Works for <span class="g">services</span></h2>
+      <p class="sbody" style="max-width:560px;margin:1rem auto 0;">The framework adapts to what you're selling. The validation signals change — the rigour doesn't.</p>
+    </div>
+
+    <div class="who-grid">
+      <div class="who-card reveal reveal-d1">
+        <div class="who-label">DTC Products</div>
+        <div class="who-title">Physical and digital products going direct to consumer</div>
+        <div class="who-desc">Validate product-market fit before committing to production. Test pricing, creative, and audience response with real data — then launch a first drop or pre-order with confidence.</div>
+        <div class="who-examples">Fashion brands, food & drink, homeware, beauty, limited-edition drops, consumer tech</div>
+      </div>
+      <div class="who-card reveal reveal-d2">
+        <div class="who-label">Business Services</div>
+        <div class="who-title">Service businesses launching, repositioning, or entering new markets</div>
+        <div class="who-desc">Define your positioning and test it with your actual target audience. Validate your messaging and lead generation before scaling marketing spend. Launch with a pipeline, not a guess.</div>
+        <div class="who-examples">Consultancies, agencies, SaaS, professional services, coaching, B2B startups</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="deliverables">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:3rem;" class="reveal">
+      <span class="stag">How It Works</span>
+      <h2 class="sh2">Structured, sequential, <span class="g">evidence-led</span></h2>
+    </div>
+
+    <div class="how-steps reveal">
+      <div class="how-step">
+        <div class="how-step-num">01</div>
+        <div class="how-step-title">Define</div>
+        <div class="how-step-desc">Play Start Your Story. Lock positioning, messaging, and creative direction.</div>
+      </div>
+      <div class="how-step">
+        <div class="how-step-num">02</div>
+        <div class="how-step-title">Test</div>
+        <div class="how-step-desc">Survey real audiences. Separate product appeal from creative effectiveness.</div>
+      </div>
+      <div class="how-step">
+        <div class="how-step-num">03</div>
+        <div class="how-step-title">Validate</div>
+        <div class="how-step-desc">Build channels, run paid campaigns, score across seven behavioural signals.</div>
+      </div>
+      <div class="how-step">
+        <div class="how-step-num">04</div>
+        <div class="how-step-title">Launch</div>
+        <div class="how-step-desc">Convert momentum into your first sale. E-commerce, bookings, or lead gen — whatever fits.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT'S INCLUDED -->
+<section>
+  <div class="container">
+    <div style="text-align:center;margin-bottom:3rem;" class="reveal">
+      <span class="stag">What's Included</span>
+      <h2 class="sh2">Everything you need to <span class="g">get to market</span></h2>
+    </div>
+
+    <div class="del-grid reveal">
+      <div class="del-item">
+        <div class="del-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12l2 2 4-4"/></svg></div>
+        <div>
+          <div class="del-title">Start Your Story</div>
+          <div class="del-desc">AI-powered brand game to define positioning, messaging, and creative direction</div>
+        </div>
+      </div>
+      <div class="del-item">
+        <div class="del-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h4"/></svg></div>
+        <div>
+          <div class="del-title">Panel Survey + Message Testing</div>
+          <div class="del-desc">200+ targeted responses validating product appeal and creative effectiveness separately</div>
+        </div>
+      </div>
+      <div class="del-item">
+        <div class="del-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <div>
+          <div class="del-title">Landing Page + Social Channels</div>
+          <div class="del-desc">Full channel build — landing page, Instagram, email capture — ready for testing</div>
+        </div>
+      </div>
+      <div class="del-item">
+        <div class="del-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+        <div>
+          <div class="del-title">Paid Campaign Testing</div>
+          <div class="del-desc">Creative variant production and managed paid media across social platforms</div>
+        </div>
+      </div>
+      <div class="del-item">
+        <div class="del-icon"><svg viewBox="0 0 24 24"><path d="M12 20V10M18 20V4M6 20v-4"/></svg></div>
+        <div>
+          <div class="del-title">Validation Scorecard</div>
+          <div class="del-desc">Seven-signal scoring framework with clear go/no-go thresholds and diagnostic matrix</div>
+        </div>
+      </div>
+      <div class="del-item">
+        <div class="del-icon"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg></div>
+        <div>
+          <div class="del-title">Launch Activation</div>
+          <div class="del-desc">E-commerce setup, launch campaign, email nurture, and post-launch analysis (conditional)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-sec">
+  <span class="stag" style="text-align:center;">Start Here</span>
+  <h2>Ready to go from brand<br>to <span class="g">market</span>?</h2>
+  <p>Tell us what you're building. We'll tell you exactly how Brand to Market would work for your product or service.</p>
+  <div class="cta-btns">
+    <a href="/#contact" class="btn-p">Get a quote →</a>
+    <a href="/" class="btn-g">Back to Unicorn →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-name">Unicorn</div>
+    <div class="footer-parent">Fractional brand partner</div>
+  </div>
+  <div class="footer-copy">&copy; 2026 Unicorn</div>
+</footer>
+
+<script>
+(function(){
+  const els = document.querySelectorAll('.reveal');
+  if(!els.length) return;
+  const io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); }});
+  },{threshold:.15});
+  els.forEach(function(el){io.observe(el);});
+})();
+</script>
+</body>
+</html>

@@ -571,6 +571,30 @@ footer{background:var(--ink);border-top:1px solid rgba(123,47,190,.1);padding:3.
       <button class="svc-more" onclick="openLC('culture')">Find out more →</button>
     </div>
 
+    <div class="svc featured" data-cats="me business" style="background:linear-gradient(135deg,rgba(123,47,190,.12),rgba(199,36,177,.06));border-color:rgba(199,36,177,.2);">
+      <div>
+        <span class="svc-tag">Brand to Market</span>
+        <div class="svc-name">Brand to Market</div>
+        <div class="svc-tagline">Define your brand, validate it with real audiences, and launch with confidence.</div>
+        <p class="svc-desc">One structured engagement that takes you from positioning to first revenue. Three gated phases — brand definition, campaign validation, and launch activation — each backed by real audience data. Works for DTC products and business services.</p>
+        <div class="svc-meta">
+          <div class="svc-meta-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>6–12 weeks</div>
+          <div class="svc-meta-item"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Online + London</div>
+        </div>
+        <button class="svc-more" onclick="openLC('btm')">Find out more + get a quote →</button>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:.75rem;">
+        <div class="svc-best">Best for: Pre-launch products or services ready to test with real audiences</div>
+        <div style="font-size:.78rem;line-height:1.65;color:rgba(248,240,255,.4);">Three gated phases:</div>
+        <div style="display:flex;flex-direction:column;gap:.5rem;">
+          <div style="font-size:.72rem;color:rgba(248,240,255,.5);padding:.55rem .7rem;border:1px solid rgba(123,47,190,.1);display:flex;align-items:center;gap:.5rem;"><span style="font-size:.55rem;font-weight:700;letter-spacing:.12em;color:rgba(181,126,255,.5);">01</span> Brand Definition + Survey Validation</div>
+          <div style="font-size:.72rem;color:rgba(248,240,255,.5);padding:.55rem .7rem;border:1px solid rgba(123,47,190,.1);display:flex;align-items:center;gap:.5rem;"><span style="font-size:.55rem;font-weight:700;letter-spacing:.12em;color:rgba(181,126,255,.5);">02</span> Campaign Validation + Scorecard</div>
+          <div style="font-size:.72rem;color:rgba(248,240,255,.5);padding:.55rem .7rem;border:1px solid rgba(123,47,190,.1);display:flex;align-items:center;gap:.5rem;"><span style="font-size:.55rem;font-weight:700;letter-spacing:.12em;color:rgba(181,126,255,.5);">03</span> Launch Activation (conditional)</div>
+        </div>
+        <a href="/brand-to-market/" style="font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(199,36,177,.7);text-decoration:none;margin-top:.3rem;transition:color .3s;">See full details →</a>
+      </div>
+    </div>
+
     <div class="svc" data-cats="business">
       <div class="svc-best">Best for: Teams who need to show up consistently</div>
       <span class="svc-tag">Brand Build</span>
@@ -925,6 +949,14 @@ const LC_CONFIG = {
     bullets:['Brand messaging framework and key copy','Brand guidelines your team will actually use','Tone of voice and content direction','Delivered in 2–4 weeks','Optional ongoing maintenance available'],
     q1label:'Do you have any existing brand materials we\'d be working from?',
     q2label:'Where is inconsistency costing you the most right now?'
+  },
+  btm:{
+    badge:'Brand to Market',
+    title:'Brand to Market',
+    sub:'Define, validate, and launch — one structured engagement from positioning to first revenue.',
+    bullets:['Start Your Story brand definition game','Panel survey with message testing (200+ responses)','Landing page and social channel build','Paid campaign testing with creative variants','Seven-signal validation scorecard','Launch activation (conditional on validation)','Works for DTC products and business services'],
+    q1label:'What are you looking to take to market — a product, a service, or something else?',
+    q2label:'Where are you now — idea stage, pre-launch, or repositioning something existing?'
   },
   personal:{
     badge:'Personal Brand',

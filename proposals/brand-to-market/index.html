@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brand to Market — Proposal | Unicorn</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --night: #1A0A2E;
+  --violet: #7B2FBE;
+  --magenta: #C724B1;
+  --rose: #E84D8A;
+  --lavender: #F8F0FF;
+  --ink: #0d0818;
+  --surface: #170d2a;
+  --card: #1e1136;
+  --text: rgba(248,240,255,0.75);
+  --text-bright: rgba(248,240,255,0.95);
+  --border: rgba(123,47,190,0.15);
+  --grad: linear-gradient(90deg, var(--violet), var(--magenta));
+  --grad3: linear-gradient(135deg, var(--violet) 0%, var(--magenta) 50%, var(--rose) 100%);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; background: var(--ink); overflow-x: hidden; }
+body {
+  font-family: 'Sora', sans-serif;
+  color: var(--text);
+  background: var(--ink);
+  line-height: 1.7;
+  font-size: 0.92rem;
+  font-weight: 400;
+}
+
+/* ─── LOGO ─── */
+.unicorn-logo {
+  display: inline-flex; align-items: center; gap: 0.55rem; text-decoration: none;
+}
+.unicorn-mark { width: 20px; height: 24px; }
+.unicorn-wordmark {
+  font-size: 0.88rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+/* ─── NAV ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 1.2rem 4rem;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(13,8,24,0.85); backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-links { display: flex; gap: 2rem; }
+.nav-links a {
+  color: rgba(248,240,255,0.45); text-decoration: none;
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+  transition: color 0.3s;
+}
+.nav-links a:hover { color: var(--lavender); }
+
+/* ─── SECTIONS ─── */
+section { padding: 7rem 4rem; max-width: 1200px; margin: 0 auto; position: relative; }
+
+/* ─── HERO ─── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
+  padding-top: 8rem; position: relative; overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 50% 40%, rgba(123,47,190,0.18) 0%, transparent 65%),
+              radial-gradient(ellipse 40% 40% at 80% 80%, rgba(199,36,177,0.08) 0%, transparent 60%),
+              var(--ink);
+}
+.hero-ring {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  border-radius: 50%; border: 1px solid rgba(123,47,190,0.08); pointer-events: none;
+}
+.hero-ring:nth-child(2) { width: 500px; height: 500px; animation: hpulse 7s ease infinite; }
+.hero-ring:nth-child(3) { width: 720px; height: 720px; border-color: rgba(199,36,177,0.06); animation: hpulse 7s 2s ease infinite; }
+.hero-ring:nth-child(4) { width: 940px; height: 940px; border-color: rgba(232,77,138,0.03); animation: hpulse 7s 4s ease infinite; }
+@keyframes hpulse {
+  0%,100% { transform: translate(-50%,-50%) scale(1); opacity: 1; }
+  50% { transform: translate(-50%,-50%) scale(1.05); opacity: 0.4; }
+}
+.hero-label {
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase;
+  color: rgba(248,240,255,0.35); margin-bottom: 2rem; position: relative; z-index: 2;
+  display: inline-flex; align-items: center; gap: 0.6rem;
+}
+.hero-label::before, .hero-label::after {
+  content: ''; display: block; width: 24px; height: 1px; background: rgba(248,240,255,0.25);
+}
+.hero h1 {
+  font-size: clamp(2.8rem, 6vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05;
+  margin-bottom: 1.5rem; position: relative; z-index: 2;
+  background: var(--grad3); background-size: 300% 300%;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  animation: grad-ripple 8s ease infinite;
+}
+@keyframes grad-ripple {
+  0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; }
+}
+.hero-sub {
+  font-size: 1.05rem; font-weight: 400; color: rgba(248,240,255,0.55);
+  max-width: 520px; margin-bottom: 1rem; position: relative; z-index: 2; line-height: 1.7;
+}
+.hero-tagline {
+  font-size: 0.82rem; color: rgba(248,240,255,0.3);
+  position: relative; z-index: 2; margin-bottom: 2rem;
+}
+.hero-tags {
+  display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap;
+  position: relative; z-index: 2; margin-bottom: 3rem;
+}
+.hero-tag {
+  font-size: 0.56rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+  padding: 0.3rem 0.75rem; border: 1px solid rgba(123,47,190,0.2); color: rgba(248,240,255,0.35);
+}
+.scroll-indicator {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+  color: rgba(248,240,255,0.25); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase;
+}
+.scroll-line {
+  width: 1px; height: 40px;
+  background: linear-gradient(to bottom, var(--violet), transparent);
+  animation: sl 2s ease infinite;
+}
+@keyframes sl {
+  0% { transform: scaleY(0); transform-origin: top; }
+  50% { transform: scaleY(1); transform-origin: top; }
+  51% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+/* ─── BODY ─── */
+.section-label {
+  font-size: 0.6rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--magenta); margin-bottom: 1.5rem;
+}
+h2 {
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 800; color: var(--text-bright);
+  letter-spacing: -0.01em; line-height: 1.15; margin-bottom: 2rem;
+}
+h3 { font-size: 1.1rem; font-weight: 700; color: var(--text-bright); margin-bottom: 0.8rem; }
+.body-text { max-width: 680px; margin-bottom: 1.5rem; line-height: 1.75; }
+.highlight-block {
+  border-left: 3px solid var(--violet); padding: 1.5rem 2rem; margin: 2.5rem 0;
+  background: rgba(123,47,190,0.06); border-radius: 0 4px 4px 0; max-width: 720px;
+}
+.highlight-block p { font-size: 1rem; font-weight: 500; color: var(--text-bright); line-height: 1.7; font-style: italic; }
+
+/* ─── KBA INTERACTIVE PHASES ─── */
+.kba-section { text-align: center; padding: 8rem 4rem; }
+.kba-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin: 4rem 0 0; position: relative; }
+.kba-btn {
+  padding: 2rem 1.5rem; border: 1px solid var(--border); background: var(--surface);
+  cursor: pointer; transition: all 0.4s ease; position: relative; text-align: center;
+}
+.kba-btn:first-child { border-radius: 4px 0 0 4px; }
+.kba-btn:last-child { border-radius: 0 4px 4px 0; }
+.kba-btn:hover { background: rgba(123,47,190,0.08); }
+.kba-btn.active { background: rgba(123,47,190,0.1); }
+.kba-btn.active::after {
+  content: ''; position: absolute; bottom: -1px; left: 20%; right: 20%; height: 2px;
+}
+.kba-btn:nth-child(1).active::after { background: var(--violet); }
+.kba-btn:nth-child(2).active::after { background: var(--magenta); }
+.kba-btn:nth-child(3).active::after { background: var(--rose); }
+.kba-btn-stage {
+  font-size: 0.55rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase;
+  margin-bottom: 0.6rem; transition: color 0.3s;
+}
+.kba-btn:nth-child(1) .kba-btn-stage { color: var(--violet); }
+.kba-btn:nth-child(2) .kba-btn-stage { color: var(--magenta); }
+.kba-btn:nth-child(3) .kba-btn-stage { color: var(--rose); }
+.kba-btn-title { font-size: 1.8rem; font-weight: 800; transition: color 0.3s; }
+.kba-btn:nth-child(1) .kba-btn-title { color: var(--violet); }
+.kba-btn:nth-child(2) .kba-btn-title { color: var(--magenta); }
+.kba-btn:nth-child(3) .kba-btn-title { color: var(--rose); }
+.kba-btn-sub { font-size: 0.78rem; color: rgba(248,240,255,0.4); margin-top: 0.3rem; font-weight: 500; }
+.kba-btn-arrow {
+  display: inline-block; margin-top: 0.8rem; font-size: 0.6rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: rgba(248,240,255,0.25); transition: all 0.3s;
+}
+.kba-btn:hover .kba-btn-arrow { color: rgba(248,240,255,0.5); }
+.kba-btn.active .kba-btn-arrow { transform: rotate(180deg); }
+.kba-panel {
+  max-height: 0; overflow: hidden; transition: max-height 0.6s ease, padding 0.4s ease, opacity 0.4s ease;
+  opacity: 0; border: 1px solid var(--border); border-top: none;
+  border-radius: 0 0 4px 4px; background: var(--surface); text-align: left;
+}
+.kba-panel.open { max-height: 800px; opacity: 1; padding: 3rem; }
+.kba-panel-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+.kba-panel h3 { margin-top: 1.5rem; }
+.kba-panel h3:first-child { margin-top: 0; }
+.kba-panel .body-text { max-width: none; font-size: 0.85rem; }
+.kba-deliverables {
+  background: rgba(123,47,190,0.04); border: 1px solid var(--border);
+  border-radius: 4px; padding: 1.8rem; align-self: start;
+}
+.kba-deliverables h4 {
+  font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(248,240,255,0.35); margin-bottom: 1rem;
+}
+.kba-del-item {
+  display: flex; align-items: flex-start; gap: 0.7rem;
+  margin-bottom: 0.7rem; font-size: 0.8rem;
+}
+.kba-del-check {
+  width: 14px; height: 14px; border-radius: 2px; border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 3px; font-size: 0.6rem;
+}
+.kba-check-define { color: var(--violet); }
+.kba-check-validate { color: var(--magenta); }
+.kba-check-launch { color: var(--rose); }
+
+/* ─── HOURS TABLE ─── */
+.hours-section { padding: 6rem 4rem; }
+.hours-table { width: 100%; border-collapse: collapse; margin: 2.5rem 0; font-size: 0.82rem; }
+.hours-table th {
+  text-align: left; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
+  color: rgba(248,240,255,0.35); padding: 1rem 1.2rem; border-bottom: 1px solid var(--border);
+}
+.hours-table th:last-child { text-align: right; }
+.hours-table td {
+  padding: 0.8rem 1.2rem; border-bottom: 1px solid rgba(123,47,190,0.06); vertical-align: top;
+}
+.hours-table td:last-child { text-align: right; font-weight: 600; }
+.hours-table tr:hover td { background: rgba(123,47,190,0.03); }
+.stage-tag {
+  display: inline-block; font-size: 0.55rem; font-weight: 700; letter-spacing: 0.15em;
+  text-transform: uppercase; padding: 0.2rem 0.6rem; border-radius: 2px; margin-right: 0.5rem;
+}
+.stage-tag.define { background: rgba(123,47,190,0.15); color: var(--violet); }
+.stage-tag.validate { background: rgba(199,36,177,0.15); color: var(--magenta); }
+.stage-tag.launch { background: rgba(232,77,138,0.15); color: var(--rose); }
+.stage-tag.partner { background: rgba(248,240,255,0.06); color: rgba(248,240,255,0.35); font-style: italic; }
+.hours-total { border-top: 2px solid var(--violet); }
+.hours-total td { font-weight: 700; color: var(--text-bright); padding-top: 1.2rem; }
+.hours-note { border-top: none; }
+.hours-note td { color: rgba(248,240,255,0.35); font-size: 0.78rem; font-style: italic; font-weight: 400; }
+
+/* Investment cards */
+.investment-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin: 3rem 0; }
+.invest-card {
+  text-align: center; padding: 2.5rem 2rem;
+  border: 1px solid var(--border); border-radius: 4px; position: relative; overflow: hidden;
+}
+.invest-card.primary {
+  background: linear-gradient(135deg, rgba(123,47,190,0.12), rgba(199,36,177,0.08));
+  border-color: rgba(123,47,190,0.3);
+}
+.invest-label {
+  font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(248,240,255,0.35); margin-bottom: 0.8rem;
+}
+.invest-value { font-size: 2rem; font-weight: 800; color: var(--text-bright); }
+.invest-value.gradient {
+  background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.invest-note { font-size: 0.72rem; color: rgba(248,240,255,0.35); margin-top: 0.5rem; }
+
+/* ─── SCORING TABLE ─── */
+.scoring-table { width: 100%; border-collapse: collapse; margin: 2rem 0; font-size: 0.78rem; }
+.scoring-table th {
+  text-align: left; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  color: rgba(248,240,255,0.35); padding: 0.8rem 1rem; border-bottom: 1px solid var(--border);
+  background: rgba(123,47,190,0.06);
+}
+.scoring-table td {
+  padding: 0.7rem 1rem; border-bottom: 1px solid rgba(123,47,190,0.06); vertical-align: top;
+}
+.scoring-table tr:hover td { background: rgba(123,47,190,0.03); }
+.score-weight { color: var(--magenta); font-weight: 700; }
+
+/* Outcome thresholds */
+.outcome-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; margin: 2rem 0; }
+.outcome-card {
+  padding: 1.5rem; border: 1px solid var(--border); border-radius: 4px; text-align: center;
+}
+.outcome-card.strong { border-color: rgba(123,47,190,0.3); background: rgba(123,47,190,0.06); }
+.outcome-card.conditional { border-color: rgba(199,36,177,0.2); }
+.outcome-card.weak { border-color: rgba(232,77,138,0.15); }
+.outcome-score { font-size: 1.4rem; font-weight: 800; margin-bottom: 0.3rem; }
+.outcome-card.strong .outcome-score { color: var(--violet); }
+.outcome-card.conditional .outcome-score { color: var(--magenta); }
+.outcome-card.weak .outcome-score { color: var(--rose); }
+.outcome-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(248,240,255,0.5); margin-bottom: 0.5rem; }
+.outcome-desc { font-size: 0.75rem; color: rgba(248,240,255,0.4); line-height: 1.5; }
+
+/* ─── DIAGNOSTIC ─── */
+.diag-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 2rem 0; }
+.diag-card {
+  padding: 1.5rem; border: 1px solid var(--border); border-radius: 4px;
+}
+.diag-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.5rem; }
+.diag-card:nth-child(1) .diag-label { color: rgba(123,47,190,0.7); }
+.diag-card:nth-child(2) .diag-label { color: rgba(199,36,177,0.7); }
+.diag-card:nth-child(3) .diag-label { color: rgba(232,77,138,0.7); }
+.diag-card:nth-child(4) .diag-label { color: rgba(248,240,255,0.3); }
+.diag-title { font-size: 0.88rem; font-weight: 700; color: var(--text-bright); margin-bottom: 0.4rem; }
+.diag-desc { font-size: 0.78rem; color: rgba(248,240,255,0.45); line-height: 1.55; }
+
+/* ─── WHY / CTA / FOOTER ─── */
+.why-section { text-align: center; padding: 8rem 4rem; }
+.manifesto-quote {
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem); font-weight: 600; font-style: italic;
+  max-width: 650px; margin: 2rem auto; line-height: 1.6;
+  background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.cta-section { text-align: center; padding: 6rem 4rem 4rem; position: relative; }
+.cta-section::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+.btn-primary {
+  display: inline-block; padding: 0.9rem 2.5rem;
+  background: var(--grad); color: var(--lavender);
+  font-family: 'Sora', sans-serif; font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none;
+  border-radius: 2px; transition: opacity 0.3s; border: none; cursor: pointer;
+}
+.btn-primary:hover { opacity: 0.85; }
+.btn-ghost {
+  display: inline-block; padding: 0.9rem 2rem;
+  border: 1px solid rgba(248,240,255,0.12); color: rgba(248,240,255,0.5);
+  font-family: 'Sora', sans-serif; font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none;
+  border-radius: 2px; transition: all 0.3s; margin-left: 1rem;
+}
+.btn-ghost:hover { color: var(--lavender); border-color: rgba(248,240,255,0.3); }
+
+footer {
+  text-align: center; padding: 3rem 4rem;
+  border-top: 1px solid var(--border); max-width: 1200px; margin: 0 auto;
+}
+.footer-tagline { font-size: 0.75rem; font-style: italic; color: rgba(248,240,255,0.3); margin: 0.5rem 0 0.3rem; }
+.footer-link { font-size: 0.72rem; color: var(--violet); text-decoration: none; }
+.section-divider {
+  height: 1px; max-width: 1200px; margin: 0 auto;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+
+/* ─── SCROLL ANIMATION ─── */
+.fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 900px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  section, .hours-section, .kba-section, .why-section, .cta-section { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .hero { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .hero h1 { font-size: 2.4rem; }
+  .investment-grid, .outcome-grid { grid-template-columns: 1fr; }
+  .diag-grid { grid-template-columns: 1fr; }
+  .kba-bar { grid-template-columns: 1fr; }
+  .kba-btn:first-child { border-radius: 4px 4px 0 0; }
+  .kba-btn:last-child { border-radius: 0 0 4px 4px; }
+  .kba-panel-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .kba-panel.open { padding: 2rem 1.5rem; }
+  .hours-table { font-size: 0.72rem; }
+  .hours-table td, .hours-table th { padding: 0.6rem 0.8rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="unicorn-logo" href="https://unicornunited.co">
+    <svg class="unicorn-mark" viewBox="0 0 120 148" fill="none"><defs><linearGradient id="nav-ug" x1="60" y1="148" x2="60" y2="0"><stop offset="0%" stop-color="#C724B1"/><stop offset="100%" stop-color="#7B2FBE"/></linearGradient><clipPath id="nav-uc"><path d="M4,8 L30,136 L60,60 L90,136 L116,8 Z"/></clipPath></defs><rect width="120" height="148" fill="url(#nav-ug)" clip-path="url(#nav-uc)"/></svg>
+    <span class="unicorn-wordmark">UNICORN</span>
+  </a>
+  <div class="nav-links">
+    <a href="#framework">Framework</a>
+    <a href="#validation">Validation</a>
+    <a href="#investment">Investment</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-ring"></div>
+  <div class="hero-ring"></div>
+  <div class="hero-ring"></div>
+
+  <div class="hero-label">Unicorn Product</div>
+  <h1>Brand to Market</h1>
+  <p class="hero-sub">Define your brand, validate it with real audiences, and launch with confidence. One structured engagement from positioning to first revenue.</p>
+  <p class="hero-tagline">Three gated phases &mdash; each backed by real audience data</p>
+  <div class="hero-tags">
+    <span class="hero-tag">DTC Products</span>
+    <span class="hero-tag">Business Services</span>
+    <span class="hero-tag">Pre-Launch &amp; Pivot</span>
+  </div>
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- THE PROBLEM -->
+<section class="fade-up">
+  <div class="section-label">The Problem</div>
+  <h2>Most brands launch on assumptions.<br>Then spend months learning what they should have tested.</h2>
+  <p class="body-text">Whether you're launching a product or a service, the same risks apply. You define your positioning in a room, build a campaign around it, and hope the market agrees. If it doesn't, you've spent the budget and you're none the wiser about <em>what</em> went wrong.</p>
+
+  <div class="highlight-block">
+    <p>Brand to Market separates what works from what doesn't before you commit. Three gated phases &mdash; each one only starts when the evidence says it should.</p>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- INTERACTIVE FRAMEWORK -->
+<section id="framework" class="kba-section fade-up">
+  <div class="section-label">The Framework</div>
+  <h2>Three phases. One clear path to market.</h2>
+  <p class="body-text" style="max-width:600px; margin: 0 auto;">Each phase builds on the last. You only move forward when the evidence says you should. Click each phase to explore.</p>
+
+  <div class="kba-bar">
+    <div class="kba-btn active" onclick="togglePanel(this, 'panel-define')">
+      <div class="kba-btn-stage">Phase 1</div>
+      <div class="kba-btn-title">Define</div>
+      <div class="kba-btn-sub">Brand Definition</div>
+      <div class="kba-btn-arrow">&#9662;</div>
+    </div>
+    <div class="kba-btn" onclick="togglePanel(this, 'panel-validate')">
+      <div class="kba-btn-stage">Phase 2</div>
+      <div class="kba-btn-title">Validate</div>
+      <div class="kba-btn-sub">Campaign Testing</div>
+      <div class="kba-btn-arrow">&#9662;</div>
+    </div>
+    <div class="kba-btn" onclick="togglePanel(this, 'panel-launch')">
+      <div class="kba-btn-stage">Phase 2b</div>
+      <div class="kba-btn-title">Launch</div>
+      <div class="kba-btn-sub">Conditional Activation</div>
+      <div class="kba-btn-arrow">&#9662;</div>
+    </div>
+  </div>
+
+  <!-- DEFINE -->
+  <div class="kba-panel open" id="panel-define">
+    <div class="kba-panel-grid">
+      <div>
+        <h3>Start Your Story</h3>
+        <p class="body-text">We begin with <strong style="color:var(--text-bright)">Start Your Story</strong> &mdash; Unicorn's AI-powered brand game, played individually. It defines your positioning, messaging, and emotional territory. The outputs feed directly into creative concept development.</p>
+
+        <h3>Panel Survey + Message Testing</h3>
+        <p class="body-text">A 200+ response panel survey validates both product appeal and creative effectiveness separately. The blind-then-reveal methodology isolates product desirability from brand story impact &mdash; so you know exactly what's working.</p>
+      </div>
+      <div class="kba-deliverables">
+        <h4>Deliverables</h4>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-define">&check;</div><span>Start Your Story brand game</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-define">&check;</div><span>Positioning statement + messaging</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-define">&check;</div><span>3&ndash;4 creative variants for testing</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-define">&check;</div><span>Panel survey (200+ targeted responses)</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-define">&check;</div><span>Product vs creative diagnostic</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-define">&check;</div><span>Survey analysis + variant ranking</span></div>
+        <h4 style="margin-top:1.5rem;">Gate</h4>
+        <p style="font-size:0.78rem;color:rgba(248,240,255,0.45);">Client approves positioning. Survey diagnostic confirms creative direction. Then Phase 2 begins.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- VALIDATE -->
+  <div class="kba-panel" id="panel-validate">
+    <div class="kba-panel-grid">
+      <div>
+        <h3>Channel Build + Campaign Testing</h3>
+        <p class="body-text">We build the channels &mdash; landing page, social presence, email capture &mdash; and produce the campaign creative. The lead variant is informed by survey results. Then we run paid campaign testing across social platforms.</p>
+
+        <h3>Validation Scorecard</h3>
+        <p class="body-text">Performance is scored across <strong style="color:var(--text-bright)">seven behavioural signals</strong>, from landing page conversion and ad engagement to purchase intent and audience fit. The composite score determines what happens next.</p>
+      </div>
+      <div class="kba-deliverables">
+        <h4>Deliverables</h4>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-validate">&check;</div><span>Landing page (product story + email capture)</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-validate">&check;</div><span>Social channel setup + seed content</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-validate">&check;</div><span>Social channel management (2&ndash;4 weeks)</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-validate">&check;</div><span>Creative variant production</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-validate">&check;</div><span>Paid campaign testing + management</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-validate">&check;</div><span>Validation report + recommendation</span></div>
+        <h4 style="margin-top:1.5rem;">Gate</h4>
+        <p style="font-size:0.78rem;color:rgba(248,240,255,0.45);">Validation score &ge; 2.5 triggers Phase 2b. Below 2.5, use the diagnostic to determine what to fix.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- LAUNCH -->
+  <div class="kba-panel" id="panel-launch">
+    <div class="kba-panel-grid">
+      <div>
+        <h3>First Sale Activation</h3>
+        <p class="body-text">The channels are already live. The audience is already warm. Phase 2b converts that momentum directly into your first sale &mdash; whether that's a product drop, a pre-order, a booking page, or a lead gen campaign.</p>
+
+        <h3>Why It's Conditional</h3>
+        <p class="body-text">If validation is weak, spending more on launch won't fix the underlying issue. The diagnostic matrix tells you whether the problem is the product/service or the creative execution. Fix the right thing first, then come back to launch.</p>
+      </div>
+      <div class="kba-deliverables">
+        <h4>Deliverables</h4>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-launch">&check;</div><span>E-commerce / booking page setup</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-launch">&check;</div><span>Launch campaign creative</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-launch">&check;</div><span>Email nurture sequence (2&ndash;3 emails)</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-launch">&check;</div><span>Launch management + social coverage</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-launch">&check;</div><span>Paid launch promotion</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-launch">&check;</div><span>Post-launch analysis + final scorecard</span></div>
+        <h4 style="margin-top:1.5rem;">Condition</h4>
+        <p style="font-size:0.78rem;color:rgba(248,240,255,0.45);">Phase 2b hours are only incurred if validation score reaches 2.5+. If not, these hours are not spent.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- VALIDATION SCORING -->
+<section id="validation" class="fade-up">
+  <div class="section-label">How We Measure</div>
+  <h2>Seven signals. One composite score.</h2>
+  <p class="body-text">Validation is scored across multiple behavioural signals &mdash; from passive interest to active commitment. The signals adapt to your context: DTC products use sell-through and purchase intent; services use booking rate and lead quality.</p>
+
+  <table class="scoring-table">
+    <thead>
+      <tr><th>Signal</th><th>What It Measures</th><th>Weight</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Landing page conversion</td><td>Email signup / enquiry rate from traffic</td><td class="score-weight">20%</td></tr>
+      <tr><td>Purchase / booking intent</td><td>Survey: would buy or book at stated price</td><td class="score-weight">20%</td></tr>
+      <tr><td>Ad engagement</td><td>Click-through rate on paid creatives</td><td class="score-weight">15%</td></tr>
+      <tr><td>Social traction</td><td>Organic follows, saves, and engagement</td><td class="score-weight">10%</td></tr>
+      <tr><td>Story lift</td><td>Intent shift after brand story reveal</td><td class="score-weight">10%</td></tr>
+      <tr><td>Audience fit</td><td>% of engaged users in target demographic</td><td class="score-weight">10%</td></tr>
+      <tr><td>First sale / drop</td><td>Conversion from launch activation</td><td class="score-weight">15%</td></tr>
+    </tbody>
+  </table>
+
+  <div class="outcome-grid">
+    <div class="outcome-card strong">
+      <div class="outcome-score">4.0 &ndash; 5.0</div>
+      <div class="outcome-label">Strong</div>
+      <div class="outcome-desc">Proceed to launch with confidence. Scale spend and activate full plan.</div>
+    </div>
+    <div class="outcome-card conditional">
+      <div class="outcome-score">2.5 &ndash; 3.9</div>
+      <div class="outcome-label">Conditional</div>
+      <div class="outcome-desc">Refine based on signal gaps. Re-test the weakest layer before committing.</div>
+    </div>
+    <div class="outcome-card weak">
+      <div class="outcome-score">1.0 &ndash; 2.4</div>
+      <div class="outcome-label">Weak</div>
+      <div class="outcome-desc">Revisit positioning, pricing, or audience. Pivot before further investment.</div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:3rem;">Diagnostic Matrix</h3>
+  <p class="body-text">If something underperforms, you need to know what to fix. The survey methodology isolates product/service desirability from creative performance.</p>
+
+  <div class="diag-grid">
+    <div class="diag-card">
+      <div class="diag-label">Product Strong + Creative Strong</div>
+      <div class="diag-title">Full validation</div>
+      <div class="diag-desc">Both resonate. Proceed to launch.</div>
+    </div>
+    <div class="diag-card">
+      <div class="diag-label">Product Strong + Creative Weak</div>
+      <div class="diag-title">Rework creative</div>
+      <div class="diag-desc">Demand exists. Messaging or visuals need work. Re-test creative only.</div>
+    </div>
+    <div class="diag-card">
+      <div class="diag-label">Product Weak + Creative Strong</div>
+      <div class="diag-title">Revisit offering</div>
+      <div class="diag-desc">Brand story lands but the offering underperforms. Adjust product, price, or service scope.</div>
+    </div>
+    <div class="diag-card">
+      <div class="diag-label">Both Weak</div>
+      <div class="diag-title">Fundamental rethink</div>
+      <div class="diag-desc">Neither is resonating. Return to positioning before further spend.</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- INVESTMENT -->
+<section id="investment" class="hours-section fade-up">
+  <div class="section-label">Investment</div>
+  <h2>Structured hours. Gated spend.<br>You only pay for what's validated.</h2>
+
+  <table class="hours-table">
+    <thead>
+      <tr><th>Phase</th><th>Activity</th><th style="text-align:right">Hours</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="stage-tag define">Phase 1</span></td><td>Start Your Story game setup + review</td><td>1</td></tr>
+      <tr><td></td><td>Positioning statement + messaging</td><td>3</td></tr>
+      <tr><td></td><td>Creative concept development (3&ndash;4 variants)</td><td>6</td></tr>
+      <tr><td></td><td>Creative concept presentation</td><td>1</td></tr>
+      <tr><td></td><td>Survey design + deployment</td><td>2</td></tr>
+      <tr><td></td><td>Survey analysis + reporting</td><td>2</td></tr>
+      <tr><td><span class="stage-tag validate">Phase 2</span></td><td>Landing page build</td><td>4</td></tr>
+      <tr><td></td><td>Social channel setup + seed content</td><td>4</td></tr>
+      <tr><td></td><td>Social management (testing period)</td><td>6</td></tr>
+      <tr><td></td><td>Creative variant production</td><td>5</td></tr>
+      <tr><td></td><td>Validation report + recommendation</td><td>3</td></tr>
+      <tr><td><span class="stage-tag partner">Adtoro</span></td><td>Campaign setup, monitoring, reporting</td><td>TBC</td></tr>
+      <tr><td><span class="stage-tag launch">Phase 2b</span></td><td>E-commerce / booking setup</td><td>3</td></tr>
+      <tr><td></td><td>Launch campaign creative</td><td>3</td></tr>
+      <tr><td></td><td>Email nurture sequence</td><td>2</td></tr>
+      <tr><td></td><td>Launch management</td><td>2</td></tr>
+      <tr><td></td><td>Social management (launch period)</td><td>2</td></tr>
+      <tr><td></td><td>Post-launch analysis</td><td>2</td></tr>
+      <tr><td><span class="stage-tag partner">Adtoro</span></td><td>Drop / launch promotion</td><td>TBC</td></tr>
+      <tr class="hours-total"><td></td><td><strong>Total Unicorn Hours</strong></td><td><strong>37 + 14</strong></td></tr>
+      <tr class="hours-note"><td></td><td colspan="2">Phase 2b hours (14) are conditional on validation score &ge; 2.5</td></tr>
+    </tbody>
+  </table>
+
+  <div class="investment-grid">
+    <div class="invest-card">
+      <div class="invest-label">Phase 1 + 2</div>
+      <div class="invest-value gradient">37 hrs</div>
+      <div class="invest-note">Definition + validation</div>
+    </div>
+    <div class="invest-card primary">
+      <div class="invest-label">Phase 2b (conditional)</div>
+      <div class="invest-value gradient">+14 hrs</div>
+      <div class="invest-note">Only on strong validation</div>
+    </div>
+    <div class="invest-card">
+      <div class="invest-label">Pass-through Costs</div>
+      <div class="invest-value gradient">&pound;1.1&ndash;1.6k+</div>
+      <div class="invest-note">Survey panel + ad spend + management</div>
+    </div>
+  </div>
+
+  <p class="body-text" style="font-size:0.82rem; color:rgba(248,240,255,0.4); margin-top:1rem;">All Unicorn hours at agreed rate. Survey panel &pound;200&ndash;350 (Pollfish recommended). Digital ad spend &pound;500+ and campaign management &pound;400&ndash;800 delivered by our digital media partner. Phase 2b promotion costs TBC and conditional.</p>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- WHY UNICORN -->
+<section class="why-section fade-up">
+  <div class="section-label">Why Unicorn</div>
+  <h2>Enterprise-quality thinking.<br>Founder-stage speed.</h2>
+  <p class="body-text" style="max-width:600px; margin: 0 auto 2rem;">We don't do brand-as-decoration. We build the clarity, the evidence, and the conviction that gets a brand to market &mdash; and tells you honestly whether it's ready.</p>
+  <div class="manifesto-quote">The gap between a good idea and a validated brand is evidence. We close that gap.</div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2>Ready to take your brand to market?</h2>
+  <p class="body-text" style="max-width:500px; margin: 0 auto 2.5rem; text-align:center;">Tell us what you're building. We'll show you exactly how Brand to Market works for your product or service.</p>
+  <a href="https://unicornunited.co/#contact" class="btn-primary">Let's talk &rarr;</a>
+  <a href="https://unicornunited.co" class="btn-ghost">unicornunited.co</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a class="unicorn-logo" href="https://unicornunited.co" style="justify-content:center; margin-bottom: 0.5rem;">
+    <svg class="unicorn-mark" viewBox="0 0 120 148" fill="none"><defs><linearGradient id="ft-ug" x1="60" y1="148" x2="60" y2="0"><stop offset="0%" stop-color="#C724B1"/><stop offset="100%" stop-color="#7B2FBE"/></linearGradient><clipPath id="ft-uc"><path d="M4,8 L30,136 L60,60 L90,136 L116,8 Z"/></clipPath></defs><rect width="120" height="148" fill="url(#ft-ug)" clip-path="url(#ft-uc)"/></svg>
+    <span class="unicorn-wordmark">UNICORN</span>
+  </a>
+  <div class="footer-tagline">Your brand deserves an owner.</div>
+  <a href="https://unicornunited.co" class="footer-link">unicornunited.co</a>
+</footer>
+
+<script>
+function togglePanel(btn, panelId) {
+  const allBtns = document.querySelectorAll('.kba-btn');
+  const allPanels = document.querySelectorAll('.kba-panel');
+  const targetPanel = document.getElementById(panelId);
+  const isAlreadyOpen = btn.classList.contains('active');
+  allBtns.forEach(b => b.classList.remove('active'));
+  allPanels.forEach(p => p.classList.remove('open'));
+  if (!isAlreadyOpen) {
+    btn.classList.add('active');
+    targetPanel.classList.add('open');
+  }
+}
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

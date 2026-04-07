@@ -434,13 +434,7 @@ footer{background:var(--ink);border-top:1px solid rgba(123,47,190,.1);padding:3.
         <div class="wmr-status"><div class="wmr-dot"></div><div class="wmr-stxt" id="wmrStatus">Session Active</div></div>
         <button class="wmr-dl" id="wmrDl" onclick="dlOut()">↓ Save Output</button>
       </div>
-      <div class="api-notice" id="apiNotice">
-        <strong style="color:rgba(181,126,255,.9);">Connect the AI</strong> — Enter your Anthropic API key to activate this workbook. Stays in this tab only, never stored. <a href="https://console.anthropic.com/" target="_blank">Get a free key →</a>
-      </div>
-      <div class="api-key-row" id="apiKeyRow">
-        <input type="password" class="api-key-in" id="apiKeyIn" placeholder="sk-ant-...">
-        <button class="api-key-btn" onclick="setKey()">Activate</button>
-      </div>
+      <!-- API key handled server-side via Netlify function -->
       <div class="wmr-msgs" id="wmrMsgs"></div>
       <div class="wmr-inp">
         <div class="wmr-inp-row">
@@ -583,7 +577,7 @@ Priority 3: [Action]
 ---`}
 };
 
-let curWb=null,hist=[],sessOut='',apiKey='',loading=false;
+let curWb=null,hist=[],sessOut='',loading=false;
 
 function openWb(id){
   curWb=id;hist=[];sessOut='';
@@ -599,42 +593,19 @@ function openWb(id){
   const o=document.getElementById('wbModal');
   o.style.display='flex';requestAnimationFrame(()=>o.style.opacity='1');
   document.body.style.overflow='hidden';
-  if(!apiKey){
-    document.getElementById('apiNotice').style.display='block';
-    document.getElementById('apiKeyRow').style.display='flex';
-    document.getElementById('wmrStatus').textContent='API Key Needed';
-    showDemo(id);
-  } else startSess();
+  startSess();
 }
 function closeWb(){
   const o=document.getElementById('wbModal');
   o.style.opacity='0';setTimeout(()=>{o.style.display='none';},400);
   document.body.style.overflow='';
 }
-function setKey(){
-  const v=document.getElementById('apiKeyIn').value.trim();
-  if(!v.startsWith('sk-')){document.getElementById('apiKeyIn').style.borderColor='#e84d8a';return;}
-  apiKey=v;
-  document.getElementById('apiNotice').style.display='none';
-  document.getElementById('apiKeyRow').style.display='none';
-  document.getElementById('wmrMsgs').innerHTML='';
-  hist=[];startSess();
-}
-function showDemo(id){
-  const d={
-    seed:`Hi — I'm the Unicorn AI. I'm here to help you find the real truth at the heart of your business.\n\nNot the polished pitch version — the honest, human reason you started and why you keep going.\n\n**Enter your API key above to activate the full session.** No brand knowledge needed. Just honesty.`,
-    map:`Hi — I'm the Unicorn AI.\n\nThis session will help you build a clear, simple brand picture — your purpose, how you operate, and what makes you the right choice for your customers.\n\nEnter your API key above to get started.`,
-    mirror:`Hi — I'm the Unicorn AI.\n\nThis session asks an honest question: *Is the world seeing you the way you see yourself?*\n\nThe gap between intention and reality is where the most useful work happens. Enter your API key above to begin.`,
-    culture:`Hi — I'm the Unicorn AI.\n\nThis session is about your team — your biggest and most underused brand asset.\n\nWe'll look honestly at whether your culture reflects what your business stands for. Enter your API key above to get started.`
-  };
-  addMsg('ai',d[id]);
-}
 async function startSess(){
   document.getElementById('wmrStatus').textContent='Session Active';
   await callAI('Begin the session now. Introduce yourself briefly and warmly as the Unicorn AI. In two or three short sentences explain what this session will help with and what they\'ll walk away with. Then ask your very first question.',true);
 }
 async function sendMsg(){
-  if(loading||!apiKey)return;
+  if(loading)return;
   const ta=document.getElementById('wmrTa');
   const txt=ta.value.trim();if(!txt)return;
   ta.value='';autoRes(ta);
@@ -644,18 +615,17 @@ async function sendMsg(){
 function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}}
 function autoRes(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,108)+'px';}
 async function callAI(ov,isInit){
-  if(!apiKey)return;
   loading=true;document.getElementById('wmrSend').disabled=true;
   const t=addTyping();
   const msgs=isInit?[{role:'user',content:ov}]:[...hist];
   try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{
+    const r=await fetch('/.netlify/functions/claude-proxy',{
       method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01'},
+      headers:{'Content-Type':'application/json'},
       body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:WBS[curWb].sys,messages:msgs})
     });
     const d=await r.json();removeTyping(t);
-    if(d.error){addMsg('ai','⚠️ '+(d.error.message||'Error. Check your API key.'));}
+    if(d.error){addMsg('ai','⚠️ '+(d.error.message||'Something went wrong. Please try again.'));}
     else{
       const reply=d.content?.[0]?.text||'';
       hist.push({role:'assistant',content:reply});
@@ -663,7 +633,7 @@ async function callAI(ov,isInit){
       const hasOut=reply.includes('✅ YOUR PURPOSE')||reply.includes('✅ YOUR BRAND')||reply.includes('🪞 YOUR ALIGNMENT')||reply.includes('🧭 YOUR CULTURE');
       if(hasOut){sessOut=reply;document.getElementById('wmrDl').style.display='block';document.getElementById('wmrStatus').textContent='Output Ready';}
     }
-  }catch(e){removeTyping(t);addMsg('ai','⚠️ Connection error. Check your API key.');}
+  }catch(e){removeTyping(t);addMsg('ai','⚠️ Connection error. Please try again.');}
   loading=false;document.getElementById('wmrSend').disabled=false;
 }
 function updProg(){
