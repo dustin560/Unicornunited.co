@@ -369,13 +369,15 @@ footer{background:var(--ink);border-top:1px solid rgba(123,47,190,.1);padding:3.
       </div>
       <div class="hc-suggestions" id="hcSugs">
         <span class="hc-sug" data-q="I need to use AI">Use AI</span>
-        <span class="hc-sug" data-q="I need to launch">Launch a brand</span>
-        <span class="hc-sug" data-q="I need brand leadership">Brand leadership</span>
+        <span class="hc-sug" data-q="I need to launch a product">Launch a brand</span>
+        <span class="hc-sug" data-q="I need ongoing brand leadership">Brand leadership</span>
         <span class="hc-sug" data-q="I need my team aligned">Align my team</span>
         <span class="hc-sug" data-q="I need brand foundations">Brand foundations</span>
-        <span class="hc-sug" data-q="I need a quick brand sprint">Fast brand clarity</span>
-        <span class="hc-sug" data-q="I want a workbook">DIY workbook</span>
-        <span class="hc-sug" data-q="I want to play start your story">Start Your Story</span>
+        <span class="hc-sug" data-q="I need clarity and positioning fast">I need clarity fast</span>
+        <span class="hc-sug" data-q="I want a DIY workbook">DIY workbook</span>
+        <span class="hc-sug" data-q="I want to play start your story">Build my story</span>
+        <span class="hc-sug" data-q="I don't know where to start">I don't know where to start</span>
+        <span class="hc-sug" data-q="I'm ready to grow and need a dedicated partner">I'm ready to grow</span>
       </div>
       <div class="hc-result" id="hcResult"></div>
     </div>
@@ -1092,7 +1094,8 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){
     {keys:['sprint','intensive','fast','quick','two week','2 week','rapid','clarity','positioning','messaging'],name:'Brand Sprint',desc:'2-week intensive to build clarity, positioning, and messaging',url:'#products',action:'link'},
     {keys:['workbook','diy','self','learn','exercise','template','framework','belief workbook'],name:'Brand Belief Workbook',desc:'AI-powered brand clarity framework you can work through yourself',url:'/workbooks',action:'link'},
     {keys:['free','download','resource','guide'],name:'Free Workbooks',desc:'Guided AI workbooks to start building your brand right now',url:'/workbooks',action:'link'},
-    {keys:['story','game','play','interactive','start your story'],name:'Start Your Story',desc:'Our AI-powered brand game — define your brand in one session',url:'https://start-your-story-production-75f3.up.railway.app',action:'link'}
+    {keys:['story','game','play','interactive','start your story','build my story'],name:'Start Your Story',desc:'Our AI-powered brand game — define your brand in one session',url:'https://start-your-story-production-75f3.up.railway.app',action:'link'},
+    {keys:['don\'t know','not sure','where to start','help','confused','lost','no idea','advice','unsure','ready to grow'],name:'Let\'s talk',desc:'Tell us where you are and we\'ll point you in the right direction',url:null,action:'contact'}
   ];
 
   var input=document.getElementById('hcInput');
