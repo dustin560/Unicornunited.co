@@ -373,6 +373,9 @@ footer{background:var(--ink);border-top:1px solid rgba(123,47,190,.1);padding:3.
         <span class="hc-sug" data-q="I need brand leadership">Brand leadership</span>
         <span class="hc-sug" data-q="I need my team aligned">Align my team</span>
         <span class="hc-sug" data-q="I need brand foundations">Brand foundations</span>
+        <span class="hc-sug" data-q="I need a quick brand sprint">Fast brand clarity</span>
+        <span class="hc-sug" data-q="I want a workbook">DIY workbook</span>
+        <span class="hc-sug" data-q="I want to play start your story">Start Your Story</span>
       </div>
       <div class="hc-result" id="hcResult"></div>
     </div>
@@ -1081,11 +1084,15 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){
 // ════════════════════════════════════════
 (function(){
   var offers = [
-    {keys:['ai','artificial','automat','chatgpt','gpt','machine','tech'],name:'AI for Business',desc:'Practical AI strategy for your brand and operations',url:'/ai',action:'link'},
-    {keys:['launch','market','product','dtc','revenue','start','sell','go to market','validate'],name:'Brand to Market',desc:'From positioning to first revenue — validated',url:'/brand-to-market',action:'link'},
-    {keys:['leader','partner','fractional','strateg','direction','ongoing','month','cmo','dedicated'],name:'Dedicated Brand Partner',desc:'Ongoing strategy, coaching, and creative direction',url:null,action:'partner'},
-    {keys:['team','align','internal','culture','workshop','staff','onboard','employ','get on board'],name:'Brand Workshop',desc:'Get your whole team behind your brand',url:null,action:'contact'},
-    {keys:['foundation','toolkit','basics','identity','logo','guid','asset','brand kit','start from scratch'],name:'Brand Toolkit',desc:'The foundations your brand needs to grow',url:null,action:'contact'}
+    {keys:['ai','artificial','automat','chatgpt','gpt','machine','tech','efficien'],name:'AI for Business',desc:'Practical AI strategy for your brand and operations',url:'/ai',action:'link'},
+    {keys:['launch','market','product','dtc','revenue','go to market','validate','first sale'],name:'Brand to Market',desc:'From positioning to first revenue — validated',url:'/brand-to-market',action:'link'},
+    {keys:['leader','partner','fractional','strateg','direction','ongoing','month','cmo','dedicated','retained'],name:'Dedicated Brand Partner',desc:'Ongoing strategy, coaching, and creative direction',url:null,action:'partner'},
+    {keys:['team','align','internal','culture','workshop','staff','onboard','employ','get on board','away day'],name:'Brand Workshop',desc:'Get your whole team behind your brand',url:null,action:'contact'},
+    {keys:['foundation','toolkit','basics','identity','logo','guid','asset','brand kit','start from scratch','visual'],name:'Brand Toolkit',desc:'The foundations your brand needs to grow',url:null,action:'contact'},
+    {keys:['sprint','intensive','fast','quick','two week','2 week','rapid','clarity','positioning','messaging'],name:'Brand Sprint',desc:'2-week intensive to build clarity, positioning, and messaging',url:'#products',action:'link'},
+    {keys:['workbook','diy','self','learn','exercise','template','framework','belief workbook'],name:'Brand Belief Workbook',desc:'AI-powered brand clarity framework you can work through yourself',url:'/workbooks',action:'link'},
+    {keys:['free','download','resource','guide'],name:'Free Workbooks',desc:'Guided AI workbooks to start building your brand right now',url:'/workbooks',action:'link'},
+    {keys:['story','game','play','interactive','start your story'],name:'Start Your Story',desc:'Our AI-powered brand game — define your brand in one session',url:'https://start-your-story-production-75f3.up.railway.app',action:'link'}
   ];
 
   var input=document.getElementById('hcInput');
