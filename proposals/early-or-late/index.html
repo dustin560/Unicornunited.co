@@ -287,6 +287,27 @@ footer { text-align: center; padding: 3rem 4rem; border-top: 1px solid var(--bor
 .footer-link { font-size: 0.72rem; color: var(--violet); text-decoration: none; }
 .section-divider { height: 1px; max-width: 1200px; margin: 0 auto; background: linear-gradient(90deg, transparent, var(--border), transparent); }
 
+/* ─── TIMELINE ─── */
+.timeline-intro { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.2rem; margin: 2.5rem 0 3rem; }
+.timeline-stat { padding: 1.5rem; border: 1px solid var(--border); border-radius: 4px; background: rgba(123,47,190,0.03); }
+.timeline-stat-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--violet); margin-bottom: 0.5rem; }
+.timeline-stat-value { font-size: 1.3rem; font-weight: 700; color: var(--text-bright); margin-bottom: 0.3rem; }
+.timeline-stat-note { font-size: 0.75rem; color: rgba(248,240,255,0.45); line-height: 1.4; }
+
+.timeline-table { width: 100%; border-collapse: collapse; margin: 0 0 2rem; font-size: 0.82rem; }
+.timeline-table th {
+  text-align: left; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
+  color: rgba(248,240,255,0.4); padding: 0.9rem 1.2rem; border-bottom: 1px solid var(--border);
+}
+.timeline-table td { padding: 1rem 1.2rem; border-bottom: 1px solid rgba(123,47,190,0.06); vertical-align: top; }
+.timeline-table tr:hover td { background: rgba(123,47,190,0.03); }
+.timeline-week { font-weight: 700; color: var(--text-bright); white-space: nowrap; }
+.timeline-milestone { font-size: 0.72rem; color: var(--magenta); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-top: 0.3rem; }
+.timeline-activity { color: rgba(248,240,255,0.72); line-height: 1.5; }
+.timeline-activity-client { color: rgba(248,240,255,0.55); font-style: italic; font-size: 0.78rem; display: block; margin-top: 0.3rem; }
+.timeline-row-milestone td { background: rgba(199,36,177,0.05); }
+.timeline-row-milestone td:first-child { border-left: 3px solid var(--magenta); padding-left: calc(1.2rem - 3px); }
+
 /* ─── PAYMENT TERMS ─── */
 .terms-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; margin: 2.5rem 0 0; }
 .terms-card { padding: 1.8rem; border: 1px solid var(--border); border-radius: 4px; background: rgba(123,47,190,0.03); }
@@ -339,6 +360,10 @@ footer { text-align: center; padding: 3rem 4rem; border-top: 1px solid var(--bor
   .kba-panel.open { padding: 2rem 1.5rem; }
   .hours-table { font-size: 0.72rem; }
   .hours-table td, .hours-table th { padding: 0.6rem 0.8rem; }
+  .timeline-intro { grid-template-columns: 1fr; }
+  .timeline-table { font-size: 0.72rem; }
+  .timeline-table td, .timeline-table th { padding: 0.6rem 0.7rem; }
+  .terms-grid { grid-template-columns: 1fr; }
   .audience-split { grid-template-columns: 1fr 1fr; }
 }
 </style>
@@ -355,6 +380,8 @@ footer { text-align: center; padding: 3rem 4rem; border-top: 1px solid var(--bor
     <a href="#audience">Audience</a>
     <a href="#approach">Approach</a>
     <a href="#investment">Investment</a>
+    <a href="#timeline">Timeline</a>
+    <a href="#approve">Approve</a>
   </div>
 </nav>
 
@@ -647,6 +674,98 @@ footer { text-align: center; padding: 3rem 4rem; border-top: 1px solid var(--bor
   <p class="body-text" style="font-size:0.82rem; color:rgba(248,240,255,0.4); margin-top:1rem;">
     Value pricing: &pound;5,000 total if all phases activate (approx. 62 hours). No hourly billing &mdash; outcomes, not timesheets. Campaign management, daily monitoring, and creative iteration delivered in-house by Unicorn across Meta and TikTok.<br><br>
     Client-paid costs (billed directly, not through Unicorn): survey panel &pound;200&ndash;350 (Pollfish), Phase 2 ad spend &pound;500&ndash;1,000 (Meta + TikTok), Phase 2b ad spend conditional and scoped with drop plan.</p>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- MILESTONES & TIMELINE -->
+<section id="timeline" class="hours-section fade-up">
+  <div class="section-label">Milestones &amp; Timeline</div>
+  <h2>~8 weeks, end-to-end.<br>Production runs in parallel.</h2>
+  <p class="body-text" style="max-width:680px;">From proposal approval to drop launch, the engagement runs approximately 8 weeks. Unicorn's validation work and Early or Late's production schedule overlap so the first drop is ready to fulfil the moment validation completes. This is indicative; final dates are confirmed at Phase 1 kick-off once supplier lead times and creative readiness are locked in.</p>
+
+  <div class="timeline-intro">
+    <div class="timeline-stat">
+      <div class="timeline-stat-label">Total Duration</div>
+      <div class="timeline-stat-value">~8 weeks</div>
+      <div class="timeline-stat-note">Proposal approval to drop launch</div>
+    </div>
+    <div class="timeline-stat">
+      <div class="timeline-stat-label">Target Launch</div>
+      <div class="timeline-stat-value">Late Jun &ndash; Early Jul</div>
+      <div class="timeline-stat-note">Assuming approval by end April 2026</div>
+    </div>
+    <div class="timeline-stat">
+      <div class="timeline-stat-label">Production Lead</div>
+      <div class="timeline-stat-value">5 weeks</div>
+      <div class="timeline-stat-note">3 wks manufacturing + 2 wks printing</div>
+    </div>
+  </div>
+
+  <table class="timeline-table">
+    <thead>
+      <tr>
+        <th style="width:14%;">Week</th>
+        <th style="width:18%;">Phase</th>
+        <th>Unicorn</th>
+        <th>Early or Late</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="timeline-week">Week 1</td>
+        <td><span class="stage-tag define">Phase 1</span></td>
+        <td class="timeline-activity">Start Your Story brand definition game (shared with core team). Creative concept and messaging development across 3&ndash;4 variants.</td>
+        <td class="timeline-activity">Play Start Your Story game (Raul, Firat, Connor, Sarah). Share remaining artworks for inclusion in the survey.</td>
+      </tr>
+      <tr>
+        <td class="timeline-week">Week 2</td>
+        <td><span class="stage-tag define">Phase 1</span></td>
+        <td class="timeline-activity">Creative concept presentation. Survey design and Pollfish deployment (200+ panel responses, 30&ndash;50 age range, 60% Millennial / 40% Gen Z split). Organic survey distribution through Early or Late network in parallel.</td>
+        <td class="timeline-activity">Sign off creative concept. Share survey with network.</td>
+      </tr>
+      <tr class="timeline-row-milestone">
+        <td class="timeline-week">Week 3<span class="timeline-milestone">Milestone</span></td>
+        <td><span class="stage-tag define">Phase 1</span></td>
+        <td class="timeline-activity"><strong>Survey results + validation scorecard delivered.</strong> Recommendations on artworks, colours, messaging, pricing, audience. Go/no-go on Phase 2.</td>
+        <td class="timeline-activity">Review results. Decide on fabric volumes (white vs black split). <span class="timeline-activity-client">Order fabric from UK supplier if green-lit.</span></td>
+      </tr>
+      <tr>
+        <td class="timeline-week">Week 4</td>
+        <td><span class="stage-tag validate">Phase 2</span></td>
+        <td class="timeline-activity">Landing page build. Instagram setup and seed content. Paid campaign setup across Meta and TikTok. AI-generated T-shirt imagery for ad creative.</td>
+        <td class="timeline-activity"><span class="timeline-activity-client">Manufacturing begins (Week 1 of 3-week production lead).</span></td>
+      </tr>
+      <tr>
+        <td class="timeline-week">Weeks 5&ndash;6</td>
+        <td><span class="stage-tag validate">Phase 2</span></td>
+        <td class="timeline-activity">Campaign goes live. Daily monitoring, creative iteration, audience refinement. Messaging adjusted based on validation signals.</td>
+        <td class="timeline-activity"><span class="timeline-activity-client">Manufacturing continues &rarr; printing begins (Weeks 2&ndash;4 of production).</span></td>
+      </tr>
+      <tr class="timeline-row-milestone">
+        <td class="timeline-week">Week 7<span class="timeline-milestone">Milestone</span></td>
+        <td><span class="stage-tag validate">Phase 2</span></td>
+        <td class="timeline-activity"><strong>Validation report + composite scorecard delivered.</strong> Go/no-go on Phase 2b based on validation score (&ge; 2.5 threshold).</td>
+        <td class="timeline-activity"><span class="timeline-activity-client">Printing completes. T-shirts ready for fulfilment.</span></td>
+      </tr>
+      <tr>
+        <td class="timeline-week">Week 8</td>
+        <td><span class="stage-tag launch">Phase 2b</span></td>
+        <td class="timeline-activity">Shopify / e-commerce setup. Drop campaign creative (organic + paid). Email nurture sequence to warm audience. Paid promo launch.</td>
+        <td class="timeline-activity">Final QC on stock. Confirm fulfilment logistics.</td>
+      </tr>
+      <tr class="timeline-row-milestone">
+        <td class="timeline-week">Week 8+<span class="timeline-milestone">Launch</span></td>
+        <td><span class="stage-tag launch">Phase 2b</span></td>
+        <td class="timeline-activity"><strong>Drop goes live.</strong> Channel + paid promo management through drop period. Post-drop analysis and recommendations for the next batch.</td>
+        <td class="timeline-activity">Fulfil pre-orders. Capture customer feedback for next batch.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="body-text" style="font-size:0.78rem; color:rgba(248,240,255,0.4); margin-top:1rem;">
+    A detailed timing plan will be built in Notion at Phase 1 kick-off and shared with the Early or Late team, linking every deliverable, milestone, and dependency (supplier lead times, printing slots, creative readiness, approvals) in one live view.
+  </p>
 </section>
 
 <div class="section-divider"></div>
