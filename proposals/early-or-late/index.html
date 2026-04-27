@@ -148,7 +148,7 @@ h3 { font-size: 1.1rem; font-weight: 700; color: var(--text-bright); margin-bott
 
 /* ─── KBA INTERACTIVE PHASES ─── */
 .kba-section { text-align: center; padding: 8rem 4rem; }
-.kba-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin: 4rem 0 0; position: relative; }
+.kba-bar { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; margin: 4rem 0 0; position: relative; }
 .kba-btn {
   padding: 2rem 1.5rem; border: 1px solid var(--border); background: var(--surface);
   cursor: pointer; transition: all 0.4s ease; position: relative; text-align: center;
@@ -160,15 +160,12 @@ h3 { font-size: 1.1rem; font-weight: 700; color: var(--text-bright); margin-bott
 .kba-btn.active::after { content: ''; position: absolute; bottom: -1px; left: 20%; right: 20%; height: 2px; }
 .kba-btn:nth-child(1).active::after { background: var(--violet); }
 .kba-btn:nth-child(2).active::after { background: var(--magenta); }
-.kba-btn:nth-child(3).active::after { background: var(--rose); }
 .kba-btn-stage { font-size: 0.55rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 0.6rem; }
 .kba-btn:nth-child(1) .kba-btn-stage { color: var(--violet); }
 .kba-btn:nth-child(2) .kba-btn-stage { color: var(--magenta); }
-.kba-btn:nth-child(3) .kba-btn-stage { color: var(--rose); }
 .kba-btn-title { font-size: 1.8rem; font-weight: 800; }
 .kba-btn:nth-child(1) .kba-btn-title { color: var(--violet); }
 .kba-btn:nth-child(2) .kba-btn-title { color: var(--magenta); }
-.kba-btn:nth-child(3) .kba-btn-title { color: var(--rose); }
 .kba-btn-sub { font-size: 0.78rem; color: rgba(248,240,255,0.4); margin-top: 0.3rem; font-weight: 500; }
 .kba-btn-arrow { display: inline-block; margin-top: 0.8rem; font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(248,240,255,0.25); transition: all 0.3s; }
 .kba-btn:hover .kba-btn-arrow { color: rgba(248,240,255,0.5); }
@@ -194,7 +191,6 @@ h3 { font-size: 1.1rem; font-weight: 700; color: var(--text-bright); margin-bott
 }
 .kba-check-define { color: var(--violet); }
 .kba-check-validate { color: var(--magenta); }
-.kba-check-launch { color: var(--rose); }
 
 /* ─── HOURS TABLE ─── */
 .hours-section { padding: 6rem 4rem; }
@@ -213,15 +209,13 @@ h3 { font-size: 1.1rem; font-weight: 700; color: var(--text-bright); margin-bott
 }
 .stage-tag.define { background: rgba(123,47,190,0.15); color: var(--violet); }
 .stage-tag.validate { background: rgba(199,36,177,0.15); color: var(--magenta); }
-.stage-tag.launch { background: rgba(232,77,138,0.15); color: var(--rose); }
-.stage-tag.partner { background: rgba(248,240,255,0.06); color: rgba(248,240,255,0.35); font-style: italic; }
 .hours-total { border-top: 2px solid var(--violet); }
 .hours-total td { font-weight: 700; color: var(--text-bright); padding-top: 1.2rem; }
 .hours-note { border-top: none; }
 .hours-note td { color: rgba(248,240,255,0.35); font-size: 0.78rem; font-style: italic; font-weight: 400; }
 
 /* Investment cards */
-.investment-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin: 3rem 0; }
+.investment-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; margin: 3rem 0; }
 .invest-card { text-align: center; padding: 2.5rem 2rem; border: 1px solid var(--border); border-radius: 4px; }
 .invest-card.primary { background: linear-gradient(135deg, rgba(123,47,190,0.12), rgba(199,36,177,0.08)); border-color: rgba(123,47,190,0.3); }
 .invest-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(248,240,255,0.35); margin-bottom: 0.8rem; }
@@ -250,14 +244,6 @@ h3 { font-size: 1.1rem; font-weight: 700; color: var(--text-bright); margin-bott
 .outcome-card.weak .outcome-score { color: var(--rose); }
 .outcome-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(248,240,255,0.5); margin-bottom: 0.5rem; }
 .outcome-desc { font-size: 0.75rem; color: rgba(248,240,255,0.4); line-height: 1.5; }
-
-/* ─── QUESTIONS ─── */
-.questions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 2rem 0; }
-.q-card { padding: 1.8rem; border: 1px solid var(--border); border-radius: 4px; }
-.q-card-title { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--magenta); margin-bottom: 1rem; }
-.q-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
-.q-list li { font-size: 0.82rem; color: rgba(248,240,255,0.55); display: flex; align-items: flex-start; gap: 0.6rem; line-height: 1.55; }
-.q-list li::before { content: '?'; color: var(--violet); font-weight: 700; flex-shrink: 0; }
 
 /* ─── WHY / CTA / FOOTER ─── */
 .why-section { text-align: center; padding: 8rem 4rem; }
@@ -315,6 +301,17 @@ footer { text-align: center; padding: 3rem 4rem; border-top: 1px solid var(--bor
 .terms-value { font-size: 1.1rem; font-weight: 700; color: var(--text-bright); margin-bottom: 0.4rem; }
 .terms-note { font-size: 0.78rem; color: rgba(248,240,255,0.5); line-height: 1.5; }
 
+/* ─── FUTURE SCOPE ─── */
+.future-scope {
+  margin: 3rem 0; padding: 2rem; border: 1px dashed rgba(123,47,190,0.2); border-radius: 4px;
+  background: rgba(123,47,190,0.02);
+}
+.future-scope h4 {
+  font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(248,240,255,0.35); margin-bottom: 1rem;
+}
+.future-scope p { font-size: 0.82rem; color: rgba(248,240,255,0.5); line-height: 1.65; max-width: none; }
+
 /* ─── APPROVAL FORM ─── */
 .approve-section { padding: 6rem 4rem; background: linear-gradient(180deg, rgba(123,47,190,0.04), transparent); }
 .approve-form { max-width: 640px; margin: 3rem auto 0; display: grid; gap: 1.2rem; }
@@ -352,7 +349,7 @@ footer { text-align: center; padding: 3rem 4rem; border-top: 1px solid var(--bor
   .hero { padding-left: 1.5rem; padding-right: 1.5rem; }
   .hero h1 { font-size: 2.4rem; }
   .stats-row, .investment-grid, .outcome-grid { grid-template-columns: 1fr; }
-  .audience-grid, .questions-grid { grid-template-columns: 1fr; }
+  .audience-grid { grid-template-columns: 1fr; }
   .kba-bar { grid-template-columns: 1fr; }
   .kba-btn:first-child { border-radius: 4px 4px 0 0; }
   .kba-btn:last-child { border-radius: 0 0 4px 4px; }
@@ -406,7 +403,7 @@ footer { text-align: center; padding: 3rem 4rem; border-top: 1px solid var(--bor
 <section class="fade-up">
   <div class="section-label">Where We Are</div>
   <h2>The brand has a clear ambition.<br>Now it needs validation.</h2>
-  <p class="body-text">Early or Late sits at the intersection of artist collaboration, neurodivergent creativity, and conscious consumption. The positioning has evolved since the initial proposal &mdash; and the scope needs to match.</p>
+  <p class="body-text">Early or Late sits at the intersection of artist collaboration, neurodivergent creativity, and conscious consumption. The concept is strong. The question is whether the market will pay &pound;150 for it &mdash; and which creative direction drives the most conviction.</p>
 
   <div class="highlight-block">
     <p>The ND artist connection is part of the story, not the market segment. The brand leads with the art. Neurodivergent artists as creative directors &mdash; named on every piece, sharing in every sale.</p>
@@ -419,16 +416,16 @@ footer { text-align: center; padding: 3rem 4rem; border-top: 1px solid var(--bor
     </div>
     <div class="stat-card fade-up">
       <div class="stat-number">50</div>
-      <div class="stat-label">Units per drop (limited edition)</div>
+      <div class="stat-label">Units per artwork (limited edition)</div>
     </div>
     <div class="stat-card fade-up">
-      <div class="stat-number">2&ndash;3</div>
-      <div class="stat-label">Additional ND artists to source</div>
+      <div class="stat-number">5</div>
+      <div class="stat-label">Artworks in the first drop</div>
     </div>
   </div>
 
-  <h3>Key shifts from client feedback</h3>
-  <p class="body-text">The ND positioning is not the lead &mdash; it's one of several brand narratives. The audience skews Millennial at this price point. The scope is tighter: positioning plus a testable campaign, not a full brand system. And no survey has been deployed yet &mdash; we need one, with message testing built in.</p>
+  <h3>A lean engagement, designed to prove one thing</h3>
+  <p class="body-text">Will people pay &pound;140&ndash;160 for a numbered, artist-credited t-shirt? This engagement is scoped tight to answer that question with real data: a panel survey for creative direction, then a paid campaign to test purchase intent in market. Everything else &mdash; Instagram build-out, Shopify, drop launch &mdash; comes after validation proves the concept.</p>
 </section>
 
 <div class="section-divider"></div>
@@ -481,99 +478,66 @@ footer { text-align: center; padding: 3rem 4rem; border-top: 1px solid var(--bor
 <!-- APPROACH / PHASES -->
 <section id="approach" class="kba-section fade-up">
   <div class="section-label">The Approach</div>
-  <h2>Three gated phases.<br>Each one earns the next.</h2>
-  <p class="body-text" style="max-width:620px; margin: 0 auto;">Progression is conditional. Phase 2 only starts when positioning is approved and the survey confirms creative direction. Phase 2b only activates on strong validation. Click each phase to explore.</p>
+  <h2>Two focused phases.<br>Survey first, then market test.</h2>
+  <p class="body-text" style="max-width:620px; margin: 0 auto;">This is a lean validation engagement. Phase 1 answers which creative direction to back. Phase 2 tests whether the market will pay for it. Click each phase to explore.</p>
 
   <div class="kba-bar">
     <div class="kba-btn active" onclick="togglePanel(this, 'panel-define')">
       <div class="kba-btn-stage">Phase 1</div>
-      <div class="kba-btn-title">Define</div>
-      <div class="kba-btn-sub">15 hours</div>
+      <div class="kba-btn-title">Know</div>
+      <div class="kba-btn-sub">5 hours</div>
       <div class="kba-btn-arrow">&#9662;</div>
     </div>
     <div class="kba-btn" onclick="togglePanel(this, 'panel-validate')">
       <div class="kba-btn-stage">Phase 2</div>
-      <div class="kba-btn-title">Validate</div>
-      <div class="kba-btn-sub">37 hours</div>
-      <div class="kba-btn-arrow">&#9662;</div>
-    </div>
-    <div class="kba-btn" onclick="togglePanel(this, 'panel-launch')">
-      <div class="kba-btn-stage">Phase 2b</div>
-      <div class="kba-btn-title">Launch</div>
-      <div class="kba-btn-sub">10 hours (conditional)</div>
+      <div class="kba-btn-title">Test</div>
+      <div class="kba-btn-sub">12 hours</div>
       <div class="kba-btn-arrow">&#9662;</div>
     </div>
   </div>
 
-  <!-- DEFINE PANEL -->
+  <!-- KNOW PANEL -->
   <div class="kba-panel open" id="panel-define">
     <div class="kba-panel-grid">
       <div>
-        <h3>Brand Definition</h3>
-        <p class="body-text">Starts with <strong style="color:var(--text-bright)">Start Your Story</strong> &mdash; played individually as a brand definition game. The outputs feed into positioning, messaging, and creative concept development, including 3&ndash;4 creative variants for the panel survey.</p>
+        <h3>Positioning Refinement</h3>
+        <p class="body-text">The brand concept is already clear from the founding team's work with Connor. This phase sharpens the positioning into testable messaging and creative variants &mdash; not a full brand system, just enough clarity to build a survey that separates product appeal from creative execution.</p>
 
-        <h3>Panel Survey with Message Testing</h3>
-        <p class="body-text">A 200+ response survey on Pollfish, Millennial-weighted (60%+), with four sections: blind product test, creative variant ranking, brand story reveal, and demographics. The survey separates product desirability from creative performance &mdash; so if something underperforms, we know what to fix.</p>
+        <h3>Panel Survey</h3>
+        <p class="body-text">A 200+ response survey on Pollfish, Millennial-weighted (60%+), testing blind product appeal, creative variant ranking, and brand story impact. The survey tells you which artwork to lead with, which messages land, and whether the &pound;150 price point holds before you spend a penny on ads.</p>
       </div>
       <div class="kba-deliverables">
         <h4>Phase 1 Deliverables</h4>
-        <div class="kba-del-item"><div class="kba-del-check kba-check-define">&check;</div><span>Start Your Story game setup + review</span></div>
-        <div class="kba-del-item"><div class="kba-del-check kba-check-define">&check;</div><span>Positioning statement + messaging</span></div>
-        <div class="kba-del-item"><div class="kba-del-check kba-check-define">&check;</div><span>Creative concept (3&ndash;4 variants)</span></div>
-        <div class="kba-del-item"><div class="kba-del-check kba-check-define">&check;</div><span>Client concept presentation</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-define">&check;</div><span>Positioning refinement + messaging</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-define">&check;</div><span>Creative variants for survey</span></div>
         <div class="kba-del-item"><div class="kba-del-check kba-check-define">&check;</div><span>Panel survey (200+ targeted responses)</span></div>
         <div class="kba-del-item"><div class="kba-del-check kba-check-define">&check;</div><span>Survey analysis + diagnostic report</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-define">&check;</div><span>Go/no-go recommendation for Phase 2</span></div>
         <h4 style="margin-top:1.5rem;">Gate</h4>
-        <p style="font-size:0.78rem;color:rgba(248,240,255,0.45);">Client approves positioning. Survey diagnostic confirms creative direction. Phase 2 begins.</p>
+        <p style="font-size:0.78rem;color:rgba(248,240,255,0.45);">Survey confirms creative direction and price-point viability. Phase 2 begins.</p>
       </div>
     </div>
   </div>
 
-  <!-- VALIDATE PANEL -->
+  <!-- TEST PANEL -->
   <div class="kba-panel" id="panel-validate">
     <div class="kba-panel-grid">
       <div>
-        <h3>Campaign Validation</h3>
-        <p class="body-text">Build the channels: landing page with email capture, Instagram page with 6&ndash;12 seed posts. Ongoing Instagram management for 2&ndash;4 weeks during testing. The lead creative variant is informed by survey results.</p>
+        <h3>Landing Page + Campaign</h3>
+        <p class="body-text">Build a single landing page with email capture, informed by the winning creative direction from the survey. Set up a paid campaign on Meta targeting the Millennial primary audience, with 2&ndash;3 creative formats tested against each other.</p>
 
-        <h3>Paid Campaign Testing</h3>
-        <p class="body-text">3&ndash;4 creative formats tested via paid social: carousel with story, static image with copy, product-focused, typography/quote-led. Audience split between Millennial primary (28&ndash;42) and Gen Z secondary (18&ndash;27). Campaign setup, daily monitoring, creative iteration, and performance reporting managed in-house by Unicorn across Meta and TikTok.</p>
+        <h3>Validation &amp; Scorecard</h3>
+        <p class="body-text">Monitor the campaign on a check-in cadence, adjusting creative and targeting based on performance signals. At the end of the test window, deliver a composite validation scorecard that tells you whether to commit to production, refine, or rethink.</p>
       </div>
       <div class="kba-deliverables">
         <h4>Phase 2 Deliverables</h4>
-        <div class="kba-del-item"><div class="kba-del-check kba-check-validate">&check;</div><span>Landing page build</span></div>
-        <div class="kba-del-item"><div class="kba-del-check kba-check-validate">&check;</div><span>Instagram setup + seed content</span></div>
-        <div class="kba-del-item"><div class="kba-del-check kba-check-validate">&check;</div><span>Instagram management (2&ndash;4 weeks)</span></div>
-        <div class="kba-del-item"><div class="kba-del-check kba-check-validate">&check;</div><span>Creative variant production</span></div>
-        <div class="kba-del-item"><div class="kba-del-check kba-check-validate">&check;</div><span>Paid campaign testing + management</span></div>
-        <div class="kba-del-item"><div class="kba-del-check kba-check-validate">&check;</div><span>Validation report + recommendation</span></div>
-        <h4 style="margin-top:1.5rem;">Gate</h4>
-        <p style="font-size:0.78rem;color:rgba(248,240,255,0.45);">Validation scorecard &ge; 2.5 triggers Phase 2b. Below 2.5, the diagnostic determines what to fix.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- LAUNCH PANEL -->
-  <div class="kba-panel" id="panel-launch">
-    <div class="kba-panel-grid">
-      <div>
-        <h3>First Drop Activation</h3>
-        <p class="body-text">The channels are already live. The audience is already warm. Phase 2b converts that momentum directly into the first 50-unit drop via Shopify. Includes launch campaign creative, email nurture sequence (teaser, launch day, last chance), and coordinated social coverage.</p>
-
-        <h3>Why It's Conditional</h3>
-        <p class="body-text">If validation is weak (below 2.5), spending more on launch won't fix the underlying issue. The diagnostic tells you whether the problem is the product or the creative. Fix the right thing first. The first 50 units are themselves the final validation signal &mdash; sell-through rate is the highest-weighted metric in the scorecard.</p>
-      </div>
-      <div class="kba-deliverables">
-        <h4>Phase 2b Deliverables</h4>
-        <div class="kba-del-item"><div class="kba-del-check kba-check-launch">&check;</div><span>Shopify / e-commerce setup</span></div>
-        <div class="kba-del-item"><div class="kba-del-check kba-check-launch">&check;</div><span>Drop campaign creative</span></div>
-        <div class="kba-del-item"><div class="kba-del-check kba-check-launch">&check;</div><span>Email nurture sequence (2&ndash;3 emails)</span></div>
-        <div class="kba-del-item"><div class="kba-del-check kba-check-launch">&check;</div><span>Drop launch management</span></div>
-        <div class="kba-del-item"><div class="kba-del-check kba-check-launch">&check;</div><span>Instagram management (drop period)</span></div>
-        <div class="kba-del-item"><div class="kba-del-check kba-check-launch">&check;</div><span>Paid drop promotion</span></div>
-        <div class="kba-del-item"><div class="kba-del-check kba-check-launch">&check;</div><span>Post-drop analysis + final scorecard</span></div>
-        <h4 style="margin-top:1.5rem;">Condition</h4>
-        <p style="font-size:0.78rem;color:rgba(248,240,255,0.45);">Phase 2b hours only incurred if validation score reaches 2.5+. If not, these hours are not spent.</p>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-validate">&check;</div><span>Landing page with email capture</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-validate">&check;</div><span>2&ndash;3 ad creative formats</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-validate">&check;</div><span>Meta campaign setup + testing</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-validate">&check;</div><span>Campaign monitoring + iteration</span></div>
+        <div class="kba-del-item"><div class="kba-del-check kba-check-validate">&check;</div><span>Validation report + composite scorecard</span></div>
+        <h4 style="margin-top:1.5rem;">Outcome</h4>
+        <p style="font-size:0.78rem;color:rgba(248,240,255,0.45);">Scorecard determines go/refine/pivot. If strong, you have the evidence to commit to the first drop with confidence.</p>
       </div>
     </div>
   </div>
@@ -584,19 +548,17 @@ footer { text-align: center; padding: 3rem 4rem; border-top: 1px solid var(--bor
 <!-- VALIDATION SCORING -->
 <section class="fade-up">
   <div class="section-label">How We Measure</div>
-  <h2>Seven signals. One composite score.</h2>
-  <p class="body-text">Each signal tests a different layer of commitment &mdash; from seeing an ad to purchasing at full price. The composite score determines whether to launch, refine, or pivot.</p>
+  <h2>Five signals. One composite score.</h2>
+  <p class="body-text">Each signal tests a different layer of commitment &mdash; from seeing an ad to stating purchase intent at full price. The composite score determines whether to launch, refine, or pivot.</p>
 
   <table class="scoring-table">
     <thead><tr><th>Signal</th><th>Metric</th><th>Weight</th></tr></thead>
     <tbody>
-      <tr><td>Landing page conversion</td><td>Email signup rate</td><td class="score-weight">20%</td></tr>
-      <tr><td>Purchase intent</td><td>Survey: would buy at &pound;150</td><td class="score-weight">20%</td></tr>
-      <tr><td>Ad engagement</td><td>CTR on paid creatives</td><td class="score-weight">15%</td></tr>
-      <tr><td>Social traction</td><td>Organic follows + saves</td><td class="score-weight">10%</td></tr>
-      <tr><td>Story lift</td><td>Intent shift after brand story reveal</td><td class="score-weight">10%</td></tr>
-      <tr><td>Audience fit</td><td>% of engaged users aged 25&ndash;45</td><td class="score-weight">10%</td></tr>
-      <tr><td>First drop sellout</td><td>Units sold out of 50</td><td class="score-weight">15%</td></tr>
+      <tr><td>Landing page conversion</td><td>Email signup rate</td><td class="score-weight">25%</td></tr>
+      <tr><td>Purchase intent</td><td>Survey: would buy at &pound;150</td><td class="score-weight">25%</td></tr>
+      <tr><td>Ad engagement</td><td>CTR on paid creatives</td><td class="score-weight">20%</td></tr>
+      <tr><td>Story lift</td><td>Intent shift after brand story reveal</td><td class="score-weight">15%</td></tr>
+      <tr><td>Audience fit</td><td>% of engaged users aged 25&ndash;45</td><td class="score-weight">15%</td></tr>
     </tbody>
   </table>
 
@@ -604,7 +566,7 @@ footer { text-align: center; padding: 3rem 4rem; border-top: 1px solid var(--bor
     <div class="outcome-card strong">
       <div class="outcome-score">4.0&ndash;5.0</div>
       <div class="outcome-label">Strong</div>
-      <div class="outcome-desc">Proceed with confidence. Scale spend, activate full launch.</div>
+      <div class="outcome-desc">Commit to the drop. Order fabric, build Shopify, launch with confidence.</div>
     </div>
     <div class="outcome-card conditional">
       <div class="outcome-score">2.5&ndash;3.9</div>
@@ -624,56 +586,45 @@ footer { text-align: center; padding: 3rem 4rem; border-top: 1px solid var(--bor
 <!-- INVESTMENT -->
 <section id="investment" class="hours-section fade-up">
   <div class="section-label">Investment</div>
-  <h2>&pound;5,000 total engagement.<br>Value-priced. Fully gated.</h2>
+  <h2>&pound;1,600 lean validation.<br>Maximum signal, minimum spend.</h2>
 
   <table class="hours-table">
     <thead><tr><th>Phase</th><th>Activity</th><th style="text-align:right">Hours</th></tr></thead>
     <tbody>
-      <tr><td><span class="stage-tag define">Phase 1</span></td><td>Start Your Story game setup + review</td><td>1</td></tr>
-      <tr><td></td><td>Positioning statement + messaging</td><td>3</td></tr>
-      <tr><td></td><td>Creative concept development (3&ndash;4 variants)</td><td>6</td></tr>
-      <tr><td></td><td>Creative concept presentation</td><td>1</td></tr>
-      <tr><td></td><td>Survey design + deployment (Pollfish)</td><td>2</td></tr>
-      <tr><td></td><td>Survey analysis + reporting</td><td>2</td></tr>
-      <tr><td><span class="stage-tag validate">Phase 2</span></td><td>Landing page build</td><td>4</td></tr>
-      <tr><td></td><td>Instagram setup + seed content</td><td>3</td></tr>
-      <tr><td></td><td>Paid campaign setup (Meta + TikTok)</td><td>3</td></tr>
-      <tr><td></td><td>Creative variant production (organic + paid)</td><td>7</td></tr>
-      <tr><td></td><td>Messaging iteration based on validation data</td><td>4</td></tr>
-      <tr><td></td><td>Daily monitoring + iteration (2&ndash;4 weeks)</td><td>10</td></tr>
-      <tr><td></td><td>Performance analysis + insight extraction</td><td>4</td></tr>
-      <tr><td></td><td>Validation report + recommendation</td><td>2</td></tr>
-      <tr><td><span class="stage-tag launch">Phase 2b</span></td><td>Shopify / e-commerce setup</td><td>2</td></tr>
-      <tr><td></td><td>Drop campaign creative (organic + paid)</td><td>3</td></tr>
-      <tr><td></td><td>Email nurture sequence</td><td>1</td></tr>
-      <tr><td></td><td>Drop launch + channel + paid promo management</td><td>2</td></tr>
-      <tr><td></td><td>Post-drop analysis</td><td>2</td></tr>
-      <tr class="hours-total"><td></td><td><strong>Total Unicorn Hours</strong></td><td><strong>52 + 10</strong></td></tr>
-      <tr class="hours-note"><td></td><td colspan="2">Phase 2b (10 hours) conditional on validation score &ge; 2.5</td></tr>
+      <tr><td><span class="stage-tag define">Phase 1</span></td><td>Positioning refinement + messaging</td><td>1</td></tr>
+      <tr><td></td><td>Creative variants for survey testing</td><td>1</td></tr>
+      <tr><td></td><td>Survey design + deployment (Pollfish)</td><td>1</td></tr>
+      <tr><td></td><td>Survey analysis + diagnostic report</td><td>2</td></tr>
+      <tr><td><span class="stage-tag validate">Phase 2</span></td><td>Landing page build</td><td>3</td></tr>
+      <tr><td></td><td>Ad creative production (2&ndash;3 formats)</td><td>3</td></tr>
+      <tr><td></td><td>Meta campaign setup + targeting</td><td>2</td></tr>
+      <tr><td></td><td>Campaign monitoring + iteration</td><td>2</td></tr>
+      <tr><td></td><td>Validation report + composite scorecard</td><td>2</td></tr>
+      <tr class="hours-total"><td></td><td><strong>Total Unicorn Hours</strong></td><td><strong>17</strong></td></tr>
+      <tr class="hours-note"><td></td><td colspan="2">Value pricing &mdash; outcomes, not timesheets</td></tr>
     </tbody>
   </table>
 
   <div class="investment-grid">
-    <div class="invest-card">
-      <div class="invest-label">Phase 1 + 2 (confirmed)</div>
-      <div class="invest-value gradient">&pound;4,200</div>
-      <div class="invest-note">52 hours &mdash; strategy, build, campaign, iteration, report</div>
-    </div>
     <div class="invest-card primary">
-      <div class="invest-label">Phase 2b (conditional)</div>
-      <div class="invest-value gradient">+&pound;800</div>
-      <div class="invest-note">10 hours &mdash; activates at score &ge; 2.5</div>
+      <div class="invest-label">Unicorn (Phase 1 + 2)</div>
+      <div class="invest-value gradient">&pound;1,600</div>
+      <div class="invest-note">Survey, landing page, campaign, validation scorecard</div>
     </div>
     <div class="invest-card">
       <div class="invest-label">Media &amp; Panel Costs</div>
-      <div class="invest-value gradient">&pound;700&ndash;1,350</div>
+      <div class="invest-value gradient">&pound;500&ndash;850</div>
       <div class="invest-note">Paid directly by client to platforms</div>
     </div>
   </div>
 
   <p class="body-text" style="font-size:0.82rem; color:rgba(248,240,255,0.4); margin-top:1rem;">
-    Value pricing: &pound;5,000 total if all phases activate (approx. 62 hours). No hourly billing &mdash; outcomes, not timesheets. Campaign management, daily monitoring, and creative iteration delivered in-house by Unicorn across Meta and TikTok.<br><br>
-    Client-paid costs (billed directly, not through Unicorn): survey panel &pound;200&ndash;350 (Pollfish), Phase 2 ad spend &pound;500&ndash;1,000 (Meta + TikTok), Phase 2b ad spend conditional and scoped with drop plan.</p>
+    Client-paid costs (billed directly, not through Unicorn): survey panel &pound;200&ndash;350 (Pollfish, 200+ responses), Meta ad spend &pound;300&ndash;500. Campaign managed in-house by Unicorn.</p>
+
+  <div class="future-scope">
+    <h4>Future Scope &mdash; After Validation</h4>
+    <p>Instagram build-out, Shopify / e-commerce setup, email nurture sequences, drop launch campaign, TikTok as a second paid channel, and ongoing social management are all natural next steps once the validation scorecard confirms the concept. These can be scoped as a follow-on engagement once you have the data to commit.</p>
+  </div>
 </section>
 
 <div class="section-divider"></div>
@@ -681,18 +632,18 @@ footer { text-align: center; padding: 3rem 4rem; border-top: 1px solid var(--bor
 <!-- MILESTONES & TIMELINE -->
 <section id="timeline" class="hours-section fade-up">
   <div class="section-label">Milestones &amp; Timeline</div>
-  <h2>~8 weeks, end-to-end.<br>Production runs in parallel.</h2>
-  <p class="body-text" style="max-width:680px;">From proposal approval to drop launch, the engagement runs approximately 8 weeks. Unicorn's validation work and Early or Late's production schedule overlap so the first drop is ready to fulfil the moment validation completes. This is indicative; final dates are confirmed at Phase 1 kick-off once supplier lead times and creative readiness are locked in.</p>
+  <h2>~5 weeks, lean and focused.<br>Production runs in parallel.</h2>
+  <p class="body-text" style="max-width:680px;">From proposal approval to validation scorecard, the engagement runs approximately 5 weeks. Early or Late's production schedule can overlap so the first drop is ready to fulfil shortly after validation completes.</p>
 
   <div class="timeline-intro">
     <div class="timeline-stat">
-      <div class="timeline-stat-label">Total Duration</div>
-      <div class="timeline-stat-value">~8 weeks</div>
-      <div class="timeline-stat-note">Proposal approval to drop launch</div>
+      <div class="timeline-stat-label">Validation Duration</div>
+      <div class="timeline-stat-value">~5 weeks</div>
+      <div class="timeline-stat-note">Proposal approval to scorecard delivery</div>
     </div>
     <div class="timeline-stat">
-      <div class="timeline-stat-label">Target Launch</div>
-      <div class="timeline-stat-value">Late Jun &ndash; Early Jul</div>
+      <div class="timeline-stat-label">Target Completion</div>
+      <div class="timeline-stat-value">Early June</div>
       <div class="timeline-stat-note">Assuming approval by end April 2026</div>
     </div>
     <div class="timeline-stat">
@@ -715,56 +666,38 @@ footer { text-align: center; padding: 3rem 4rem; border-top: 1px solid var(--bor
       <tr>
         <td class="timeline-week">Week 1</td>
         <td><span class="stage-tag define">Phase 1</span></td>
-        <td class="timeline-activity">Start Your Story brand definition game (shared with core team). Creative concept and messaging development across 3&ndash;4 variants.</td>
-        <td class="timeline-activity">Play Start Your Story game (Raul, Firat, Connor, Sarah). Share remaining artworks for inclusion in the survey.</td>
-      </tr>
-      <tr>
-        <td class="timeline-week">Week 2</td>
-        <td><span class="stage-tag define">Phase 1</span></td>
-        <td class="timeline-activity">Creative concept presentation. Survey design and Pollfish deployment (200+ panel responses, 30&ndash;50 age range, 60% Millennial / 40% Gen Z split). Organic survey distribution through Early or Late network in parallel.</td>
-        <td class="timeline-activity">Sign off creative concept. Share survey with network.</td>
+        <td class="timeline-activity">Positioning refinement. Creative variant development for survey. Survey design and Pollfish deployment (200+ panel, 60% Millennial / 40% Gen Z).</td>
+        <td class="timeline-activity">Share remaining artworks and brand assets for survey inclusion. Distribute survey link through your network in parallel with the paid panel.</td>
       </tr>
       <tr class="timeline-row-milestone">
-        <td class="timeline-week">Week 3<span class="timeline-milestone">Milestone</span></td>
+        <td class="timeline-week">Week 2<span class="timeline-milestone">Milestone</span></td>
         <td><span class="stage-tag define">Phase 1</span></td>
-        <td class="timeline-activity"><strong>Survey results + validation scorecard delivered.</strong> Recommendations on artworks, colours, messaging, pricing, audience. Go/no-go on Phase 2.</td>
+        <td class="timeline-activity"><strong>Survey results + diagnostic report delivered.</strong> Recommendations on artworks, messaging, pricing, audience. Go/no-go on Phase 2.</td>
         <td class="timeline-activity">Review results. Decide on fabric volumes (white vs black split). <span class="timeline-activity-client">Order fabric from UK supplier if green-lit.</span></td>
       </tr>
       <tr>
-        <td class="timeline-week">Week 4</td>
+        <td class="timeline-week">Week 3</td>
         <td><span class="stage-tag validate">Phase 2</span></td>
-        <td class="timeline-activity">Landing page build. Instagram setup and seed content. Paid campaign setup across Meta and TikTok. AI-generated T-shirt imagery for ad creative.</td>
+        <td class="timeline-activity">Landing page build. Ad creative production (2&ndash;3 formats). Meta campaign setup and targeting. AI-generated T-shirt imagery for ad creative.</td>
         <td class="timeline-activity"><span class="timeline-activity-client">Manufacturing begins (Week 1 of 3-week production lead).</span></td>
       </tr>
       <tr>
-        <td class="timeline-week">Weeks 5&ndash;6</td>
+        <td class="timeline-week">Weeks 4&ndash;5</td>
         <td><span class="stage-tag validate">Phase 2</span></td>
-        <td class="timeline-activity">Campaign goes live. Daily monitoring, creative iteration, audience refinement. Messaging adjusted based on validation signals.</td>
+        <td class="timeline-activity">Campaign goes live. Monitoring on check-in cadence, creative and targeting adjustments based on performance signals.</td>
         <td class="timeline-activity"><span class="timeline-activity-client">Manufacturing continues &rarr; printing begins (Weeks 2&ndash;4 of production).</span></td>
       </tr>
       <tr class="timeline-row-milestone">
-        <td class="timeline-week">Week 7<span class="timeline-milestone">Milestone</span></td>
+        <td class="timeline-week">Week 5<span class="timeline-milestone">Milestone</span></td>
         <td><span class="stage-tag validate">Phase 2</span></td>
-        <td class="timeline-activity"><strong>Validation report + composite scorecard delivered.</strong> Go/no-go on Phase 2b based on validation score (&ge; 2.5 threshold).</td>
-        <td class="timeline-activity"><span class="timeline-activity-client">Printing completes. T-shirts ready for fulfilment.</span></td>
-      </tr>
-      <tr>
-        <td class="timeline-week">Week 8</td>
-        <td><span class="stage-tag launch">Phase 2b</span></td>
-        <td class="timeline-activity">Shopify / e-commerce setup. Drop campaign creative (organic + paid). Email nurture sequence to warm audience. Paid promo launch.</td>
-        <td class="timeline-activity">Final QC on stock. Confirm fulfilment logistics.</td>
-      </tr>
-      <tr class="timeline-row-milestone">
-        <td class="timeline-week">Week 8+<span class="timeline-milestone">Launch</span></td>
-        <td><span class="stage-tag launch">Phase 2b</span></td>
-        <td class="timeline-activity"><strong>Drop goes live.</strong> Channel + paid promo management through drop period. Post-drop analysis and recommendations for the next batch.</td>
-        <td class="timeline-activity">Fulfil pre-orders. Capture customer feedback for next batch.</td>
+        <td class="timeline-activity"><strong>Validation report + composite scorecard delivered.</strong> Clear recommendation: commit to drop, refine, or pivot.</td>
+        <td class="timeline-activity"><span class="timeline-activity-client">Production nearing completion. T-shirts ready for fulfilment by Week 7.</span></td>
       </tr>
     </tbody>
   </table>
 
   <p class="body-text" style="font-size:0.78rem; color:rgba(248,240,255,0.4); margin-top:1rem;">
-    A detailed timing plan will be built in Notion at Phase 1 kick-off and shared with the Early or Late team, linking every deliverable, milestone, and dependency (supplier lead times, printing slots, creative readiness, approvals) in one live view.
+    Timing is indicative; final dates confirmed at Phase 1 kick-off once supplier lead times and creative readiness are locked in. Drop launch (Shopify, email nurture, paid promo) can be scoped as a follow-on engagement once validation is complete.
   </p>
 </section>
 
@@ -773,24 +706,24 @@ footer { text-align: center; padding: 3rem 4rem; border-top: 1px solid var(--bor
 <!-- PAYMENT TERMS -->
 <section class="hours-section fade-up">
   <div class="section-label">Payment Terms</div>
-  <h2>Gated invoicing.<br>Aligned with the work.</h2>
-  <p class="body-text" style="max-width:640px;">Professional service fees are invoiced in two parts per phase: 50% at phase start, 50% at phase end. Media and panel costs are requested upfront on booking so campaigns can launch without cashflow delay.</p>
+  <h2>Simple, gated invoicing.</h2>
+  <p class="body-text" style="max-width:640px;">Professional service fees are invoiced in two parts: 50% at engagement start, 50% on delivery of the validation scorecard. Media and panel costs are requested upfront so campaigns can launch without delay.</p>
 
   <div class="terms-grid">
     <div class="terms-card">
       <div class="terms-label">Professional Fees</div>
       <div class="terms-value">50% / 50%</div>
-      <div class="terms-note">50% invoiced at the start of each phase. 50% invoiced at phase completion. Phase 2b only invoiced if activated (score &ge; 2.5).</div>
+      <div class="terms-note">&pound;800 invoiced at engagement start. &pound;800 invoiced on delivery of the validation scorecard.</div>
     </div>
     <div class="terms-card">
       <div class="terms-label">Media &amp; Panel Costs</div>
       <div class="terms-value">100% on booking</div>
-      <div class="terms-note">Survey panel, Meta and TikTok ad spend requested upfront. Paid directly to platforms or billed through Unicorn at cost.</div>
+      <div class="terms-note">Survey panel and Meta ad spend requested upfront. Paid directly to platforms or billed through Unicorn at cost.</div>
     </div>
     <div class="terms-card">
       <div class="terms-label">Payment Window</div>
       <div class="terms-value">7 days</div>
-      <div class="terms-note">Net 7 from invoice date. Bank transfer preferred. Invoices issued within 24 hours of approval and at each phase transition.</div>
+      <div class="terms-note">Net 7 from invoice date. Bank transfer preferred. First invoice issued within 24 hours of approval.</div>
     </div>
   </div>
 </section>
@@ -802,7 +735,7 @@ footer { text-align: center; padding: 3rem 4rem; border-top: 1px solid var(--bor
   <div class="section-label">Why Unicorn</div>
   <h2>Enterprise-quality thinking.<br>Founder-stage speed.</h2>
   <p class="body-text" style="max-width:600px; margin: 0 auto 2rem;">We don't do brand-as-decoration. We build the clarity, the evidence, and the conviction that gets a brand to market &mdash; and tells you honestly whether it's ready.</p>
-  <div class="manifesto-quote">The first 50 units are the final test. Everything before that is making sure the test is worth running.</div>
+  <div class="manifesto-quote">Validate before you manufacture. The data should earn the inventory, not the other way around.</div>
 </section>
 
 <!-- APPROVAL -->
@@ -814,7 +747,7 @@ footer { text-align: center; padding: 3rem 4rem; border-top: 1px solid var(--bor
   <form name="proposal-approval" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/proposals/thank-you/" class="approve-form">
     <input type="hidden" name="form-name" value="proposal-approval">
     <input type="hidden" name="proposal" value="Early or Late">
-    <input type="hidden" name="value" value="£5,000">
+    <input type="hidden" name="value" value="£1,600">
     <p style="display:none;"><label>Don't fill this out if you're human: <input name="bot-field"></label></p>
 
     <div class="approve-row">
@@ -851,7 +784,7 @@ footer { text-align: center; padding: 3rem 4rem; border-top: 1px solid var(--bor
 
     <div class="approve-checkbox">
       <input type="checkbox" id="terms" name="terms_accepted" required value="yes">
-      <label for="terms">I approve this proposal and accept the <a href="/terms/" target="_blank" rel="noopener" style="color: var(--lavender); text-decoration: underline;">Terms &amp; Conditions</a>, including the payment terms (50% at phase start, 50% at phase completion; media and panel costs upfront on booking).</label>
+      <label for="terms">I approve this proposal and accept the <a href="/terms/" target="_blank" rel="noopener" style="color: var(--lavender); text-decoration: underline;">Terms &amp; Conditions</a>, including the payment terms (&pound;800 at engagement start, &pound;800 on scorecard delivery; media and panel costs upfront on booking).</label>
     </div>
 
     <button type="submit" class="approve-submit">Approve proposal &amp; start Phase 1 &rarr;</button>
