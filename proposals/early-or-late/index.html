@@ -588,7 +588,7 @@ footer { text-align: center; padding: 3rem 4rem; border-top: 1px solid var(--bor
 <!-- INVESTMENT -->
 <section id="investment" class="hours-section fade-up">
   <div class="section-label">Investment</div>
-  <h2>&pound;1,600 lean validation.<br>Maximum signal, minimum spend.</h2>
+  <h2>&pound;1,600 all-in.<br>Maximum signal, minimum spend.</h2>
 
   <table class="hours-table">
     <thead><tr><th>Phase</th><th>Activity</th><th style="text-align:right">Hours</th></tr></thead>
@@ -607,21 +607,26 @@ footer { text-align: center; padding: 3rem 4rem; border-top: 1px solid var(--bor
     </tbody>
   </table>
 
-  <div class="investment-grid">
+  <div class="investment-grid" style="grid-template-columns: repeat(3, 1fr);">
     <div class="invest-card primary">
-      <div class="invest-label">Unicorn (Phase 1 + 2)</div>
+      <div class="invest-label">Total (all-in)</div>
       <div class="invest-value gradient">&pound;1,600</div>
-      <div class="invest-note">Landing page, research, campaign, validation scorecard</div>
+      <div class="invest-note">Everything below, one number</div>
     </div>
     <div class="invest-card">
-      <div class="invest-label">Media &amp; Panel Costs</div>
-      <div class="invest-value gradient">&pound;380&ndash;650</div>
-      <div class="invest-note">Paid directly by client to platforms</div>
+      <div class="invest-label">Unicorn Fees</div>
+      <div class="invest-value gradient">&pound;1,220</div>
+      <div class="invest-note">Strategy, landing page, campaign, scorecard</div>
+    </div>
+    <div class="invest-card">
+      <div class="invest-label">Media &amp; Panel</div>
+      <div class="invest-value gradient">&pound;380</div>
+      <div class="invest-note">Pollfish panel + Meta ad spend</div>
     </div>
   </div>
 
   <p class="body-text" style="font-size:0.82rem; color:rgba(248,240,255,0.4); margin-top:1rem;">
-    Client-paid costs (billed directly, not through Unicorn): Pollfish panel &pound;80&ndash;150 (50&ndash;70 targeted visitors to the landing page, supplemented by organic), Meta ad spend &pound;300&ndash;500 (Phase 2). Campaign managed in-house by Unicorn.</p>
+    Media &amp; panel breakdown: Pollfish panel ~&pound;80&ndash;100 (50&ndash;70 targeted visitors to the landing page, supplemented by organic), Meta ad spend ~&pound;280&ndash;300 (Phase 2). All managed in-house by Unicorn. No additional costs beyond the &pound;1,600.</p>
 
   <div class="future-scope">
     <h4>Future Scope &mdash; After Validation</h4>
@@ -708,19 +713,19 @@ footer { text-align: center; padding: 3rem 4rem; border-top: 1px solid var(--bor
 <!-- PAYMENT TERMS -->
 <section class="hours-section fade-up">
   <div class="section-label">Payment Terms</div>
-  <h2>Simple, gated invoicing.</h2>
-  <p class="body-text" style="max-width:640px;">Professional service fees are invoiced in two parts: 50% at engagement start, 50% on delivery of the validation scorecard. Media and panel costs are requested upfront so campaigns can launch without delay.</p>
+  <h2>Simple, two-part invoicing.</h2>
+  <p class="body-text" style="max-width:640px;">&pound;1,600 all-in, split across two invoices. The first invoice includes media and panel costs so campaigns can launch without delay.</p>
 
   <div class="terms-grid">
     <div class="terms-card">
-      <div class="terms-label">Professional Fees</div>
-      <div class="terms-value">50% / 50%</div>
-      <div class="terms-note">&pound;800 invoiced at engagement start. &pound;800 invoiced on delivery of the validation scorecard.</div>
+      <div class="terms-label">Invoice 1 &mdash; On Approval</div>
+      <div class="terms-value">&pound;990</div>
+      <div class="terms-note">50% of Unicorn fees (&pound;610) + 100% media &amp; panel costs (&pound;380). Covers Phase 1 and funds Pollfish panel + Meta ad account.</div>
     </div>
     <div class="terms-card">
-      <div class="terms-label">Media &amp; Panel Costs</div>
-      <div class="terms-value">100% on booking</div>
-      <div class="terms-note">Survey panel and Meta ad spend requested upfront. Paid directly to platforms or billed through Unicorn at cost.</div>
+      <div class="terms-label">Invoice 2 &mdash; On Delivery</div>
+      <div class="terms-value">&pound;610</div>
+      <div class="terms-note">Remaining 50% of Unicorn fees. Invoiced on delivery of the validation scorecard at end of Phase 2.</div>
     </div>
     <div class="terms-card">
       <div class="terms-label">Payment Window</div>
@@ -786,7 +791,7 @@ footer { text-align: center; padding: 3rem 4rem; border-top: 1px solid var(--bor
 
     <div class="approve-checkbox">
       <input type="checkbox" id="terms" name="terms_accepted" required value="yes">
-      <label for="terms">I approve this proposal and accept the <a href="/terms/" target="_blank" rel="noopener" style="color: var(--lavender); text-decoration: underline;">Terms &amp; Conditions</a>, including the payment terms (&pound;800 at engagement start, &pound;800 on scorecard delivery; media and panel costs upfront on booking).</label>
+      <label for="terms">I approve this proposal and accept the <a href="/terms/" target="_blank" rel="noopener" style="color: var(--lavender); text-decoration: underline;">Terms &amp; Conditions</a>, including the payment terms (&pound;990 on approval, &pound;610 on scorecard delivery; &pound;1,600 all-in).</label>
     </div>
 
     <button type="submit" class="approve-submit">Approve proposal &amp; start Phase 1 &rarr;</button>
