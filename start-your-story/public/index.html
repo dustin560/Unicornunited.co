@@ -1757,19 +1757,29 @@ function showEmailGate(bw) {
       <div class="gate-fields">
         <div class="gate-field">
           <label>Email Address</label>
-          <input type="email" id="gateEmail" placeholder="you@company.com" maxlength="100">
+          <input type="email" id="gateEmail" placeholder="you@company.com" maxlength="100" oninput="validateGateEmail()">
         </div>
         <div class="gate-field">
           <label>Company Name</label>
           <input type="text" id="gateCompany" placeholder="${G.brandName}" value="${G.brandName}" maxlength="60">
         </div>
       </div>
-      <button class="btn-primary" style="width:100%;justify-content:center;" id="gateSubmitBtn" onclick="submitEmailGate(false)">Reveal my Brand World →</button>
+      <button class="btn-primary" style="width:100%;justify-content:center;opacity:.35;pointer-events:none;" id="gateSubmitBtn" onclick="submitEmailGate(false)" disabled>Reveal my Brand World →</button>
       <p class="gate-note">We'll email your results. No spam, ever.</p>
-      <button class="gate-skip" onclick="submitEmailGate(true)">Skip — just show me the results</button>
     </div>
   `;
 }
+
+window.validateGateEmail = function() {
+  const btn = el('gateSubmitBtn');
+  const email = el('gateEmail')?.value?.trim() || '';
+  const valid = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+  if (btn) {
+    btn.disabled = !valid;
+    btn.style.opacity = valid ? '1' : '.35';
+    btn.style.pointerEvents = valid ? 'auto' : 'none';
+  }
+};
 
 window.submitEmailGate = async function(skip) {
   const email = el('gateEmail')?.value?.trim() || '';
