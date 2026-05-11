@@ -6,6 +6,7 @@ require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const { Resend } = require('resend');
+const { Client: NotionClient } = require('@notionhq/client');
 
 const app = express();
 app.use(express.json({ limit: '64kb' }));
@@ -18,6 +19,9 @@ const MAX_TOKENS = parseInt(process.env.MAX_TOKENS || '1024', 10);
 const PORT = process.env.PORT || 3000;
 const RESEND_KEY = process.env.RESEND_API_KEY || '';
 const NOTIFY_EMAIL = process.env.NOTIFY_EMAIL || ''; // Your email for lead notifications
+const NOTION_KEY = process.env.NOTION_API_KEY || '';
+const NOTION_DB_ID = process.env.NOTION_GAME_COMPLETIONS_DB_ID || '';
+const notion = NOTION_KEY ? new NotionClient({ auth: NOTION_KEY }) : null;
 
 // ── Basic rate limiting (per IP) ──
 const rateMap = new Map();
@@ -114,6 +118,13 @@ app.post('/api/send-results', async (req, res) => {
     sourceArchetypes, quadrant, vals, man,
     moodSelections, brandWords
   });
+
+  // ── Persist completion to Notion (non-blocking — never block the email) ──
+  saveCompletionToNotion({
+    email, playerName, brandName, company, brandWorld: bw,
+    archetype, sourceArchetypes, quadrant, values: vals,
+    manifesto: man, brandWords
+  }).catch(err => console.error('Notion save error:', err?.message || err));
 
   try {
     // 1. Send results to the player
@@ -373,6 +384,184 @@ function esc(str) {
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
+// ═══════════════════════════════════════════════════════════════
+// NOTION — Persist completion to Game Completions database
+// ═══════════════════════════════════════════════════════════════
+
+// Notion rich-text + block builders (kept small + boring on purpose)
+function nText(content) {
+  return [{ type: 'text', text: { content: String(content || '').slice(0, 2000) } }];
+}
+function nParagraph(text) {
+  return { object: 'block', type: 'paragraph', paragraph: { rich_text: nText(text) } };
+}
+function nHeading(level, text) {
+  const type = `heading_${level}`;
+  return { object: 'block', type, [type]: { rich_text: nText(text) } };
+}
+function nQuote(text) {
+  return { object: 'block', type: 'quote', quote: { rich_text: nText(text) } };
+}
+function nCallout(text, emoji, color) {
+  return {
+    object: 'block', type: 'callout',
+    callout: {
+      rich_text: nText(text),
+      icon: emoji ? { type: 'emoji', emoji } : undefined,
+      color: color || 'default'
+    }
+  };
+}
+function nBullet(text) {
+  return { object: 'block', type: 'bulleted_list_item', bulleted_list_item: { rich_text: nText(text) } };
+}
+function nDivider() {
+  return { object: 'block', type: 'divider', divider: {} };
+}
+
+function buildBrandWorldBlocks({ bw, archetype, sourceArchetypes, vals, man, brandWords }) {
+  const blocks = [];
+
+  // Story opening
+  if (bw.story_opening) {
+    blocks.push(nHeading(2, 'Brand World'));
+    blocks.push(nParagraph(bw.story_opening));
+    blocks.push(nDivider());
+  }
+
+  // Archetype
+  if (archetype && archetype.name) {
+    blocks.push(nHeading(2, `Archetype: ${archetype.name}`));
+    if (archetype.territory) blocks.push(nParagraph(archetype.territory));
+    if (archetype.desc) blocks.push(nParagraph(archetype.desc));
+    if (archetype.shadow) blocks.push(nCallout(`Shadow — ${archetype.shadow}`, '🌑', 'gray_background'));
+    if (sourceArchetypes && sourceArchetypes.length) {
+      blocks.push(nParagraph(`Forged from ${sourceArchetypes.join(' + ')}`));
+    }
+    blocks.push(nDivider());
+  }
+
+  // Positioning
+  if (bw.positioning) {
+    blocks.push(nHeading(2, 'Brand Positioning'));
+    blocks.push(nQuote(bw.positioning));
+    blocks.push(nDivider());
+  }
+
+  // Know → Believe → Act
+  if (bw.know || bw.believe || bw.act) {
+    blocks.push(nHeading(2, 'Know → Believe → Act'));
+    if (bw.know) blocks.push(nCallout(`KNOW — ${bw.know}`, '🧠', 'purple_background'));
+    if (bw.believe) blocks.push(nCallout(`BELIEVE — ${bw.believe}`, '💜', 'pink_background'));
+    if (bw.act) blocks.push(nCallout(`ACT — ${bw.act}`, '⚡', 'red_background'));
+    blocks.push(nDivider());
+  }
+
+  // Core Manifesto
+  const why = bw.manifesto_why || man.why;
+  const how = bw.manifesto_how || man.how;
+  const what = bw.manifesto_what || man.what;
+  if (why || how || what) {
+    blocks.push(nHeading(2, 'Core Manifesto'));
+    if (why) { blocks.push(nHeading(3, 'Why')); blocks.push(nParagraph(why)); }
+    if (how) { blocks.push(nHeading(3, 'How')); blocks.push(nParagraph(how)); }
+    if (what) { blocks.push(nHeading(3, 'What')); blocks.push(nParagraph(what)); }
+    blocks.push(nDivider());
+  }
+
+  // Values + Personality
+  const allValues = [...(vals.foundation || []), ...(vals.current || []), ...(vals.constellation || [])];
+  if (allValues.length || bw.personality || (brandWords && brandWords.length)) {
+    blocks.push(nHeading(2, 'Values & Personality'));
+    if (allValues.length) blocks.push(nParagraph(`Values: ${allValues.join(' · ')}`));
+    if (bw.personality) blocks.push(nParagraph(`Personality: ${bw.personality}`));
+    if (brandWords && brandWords.length) blocks.push(nParagraph(`Brand words: ${brandWords.join(' · ')}`));
+    blocks.push(nDivider());
+  }
+
+  // Visual Brand World
+  if (bw.visual_shapes || bw.visual_imagery || bw.visual_motion || bw.visual_texture || bw.visual_experience) {
+    blocks.push(nHeading(2, 'Visual Brand World'));
+    if (bw.visual_shapes) blocks.push(nBullet(`SHAPES — ${bw.visual_shapes}`));
+    if (bw.visual_imagery) blocks.push(nBullet(`IMAGERY — ${bw.visual_imagery}`));
+    if (bw.visual_motion) blocks.push(nBullet(`MOTION — ${bw.visual_motion}`));
+    if (bw.visual_texture) blocks.push(nBullet(`TEXTURE — ${bw.visual_texture}`));
+    if (bw.visual_experience) blocks.push(nCallout(`EXPERIENCE — ${bw.visual_experience}`, '✨', 'pink_background'));
+    blocks.push(nDivider());
+  }
+
+  // Brand Associations
+  if (bw.associations && bw.associations.length) {
+    blocks.push(nHeading(2, 'Brand Associations'));
+    blocks.push(nParagraph(bw.associations.join(' · ')));
+    blocks.push(nDivider());
+  }
+
+  // Benchmark Brands
+  if (bw.benchmark_1_name) {
+    blocks.push(nHeading(2, 'Kindred Spirits'));
+    blocks.push(nHeading(3, bw.benchmark_1_name));
+    if (bw.benchmark_1_why) blocks.push(nParagraph(bw.benchmark_1_why));
+    (bw.benchmark_1_examples || []).forEach(ex => blocks.push(nBullet(ex)));
+    if (bw.benchmark_2_name) {
+      blocks.push(nHeading(3, bw.benchmark_2_name));
+      if (bw.benchmark_2_why) blocks.push(nParagraph(bw.benchmark_2_why));
+      (bw.benchmark_2_examples || []).forEach(ex => blocks.push(nBullet(ex)));
+    }
+  }
+
+  return blocks;
+}
+
+// Known multi-select values in the Notion DB. Filter incoming values to these
+// so Notion doesn't reject the whole page over a mismatched archetype name.
+const KNOWN_SOURCE_ARCHETYPES = new Set([
+  'The Forgemaster', 'The Weaver', 'The Catalyst', 'The Alchemist',
+  'The Sage', 'The Guardian', 'The Explorer', 'The Sovereign',
+  'The Trickster', 'The Maverick'
+]);
+const KNOWN_QUADRANTS = new Set(['Power', 'Passion', 'Progress', 'Protection']);
+
+async function saveCompletionToNotion(data) {
+  if (!notion || !NOTION_DB_ID) return; // Notion not configured — skip silently
+
+  const {
+    email, playerName, brandName, company, brandWorld,
+    archetype, sourceArchetypes, quadrant, values, manifesto, brandWords
+  } = data;
+  const bw = brandWorld || {};
+  const vals = values || {};
+  const man = manifesto || {};
+
+  const cleanSources = (sourceArchetypes || [])
+    .filter(s => KNOWN_SOURCE_ARCHETYPES.has(s))
+    .map(name => ({ name }));
+
+  const properties = {
+    'Player Name': { title: [{ text: { content: playerName || 'Unknown' } }] },
+    'Brand Name': { rich_text: [{ text: { content: brandName || '' } }] },
+    'Company': { rich_text: [{ text: { content: company || brandName || '' } }] },
+    'Archetype': { rich_text: [{ text: { content: archetype?.name || '' } }] },
+    'Source Archetypes': { multi_select: cleanSources },
+    'Status': { select: { name: 'New' } },
+  };
+
+  if (email) properties['Email'] = { email };
+  if (quadrant && KNOWN_QUADRANTS.has(quadrant)) {
+    properties['Quadrant'] = { select: { name: quadrant } };
+  }
+
+  try {
+    await notion.pages.create({
+      parent: { database_id: NOTION_DB_ID },
+      properties,
+      children: buildBrandWorldBlocks({ bw, archetype, sourceArchetypes, vals, man, brandWords }),
+    });
+  } catch (err) {
+    console.error('Notion save failed:', err?.message || err);
+  }
+}
+
 // ── Health check ──
 app.get('/api/health', (req, res) => {
   res.json({ ok: true, hasKey: !!API_KEY });
@@ -382,5 +571,6 @@ app.get('/api/health', (req, res) => {
 app.listen(PORT, () => {
   console.log(`\n  ✦ Start your Story is running at http://localhost:${PORT}`);
   console.log(`  ${API_KEY ? '✓ API key loaded' : '✗ No API key — set ANTHROPIC_API_KEY in .env'}`);
-  console.log(`  ${RESEND_KEY ? '✓ Email configured' : '✗ No email key — set RESEND_API_KEY in .env'}\n`);
+  console.log(`  ${RESEND_KEY ? '✓ Email configured' : '✗ No email key — set RESEND_API_KEY in .env'}`);
+  console.log(`  ${notion && NOTION_DB_ID ? '✓ Notion configured (Game Completions)' : '✗ Notion not configured — set NOTION_API_KEY and NOTION_GAME_COMPLETIONS_DB_ID'}\n`);
 });
