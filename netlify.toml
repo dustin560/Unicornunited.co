@@ -1,2 +1,37 @@
 [build]
   publish = "."
+
+[[redirects]]
+  from = "https://unicornbrand.co/*"
+  to = "https://unicornunited.co/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://www.unicornunited.co/*"
+  to = "https://unicornunited.co/:splat"
+  status = 301
+  force = true
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), camera=(), microphone=()"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
