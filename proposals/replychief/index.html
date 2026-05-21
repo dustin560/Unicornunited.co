@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReplyChief — Brand to Market Proposal | Unicorn</title>
+<meta name="description" content="Mini proposal for ReplyChief — three founder-stage options to take the brand from a sharp wedge to a positioned, named, voiced launch.">
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#1A0A2E;--violet:#7B2FBE;--magenta:#C724B1;--rose:#E84D8A;
+  --lavender:#F8F0FF;--ink:#0d0818;--surface:#170d2a;--card:#1e1136;
+  --mist:rgba(248,240,255,.7);--soft:rgba(248,240,255,.45);--white:#fff;
+  --grad:linear-gradient(90deg,var(--violet),var(--magenta));
+  --grad3:linear-gradient(135deg,var(--violet) 0%,var(--magenta) 50%,var(--rose) 100%);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Sora',sans-serif;background:var(--ink);color:var(--white);line-height:1.6;}
+
+.wrap{max-width:880px;margin:0 auto;padding:4rem 2rem 5rem;}
+
+/* HEADER */
+.head{margin-bottom:3.2rem;border-bottom:1px solid rgba(123,47,190,.18);padding-bottom:2.2rem;}
+.brand{display:flex;align-items:center;gap:.6rem;margin-bottom:1.8rem;}
+.mark{width:18px;height:22px;}
+.brand-name{font-size:.78rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.kicker{display:inline-flex;align-items:center;gap:.6rem;font-size:.6rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--soft);margin-bottom:1.3rem;}
+.kicker::before{content:'';display:block;width:24px;height:1px;background:rgba(248,240,255,.25);}
+h1{font-size:clamp(2rem,5vw,3rem);font-weight:800;line-height:1.05;letter-spacing:-.03em;margin-bottom:1rem;}
+h1 .g{background:var(--grad3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.lede{font-size:1rem;line-height:1.7;color:var(--mist);max-width:640px;}
+
+/* SECTIONS */
+section{margin-top:3rem;}
+.stag{font-size:.6rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block;margin-bottom:.7rem;}
+h2{font-size:clamp(1.3rem,2.8vw,1.85rem);font-weight:800;line-height:1.2;letter-spacing:-.02em;margin-bottom:1.1rem;color:var(--white);}
+h2 .g{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+p{font-size:.94rem;line-height:1.78;color:var(--mist);margin-bottom:1rem;}
+p strong{color:var(--white);font-weight:600;}
+
+/* SCOPE BAR */
+.scope{margin-top:1.5rem;padding:1.5rem 1.8rem;background:var(--surface);border-left:2px solid var(--magenta);}
+.scope-label{font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(199,36,177,.7);margin-bottom:.5rem;}
+.scope p{font-size:.88rem;line-height:1.7;color:rgba(248,240,255,.65);margin:0;}
+
+/* OPTION CARDS */
+.opts{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:1.6rem;}
+.opt{padding:1.8rem 1.5rem;background:var(--surface);border:1px solid rgba(123,47,190,.18);position:relative;display:flex;flex-direction:column;}
+.opt.flag{border-color:rgba(199,36,177,.5);background:linear-gradient(180deg,rgba(199,36,177,.1),rgba(123,47,190,.05));}
+.opt-badge{position:absolute;top:-10px;left:1.5rem;font-size:.55rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;background:var(--grad);color:var(--white);padding:.3rem .7rem;border-radius:2px;}
+.opt-tag{font-size:.55rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(181,126,255,.6);margin-bottom:.5rem;}
+.opt-name{font-size:1.15rem;font-weight:800;letter-spacing:-.02em;color:var(--white);margin-bottom:.4rem;line-height:1.2;}
+.opt-line{font-size:.78rem;color:rgba(248,240,255,.45);margin-bottom:1.2rem;line-height:1.5;}
+.opt-price{margin-bottom:1.3rem;padding-bottom:1.2rem;border-bottom:1px solid rgba(123,47,190,.12);}
+.opt-gbp{font-size:1.9rem;font-weight:800;letter-spacing:-.02em;color:var(--white);line-height:1;}
+.opt-usd{font-size:.72rem;color:rgba(248,240,255,.4);margin-top:.3rem;letter-spacing:.04em;}
+.opt-time{font-size:.62rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(181,126,255,.55);margin-top:.55rem;}
+.opt-incl{list-style:none;display:flex;flex-direction:column;gap:.55rem;flex:1;}
+.opt-incl li{font-size:.78rem;line-height:1.5;color:rgba(248,240,255,.55);display:flex;align-items:flex-start;gap:.55rem;}
+.opt-incl li::before{content:'→';color:var(--violet);opacity:.7;flex-shrink:0;font-size:.7rem;margin-top:.15rem;}
+.opt-incl li.muted{color:rgba(248,240,255,.22);}
+.opt-incl li.muted::before{content:'·';color:rgba(248,240,255,.2);}
+.opt-foot{margin-top:1.5rem;padding-top:1.2rem;border-top:1px solid rgba(123,47,190,.1);}
+.opt-best{font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(181,126,255,.55);margin-bottom:.45rem;}
+.opt-best-line{font-size:.78rem;color:rgba(248,240,255,.55);line-height:1.5;}
+
+/* TIMELINE */
+.tl{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;margin-top:1.4rem;}
+.tl-box{padding:1.1rem 1rem;background:var(--surface);border:1px solid rgba(123,47,190,.12);}
+.tl-wk{font-size:.55rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(181,126,255,.6);margin-bottom:.4rem;}
+.tl-t{font-size:.85rem;font-weight:700;color:var(--white);margin-bottom:.3rem;letter-spacing:-.01em;}
+.tl-d{font-size:.72rem;line-height:1.55;color:rgba(248,240,255,.4);}
+
+/* HONEST NOTE */
+.note{margin-top:2.2rem;padding:1.6rem 1.8rem;background:rgba(123,47,190,.06);border:1px solid rgba(123,47,190,.15);}
+.note-label{font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(181,126,255,.6);margin-bottom:.55rem;}
+.note p{font-size:.86rem;line-height:1.72;color:rgba(248,240,255,.62);margin:0;}
+.note p + p{margin-top:.7rem;}
+
+/* CTA */
+.cta-box{margin-top:2.5rem;padding:2.2rem;background:linear-gradient(135deg,rgba(123,47,190,.14),rgba(232,77,138,.06));border:1px solid rgba(123,47,190,.25);text-align:center;}
+.cta-box h3{font-size:1.2rem;font-weight:800;color:var(--white);margin-bottom:.6rem;letter-spacing:-.02em;}
+.cta-box p{font-size:.88rem;line-height:1.7;color:rgba(248,240,255,.65);max-width:520px;margin:0 auto 1.4rem;}
+.cta-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--grad);color:var(--white);font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.85rem 2rem;text-decoration:none;border-radius:2px;}
+
+/* FOOTER */
+.foot{margin-top:3.5rem;padding-top:2rem;border-top:1px solid rgba(123,47,190,.15);display:flex;justify-content:space-between;align-items:center;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(248,240,255,.3);}
+.foot a{color:rgba(248,240,255,.5);text-decoration:none;}
+.foot a:hover{color:var(--lavender);}
+
+@media(max-width:760px){
+  .opts,.tl{grid-template-columns:1fr;}
+  .wrap{padding:2.5rem 1.4rem 3rem;}
+  .tl-box{padding:.9rem 1rem;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="head">
+  <div class="brand">
+    <svg class="mark" viewBox="0 0 120 148" fill="none">
+      <defs>
+        <linearGradient id="ug" x1="0" y1="0" x2="120" y2="148" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#7B2FBE"/>
+          <stop offset="100%" stop-color="#C724B1"/>
+        </linearGradient>
+        <clipPath id="uc"><path d="M4,140 L30,12 L60,88 L90,12 L116,140 Z"/></clipPath>
+      </defs>
+      <rect width="120" height="148" fill="url(#ug)" clip-path="url(#uc)"/>
+    </svg>
+    <span class="brand-name">Unicorn</span>
+  </div>
+  <div class="kicker">Mini proposal · For Evan / ReplyChief</div>
+  <h1>Brand to Market <span class="g">for ReplyChief</span></h1>
+  <p class="lede">A focused engagement to take ReplyChief from "interesting wedge" to a real brand with positioning, voice, and a launch story. Three options below — sized for a founder building this, not for an agency selling theatre.</p>
+</header>
+
+<section>
+  <span class="stag">01 · Scope</span>
+  <h2>What we're actually solving.</h2>
+  <p>The work isn't a logo and a colour palette. It's the strategic layer underneath — the bit that explains why ReplyChief exists in a category that already has fifteen review tools, who it's really for, and what it sounds like when nobody else is in the room. That's what makes the rest of marketing efficient instead of expensive.</p>
+  <div class="scope">
+    <div class="scope-label">The brief, in one line</div>
+    <p>Turn ReplyChief from a smart side-hustle into a positioned, named, voiced brand that's promotable — by you, by partners, by anyone.</p>
+  </div>
+</section>
+
+<section>
+  <span class="stag">02 · Three Options</span>
+  <h2>Pick the bite size <span class="g">that fits</span>.</h2>
+  <p>All three are real options — not a "good / better / best" upsell trap. Pick the one that matches where you are. The recommended path for ReplyChief today is the Founder Edition; the Sprint is a sharper, cheaper start if you want to test the working relationship first.</p>
+
+  <div class="opts">
+
+    <!-- Option 01: Sprint -->
+    <div class="opt">
+      <div class="opt-tag">Option 01</div>
+      <div class="opt-name">Brand Definition Sprint</div>
+      <div class="opt-line">Phase 1 only — strategy, positioning, voice. The foundation.</div>
+      <div class="opt-price">
+        <div class="opt-gbp">£2,400</div>
+        <div class="opt-usd">~ $3,000 USD</div>
+        <div class="opt-time">10 working days</div>
+      </div>
+      <ul class="opt-incl">
+        <li>Start Your Story strategic workshop</li>
+        <li>Positioning + messaging architecture</li>
+        <li>Verbal identity — name audit, voice principles</li>
+        <li>ICP definition (one primary, one secondary)</li>
+        <li>Brand strategy one-pager you can give anyone</li>
+        <li class="muted">No audience validation</li>
+        <li class="muted">No launch comms or site rewrite</li>
+      </ul>
+      <div class="opt-foot">
+        <div class="opt-best">Best for</div>
+        <div class="opt-best-line">Testing the working relationship before bigger commitment.</div>
+      </div>
+    </div>
+
+    <!-- Option 02: Founder Edition - RECOMMENDED -->
+    <div class="opt flag">
+      <div class="opt-badge">Recommended</div>
+      <div class="opt-tag">Option 02</div>
+      <div class="opt-name">Brand to Market — Founder Edition</div>
+      <div class="opt-line">Phases 1 + 2 — define <em>and</em> validate. Evidence-led.</div>
+      <div class="opt-price">
+        <div class="opt-gbp">£4,500</div>
+        <div class="opt-usd">~ $5,700 USD</div>
+        <div class="opt-time">4 weeks</div>
+      </div>
+      <ul class="opt-incl">
+        <li>Everything in Option 01</li>
+        <li>Validation panel — 12–15 real local-business owners</li>
+        <li>Message testing across two positioning routes</li>
+        <li>Refined positioning + creative concept</li>
+        <li>Go / no-go decision based on actual evidence</li>
+        <li>Brand strategy + validation report</li>
+        <li class="muted">No site rewrite (priced separately)</li>
+      </ul>
+      <div class="opt-foot">
+        <div class="opt-best">Best for</div>
+        <div class="opt-best-line">ReplyChief today. You walk into rev-share conversations with something real.</div>
+      </div>
+    </div>
+
+    <!-- Option 03: Full -->
+    <div class="opt">
+      <div class="opt-tag">Option 03</div>
+      <div class="opt-name">Brand to Market — Full</div>
+      <div class="opt-line">All three phases. Defined, validated, launched.</div>
+      <div class="opt-price">
+        <div class="opt-gbp">£8,250</div>
+        <div class="opt-usd">~ $10,400 USD</div>
+        <div class="opt-time">8 weeks</div>
+      </div>
+      <ul class="opt-incl">
+        <li>Everything in Options 01 + 02</li>
+        <li>Brand world — visual direction, type, palette</li>
+        <li>Site rewrite (copy + structure, you keep the build)</li>
+        <li>Founder voice — LinkedIn & founder-led content kit</li>
+        <li>Launch comms — partner pitch, press one-pager</li>
+        <li>Two-month post-launch coaching included</li>
+      </ul>
+      <div class="opt-foot">
+        <div class="opt-best">Best for</div>
+        <div class="opt-best-line">Going to market in Q3 2026 with a brand built to scale.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <span class="stag">03 · Founder Edition Timeline</span>
+  <h2>What four weeks <span class="g">looks like</span>.</h2>
+  <div class="tl">
+    <div class="tl-box">
+      <div class="tl-wk">Week 01</div>
+      <div class="tl-t">Discover</div>
+      <div class="tl-d">Start Your Story workshop. Audit. Two positioning routes drafted.</div>
+    </div>
+    <div class="tl-box">
+      <div class="tl-wk">Week 02</div>
+      <div class="tl-t">Define</div>
+      <div class="tl-d">Positioning, messaging, ICP, name audit, voice principles locked.</div>
+    </div>
+    <div class="tl-box">
+      <div class="tl-wk">Week 03</div>
+      <div class="tl-t">Validate</div>
+      <div class="tl-d">Panel of 12–15 owners. Message tests across both routes.</div>
+    </div>
+    <div class="tl-box">
+      <div class="tl-wk">Week 04</div>
+      <div class="tl-t">Decide</div>
+      <div class="tl-d">Refined brand strategy + validation report. Go / no-go call.</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="note">
+    <div class="note-label">Honest note on pricing</div>
+    <p>Worth being straight about this — Unicorn's full Brand to Market engagements typically land in the £15–25k range for funded businesses. The numbers above are deliberately founder-stage: I'm scaling effort and scope, not corner-cutting the thinking. You get the same brain, applied to a tighter remit.</p>
+    <p>If a rev-share or equity component is interesting alongside a smaller cash number, happy to talk about that too. The version I'd rule out is the free one — you'd want me invested, and "invested" has to mean something.</p>
+  </div>
+</section>
+
+<section>
+  <div class="cta-box">
+    <h3>Want to start with a 30-minute call?</h3>
+    <p>If any of the three options is in the right ballpark, the next step is a short call to confirm scope and lock dates. No deck, no sales theatre — just a working conversation.</p>
+    <a href="https://unicornunited.co/#contact" class="cta-btn">Book the call →</a>
+  </div>
+</section>
+
+<footer class="foot">
+  <div>Unicorn United Ltd · Co. No. 09522884</div>
+  <div><a href="https://unicornunited.co">unicornunited.co</a></div>
+</footer>
+
+</div>
+</body>
+</html>
