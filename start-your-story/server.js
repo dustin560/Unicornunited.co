@@ -560,6 +560,60 @@ function buildPersonalResultsEmail({ playerName, role, pov, recommendedTier, bw,
 
   <tr><td style="height:16px;"></td></tr>
 
+  ${(bw.light_expression || bw.shadow_integration || bw.dark_reflection || bw.source_symbol) ? `
+  <!-- Four-Quadrant Map (Light/Shadow/Dark/Source) -->
+  <tr><td style="padding:24px 30px;background:#170d2a;border:1px solid rgba(123,47,190,.15);">
+    <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#C724B1;margin-bottom:14px;">The Four Quadrants</div>
+    <table width="100%" cellpadding="0" cellspacing="0">
+      ${bw.light_expression ? `<tr><td style="padding:10px 12px;background:rgba(123,47,190,.06);border-left:3px solid #7B2FBE;"><div style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:#7B2FBE;margin-bottom:4px;">LIGHT — WHAT YOU EMBODY</div><div style="font-size:13px;color:rgba(248,240,255,.7);line-height:1.55;">${esc(bw.light_expression)}</div></td></tr><tr><td style="height:8px;"></td></tr>` : ''}
+      ${bw.shadow_integration ? `<tr><td style="padding:10px 12px;background:rgba(91,79,214,.06);border-left:3px solid #5B4FD6;"><div style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:#5B4FD6;margin-bottom:4px;">SHADOW — REFRAMED AS STRENGTH</div><div style="font-size:13px;color:rgba(248,240,255,.7);line-height:1.55;">${esc(bw.shadow_integration)}</div></td></tr><tr><td style="height:8px;"></td></tr>` : ''}
+      ${bw.dark_reflection ? `<tr><td style="padding:10px 12px;background:rgba(232,77,138,.05);border-left:3px solid #E84D8A;"><div style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:#E84D8A;margin-bottom:4px;">DARK — WHAT OTHERS SEE</div><div style="font-size:13px;color:rgba(248,240,255,.7);line-height:1.55;">${esc(bw.dark_reflection)}</div></td></tr><tr><td style="height:8px;"></td></tr>` : ''}
+      ${bw.source_symbol ? `<tr><td style="padding:10px 12px;background:rgba(199,36,177,.05);border-left:3px solid #C724B1;"><div style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:#C724B1;margin-bottom:4px;">SOURCE — FUTURE-SELF SYMBOL</div><div style="font-size:13px;color:rgba(248,240,255,.7);line-height:1.55;font-style:italic;">${esc(bw.source_symbol)}</div></td></tr>` : ''}
+    </table>
+  </td></tr>
+  <tr><td style="height:16px;"></td></tr>
+  ` : ''}
+
+  ${(bw.purpose || bw.people || bw.proof || bw.path) ? `
+  <!-- Purpose / People / Proof / Path -->
+  <tr><td style="padding:24px 30px;background:#1e1136;border:1px solid rgba(123,47,190,.12);">
+    <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#C724B1;margin-bottom:14px;">Purpose · People · Proof · Path</div>
+    <table width="100%" cellpadding="0" cellspacing="0" style="font-size:13px;line-height:1.55;">
+      ${bw.purpose ? `<tr><td style="padding:8px 0;"><strong style="color:#E84D8A;font-size:10px;letter-spacing:1.5px;">PURPOSE</strong><div style="color:rgba(248,240,255,.7);">${esc(bw.purpose)}</div></td></tr>` : ''}
+      ${bw.people ? `<tr><td style="padding:8px 0;"><strong style="color:#C724B1;font-size:10px;letter-spacing:1.5px;">PEOPLE</strong><div style="color:rgba(248,240,255,.7);">${esc(bw.people)}</div></td></tr>` : ''}
+      ${bw.proof ? `<tr><td style="padding:8px 0;"><strong style="color:#7B2FBE;font-size:10px;letter-spacing:1.5px;">PROOF</strong><div style="color:rgba(248,240,255,.7);">${esc(bw.proof)}</div></td></tr>` : ''}
+      ${bw.path ? `<tr><td style="padding:8px 0;"><strong style="color:#5B4FD6;font-size:10px;letter-spacing:1.5px;">PATH</strong><div style="color:rgba(248,240,255,.7);">${esc(bw.path)}</div></td></tr>` : ''}
+    </table>
+  </td></tr>
+  <tr><td style="height:16px;"></td></tr>
+  ` : ''}
+
+  ${(Array.isArray(bw.stop) || Array.isArray(bw.continue_) || Array.isArray(bw.start)) ? `
+  <!-- STOP / CONTINUE / START -->
+  <tr><td style="padding:24px 30px;background:#170d2a;border:1px solid rgba(123,47,190,.15);">
+    <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#C724B1;margin-bottom:14px;">Stop · Continue · Start</div>
+    <table width="100%" cellpadding="0" cellspacing="0" style="font-size:12px;line-height:1.5;">
+      <tr>
+        <td width="33%" style="padding:0 8px;vertical-align:top;"><div style="font-size:10px;font-weight:700;color:#E84D8A;letter-spacing:1.5px;margin-bottom:6px;">STOP</div>${(bw.stop || []).map(x => `<div style="color:rgba(248,240,255,.65);padding:3px 0;">${esc(x)}</div>`).join('')}</td>
+        <td width="33%" style="padding:0 8px;vertical-align:top;"><div style="font-size:10px;font-weight:700;color:#C724B1;letter-spacing:1.5px;margin-bottom:6px;">CONTINUE</div>${(bw.continue_ || []).map(x => `<div style="color:rgba(248,240,255,.65);padding:3px 0;">${esc(x)}</div>`).join('')}</td>
+        <td width="33%" style="padding:0 8px;vertical-align:top;"><div style="font-size:10px;font-weight:700;color:#7B2FBE;letter-spacing:1.5px;margin-bottom:6px;">START</div>${(bw.start || []).map(x => `<div style="color:rgba(248,240,255,.65);padding:3px 0;">${esc(x)}</div>`).join('')}</td>
+      </tr>
+    </table>
+  </td></tr>
+  <tr><td style="height:16px;"></td></tr>
+  ` : ''}
+
+  ${(bw.plan_30 || bw.plan_60 || bw.plan_90) ? `
+  <!-- 30 / 60 / 90 day plan -->
+  <tr><td style="padding:24px 30px;background:#1e1136;border:1px solid rgba(123,47,190,.12);">
+    <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#C724B1;margin-bottom:14px;">Your 30 / 60 / 90 Plan</div>
+    ${bw.plan_30 ? `<div style="margin-bottom:10px;"><div style="font-size:10px;font-weight:700;color:#E84D8A;letter-spacing:1.5px;">30 DAYS</div><div style="font-size:13px;color:rgba(248,240,255,.7);line-height:1.55;">${esc(bw.plan_30)}</div></div>` : ''}
+    ${bw.plan_60 ? `<div style="margin-bottom:10px;"><div style="font-size:10px;font-weight:700;color:#C724B1;letter-spacing:1.5px;">60 DAYS</div><div style="font-size:13px;color:rgba(248,240,255,.7);line-height:1.55;">${esc(bw.plan_60)}</div></div>` : ''}
+    ${bw.plan_90 ? `<div><div style="font-size:10px;font-weight:700;color:#7B2FBE;letter-spacing:1.5px;">90 DAYS</div><div style="font-size:13px;color:rgba(248,240,255,.7);line-height:1.55;">${esc(bw.plan_90)}</div></div>` : ''}
+  </td></tr>
+  <tr><td style="height:16px;"></td></tr>
+  ` : ''}
+
   <!-- Tier Recommendation -->
   <tr><td style="padding:30px;background:linear-gradient(135deg,rgba(123,47,190,.18),rgba(199,36,177,.06));border:1px solid rgba(199,36,177,.28);">
     <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#f4a0c0;margin-bottom:14px;">Your Recommended Path</div>
@@ -809,6 +863,72 @@ async function saveCompletionToNotion(data) {
   }
 }
 
+function buildPersonalBrandWorldBlocks({ bw, archetype, sourceArchetypes, vals, man, brandWords, pov, recommendedTier, role }) {
+  const blocks = [];
+  if (bw.story_opening) {
+    blocks.push(nHeading(2, 'Personal Brand World'));
+    blocks.push(nParagraph(bw.story_opening));
+    blocks.push(nDivider());
+  }
+  if (archetype && archetype.name) {
+    blocks.push(nHeading(2, `Quest: ${archetype.name}`));
+    if (archetype.territory) blocks.push(nParagraph(archetype.territory));
+    if (archetype.desc) blocks.push(nParagraph(archetype.desc));
+    if (archetype.shadow) blocks.push(nCallout(`Shadow — ${archetype.shadow}`, '🌑', 'gray_background'));
+    if (sourceArchetypes && sourceArchetypes.length) blocks.push(nParagraph(`Final three Quests: ${sourceArchetypes.join(' · ')}`));
+    blocks.push(nDivider());
+  }
+  if (pov) {
+    blocks.push(nHeading(2, 'POV'));
+    blocks.push(nQuote(pov));
+    blocks.push(nDivider());
+  }
+  if (bw.positioning) {
+    blocks.push(nHeading(2, 'How They Show Up'));
+    blocks.push(nQuote(bw.positioning));
+    blocks.push(nDivider());
+  }
+  // Four-quadrant map
+  if (bw.light_expression || bw.shadow_integration || bw.dark_reflection || bw.source_symbol) {
+    blocks.push(nHeading(2, 'The Four Quadrants'));
+    if (bw.light_expression) blocks.push(nCallout(`LIGHT — ${bw.light_expression}`, '☀️', 'purple_background'));
+    if (bw.shadow_integration) blocks.push(nCallout(`SHADOW — ${bw.shadow_integration}`, '🌒', 'blue_background'));
+    if (bw.dark_reflection) blocks.push(nCallout(`DARK — ${bw.dark_reflection}`, '✨', 'pink_background'));
+    if (bw.source_symbol) blocks.push(nCallout(`SOURCE — ${bw.source_symbol}`, '🧭', 'red_background'));
+    blocks.push(nDivider());
+  }
+  // Purpose / People / Proof / Path
+  if (bw.purpose || bw.people || bw.proof || bw.path) {
+    blocks.push(nHeading(2, 'Purpose · People · Proof · Path'));
+    if (bw.purpose) blocks.push(nBullet(`Purpose — ${bw.purpose}`));
+    if (bw.people) blocks.push(nBullet(`People — ${bw.people}`));
+    if (bw.proof) blocks.push(nBullet(`Proof — ${bw.proof}`));
+    if (bw.path) blocks.push(nBullet(`Path — ${bw.path}`));
+    blocks.push(nDivider());
+  }
+  // STOP / CONTINUE / START
+  if (Array.isArray(bw.stop) || Array.isArray(bw.continue_) || Array.isArray(bw.start)) {
+    blocks.push(nHeading(2, 'Stop · Continue · Start'));
+    if (Array.isArray(bw.stop)) { blocks.push(nHeading(3, 'STOP')); bw.stop.forEach(x => blocks.push(nBullet(x))); }
+    if (Array.isArray(bw.continue_)) { blocks.push(nHeading(3, 'CONTINUE')); bw.continue_.forEach(x => blocks.push(nBullet(x))); }
+    if (Array.isArray(bw.start)) { blocks.push(nHeading(3, 'START')); bw.start.forEach(x => blocks.push(nBullet(x))); }
+    blocks.push(nDivider());
+  }
+  // 30 / 60 / 90
+  if (bw.plan_30 || bw.plan_60 || bw.plan_90) {
+    blocks.push(nHeading(2, '30 / 60 / 90 Day Plan'));
+    if (bw.plan_30) blocks.push(nCallout(`30 DAYS — ${bw.plan_30}`, '🌱', 'pink_background'));
+    if (bw.plan_60) blocks.push(nCallout(`60 DAYS — ${bw.plan_60}`, '🌿', 'purple_background'));
+    if (bw.plan_90) blocks.push(nCallout(`90 DAYS — ${bw.plan_90}`, '🌳', 'red_background'));
+    blocks.push(nDivider());
+  }
+  if (recommendedTier) {
+    blocks.push(nHeading(2, 'Recommended Path'));
+    blocks.push(nCallout(`${recommendedTier} — recommended for ${role || 'this leader'}`, '🎯', 'pink_background'));
+  }
+  return blocks;
+}
+
 async function savePersonalCompletionToNotion(data) {
   if (!notion || !NOTION_PERSONAL_DB_ID) return; // Personal Notion not configured — skip silently
 
@@ -847,11 +967,87 @@ async function savePersonalCompletionToNotion(data) {
     await notion.pages.create({
       parent: { database_id: NOTION_PERSONAL_DB_ID },
       properties,
-      children: buildBrandWorldBlocks({ bw, archetype, sourceArchetypes, vals, man, brandWords }),
+      children: buildPersonalBrandWorldBlocks({ bw, archetype, sourceArchetypes, vals, man, brandWords, pov, recommendedTier, role }),
     });
   } catch (err) {
     console.error('Notion personal save failed:', err?.message || err);
   }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ALLY SHARE — Personal mode v2 viral loop
+// Send each ally a 1-question email; reply-to: the player.
+// ═══════════════════════════════════════════════════════════════
+app.post('/api/send-ally-share', async (req, res) => {
+  const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+  if (!rateCheck(ip)) return res.status(429).json({ error: 'Too many requests.' });
+  if (!RESEND_KEY) return res.status(500).json({ error: 'Email not configured.' });
+
+  const { playerName, playerEmail, lockedQuest, allies } = req.body;
+  if (!playerName || !playerEmail || !Array.isArray(allies) || !allies.length) {
+    return res.status(400).json({ error: 'Missing playerName, playerEmail, or allies.' });
+  }
+  // Filter to valid email+name pairs, cap at 5
+  const cleanAllies = allies
+    .filter(a => a && a.email && a.email.includes('@'))
+    .slice(0, 5)
+    .map(a => ({ name: (a.name || '').trim() || 'there', email: a.email.trim() }));
+  if (!cleanAllies.length) return res.status(400).json({ error: 'No valid ally emails.' });
+
+  const resend = new Resend(RESEND_KEY);
+  const results = [];
+  for (const ally of cleanAllies) {
+    try {
+      await resend.emails.send({
+        from: 'Start your Story <results@unicornunited.co>',
+        to: ally.email,
+        reply_to: playerEmail,
+        subject: `${playerName} asked for your take`,
+        html: buildAllyShareEmail({ playerName, allyName: ally.name, playerEmail, lockedQuest })
+      });
+      results.push({ email: ally.email, ok: true });
+    } catch (err) {
+      console.error('Ally share email failed for', ally.email, err?.message || err);
+      results.push({ email: ally.email, ok: false });
+    }
+  }
+  res.json({ ok: true, sent: results.filter(r => r.ok).length, results });
+});
+
+function buildAllyShareEmail({ playerName, allyName, playerEmail, lockedQuest }) {
+  const questLine = lockedQuest && lockedQuest.name
+    ? `${esc(playerName)} just did a deep piece of work on their personal brand. They came out the other side with a Quest: <strong>${esc(lockedQuest.name)}</strong> — ${esc(lockedQuest.quest || '')}.`
+    : `${esc(playerName)} just did a deep piece of work on their personal brand.`;
+  return `
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background:#0d0818;font-family:'Helvetica Neue',Arial,sans-serif;color:#ffffff;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#0d0818;">
+<tr><td align="center" style="padding:40px 20px;">
+<table width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;">
+  <tr><td style="text-align:center;padding:20px 0 30px;">
+    <div style="font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(248,240,255,.35);margin-bottom:12px;">A Unicorn for Leaders Moment</div>
+    <h1 style="font-size:26px;font-weight:800;margin:0;letter-spacing:-1px;background:linear-gradient(90deg,#7B2FBE,#C724B1,#E84D8A);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Hey ${esc(allyName)},</h1>
+  </td></tr>
+  <tr><td style="padding:24px 30px;background:#170d2a;border:1px solid rgba(123,47,190,.18);">
+    <p style="font-size:15px;line-height:1.7;color:rgba(248,240,255,.78);margin:0 0 16px;">${questLine}</p>
+    <p style="font-size:15px;line-height:1.7;color:rgba(248,240,255,.78);margin:0 0 16px;">They chose you because they trust your eye on them. One short question:</p>
+    <div style="padding:18px 20px;background:rgba(199,36,177,.08);border-left:3px solid #C724B1;margin:16px 0;">
+      <p style="font-size:16px;font-weight:600;line-height:1.55;color:#fff;margin:0;font-style:italic;">"What do you see in ${esc(playerName)} when they're at their best?"</p>
+    </div>
+    <p style="font-size:14px;line-height:1.7;color:rgba(248,240,255,.6);margin:0 0 20px;">Just hit reply and tell them. A sentence is enough. Two is generous. You'd be surprised how rare it is for someone to be told exactly what gift they bring to a room.</p>
+    <div style="text-align:center;margin-top:24px;">
+      <a href="mailto:${esc(playerEmail)}?subject=What%20I%20see%20in%20you" style="display:inline-block;padding:12px 28px;background:linear-gradient(90deg,#7B2FBE,#C724B1);color:#fff;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;text-decoration:none;border-radius:2px;">Reply to ${esc(playerName)} →</a>
+    </div>
+  </td></tr>
+  <tr><td style="padding:24px 30px;background:#1e1136;border:1px solid rgba(123,47,190,.12);margin-top:16px;text-align:center;">
+    <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(248,240,255,.3);margin-bottom:8px;">Curious for yourself?</div>
+    <p style="font-size:13px;color:rgba(248,240,255,.55);line-height:1.6;margin:0 0 14px;">You can play through the same workshop. 25 minutes. It'll surface things you didn't know you knew about yourself.</p>
+    <a href="https://start-your-story-production-75f3.up.railway.app" target="_blank" style="display:inline-block;padding:10px 24px;border:1px solid rgba(248,240,255,.18);color:rgba(248,240,255,.6);font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;text-decoration:none;border-radius:2px;">Play Start Your Story</a>
+  </td></tr>
+  <tr><td style="padding:24px 0;text-align:center;"><div style="font-size:11px;color:rgba(248,240,255,.15);">A nudge from <a href="https://unicornunited.co/for-leaders" style="color:rgba(248,240,255,.25);text-decoration:none;">Unicorn for Leaders</a></div></td></tr>
+</table>
+</td></tr></table></body></html>`;
 }
 
 // ── Health check ──

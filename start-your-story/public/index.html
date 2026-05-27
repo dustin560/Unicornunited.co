@@ -419,6 +419,15 @@ const G = {
   role: '',                   // personal-mode only: Founder/CEO, etc.
   recommendedTier: '',        // personal-mode only: AI-routed tier recommendation
   pov: '',                    // personal-mode only: distilled personal POV statement
+
+  // Personal v2 — Light/Shadow/Dark/Source captures
+  light: { words: [], freeText: '', distilled: '' },         // Ch1 Light Expression
+  shadow: { answers: {}, distilled: '' },                    // Ch2 Shadow Integration
+  dark: { answers: {}, distilled: '' },                      // Ch3 Dark Reflection (hidden gifts)
+  source: { selectedQuests: [], finalQuests: [], lockedQuest: null, symbol: '', futureMessage: '' }, // Ch4 Source Symbol
+  synthesis: null,            // Ch5 final AI-generated object
+  allyShares: [],             // optional ally-share email captures
+
   playerName: '', brandName: '',
   chapter: 0,
   // Chapter 1 — Compass
@@ -628,6 +637,133 @@ const ARCHETYPES = [
     desc:'You build community. Weaver brands see the invisible connections between people, ideas, and moments — and strengthen them. Your superpower isn\'t standing out, it\'s bringing together.',
     shadow:'Can become invisible, so focused on others that your own identity fades. Risk of being taken for granted.',
     values:['Community','Reliability','Support','Consistency'] },
+];
+
+// ═══════════════════════════════════════
+// PERSONAL — 15 QUEST ARCHETYPES (v2)
+// Mapped to existing 12 game icons where possible; 3 new SVGs below.
+// Each Quest: id, name, quest (one-line leadership question), hook (what others recognise),
+// desc (the leader you become if you choose this quest), shadow (the failure mode),
+// beliefs (4 values), quadrant (mapped to existing power/passion/progress/protection palette).
+// ═══════════════════════════════════════
+function questIcon(id, size=48) {
+  const s = size;
+  const newIcons = {
+    architect: `<svg width="${s}" height="${s}" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="6" y="6" width="36" height="36" rx="1" stroke="url(#gArc)" stroke-width="1.4" fill="rgba(123,47,190,.05)"/>
+      <line x1="6" y1="18" x2="42" y2="18" stroke="url(#gArc)" stroke-width="1" opacity=".35"/>
+      <line x1="6" y1="30" x2="42" y2="30" stroke="url(#gArc)" stroke-width="1" opacity=".35"/>
+      <line x1="18" y1="6" x2="18" y2="42" stroke="url(#gArc)" stroke-width="1" opacity=".35"/>
+      <line x1="30" y1="6" x2="30" y2="42" stroke="url(#gArc)" stroke-width="1" opacity=".35"/>
+      <circle cx="18" cy="18" r="2.5" fill="url(#gArc)" opacity=".9"/>
+      <circle cx="30" cy="30" r="2.5" fill="url(#gArc)" opacity=".6"/>
+      <defs><linearGradient id="gArc" x1="6" y1="42" x2="42" y2="6"><stop stop-color="#7B2FBE"/><stop offset="1" stop-color="#5B4FD6"/></linearGradient></defs></svg>`,
+    jester: `<svg width="${s}" height="${s}" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="24" cy="24" r="16" stroke="url(#gJst)" stroke-width="1.4" fill="rgba(199,36,177,.06)"/>
+      <path d="M16 30C18 33 22 35 24 35C26 35 30 33 32 30" stroke="url(#gJst)" stroke-width="1.5" stroke-linecap="round"/>
+      <circle cx="18" cy="20" r="1.8" fill="url(#gJst)"/>
+      <circle cx="30" cy="20" r="1.8" fill="url(#gJst)"/>
+      <path d="M12 10L8 6M36 10L40 6" stroke="url(#gJst)" stroke-width="1.2" stroke-linecap="round" opacity=".5"/>
+      <defs><linearGradient id="gJst" x1="8" y1="40" x2="40" y2="6"><stop stop-color="#C724B1"/><stop offset="1" stop-color="#E84D8A"/></linearGradient></defs></svg>`,
+    professor: `<svg width="${s}" height="${s}" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M8 14L24 8L40 14L24 20Z" stroke="url(#gPrf)" stroke-width="1.4" fill="rgba(91,79,214,.06)" stroke-linejoin="round"/>
+      <path d="M14 16V28C14 32 18 34 24 34C30 34 34 32 34 28V16" stroke="url(#gPrf)" stroke-width="1.4" fill="none"/>
+      <line x1="40" y1="14" x2="40" y2="28" stroke="url(#gPrf)" stroke-width="1.4" stroke-linecap="round"/>
+      <circle cx="24" cy="20" r="2" fill="url(#gPrf)" opacity=".7"/>
+      <defs><linearGradient id="gPrf" x1="8" y1="34" x2="40" y2="8"><stop stop-color="#5B4FD6"/><stop offset="1" stop-color="#7B2FBE"/></linearGradient></defs></svg>`,
+    detective: `<svg width="${s}" height="${s}" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="20" cy="20" r="12" stroke="url(#gDet)" stroke-width="1.5" fill="rgba(123,47,190,.05)"/>
+      <line x1="29" y1="29" x2="40" y2="40" stroke="url(#gDet)" stroke-width="1.8" stroke-linecap="round"/>
+      <circle cx="20" cy="20" r="5" stroke="url(#gDet)" stroke-width="1" opacity=".5"/>
+      <circle cx="20" cy="20" r="1.5" fill="url(#gDet)"/>
+      <defs><linearGradient id="gDet" x1="8" y1="40" x2="40" y2="8"><stop stop-color="#7B2FBE"/><stop offset="1" stop-color="#C724B1"/></linearGradient></defs></svg>`,
+  };
+  return newIcons[id] || archIcon(id, size);
+}
+
+const QUESTS = [
+  // ── POWER quadrant — Disruption, Creation, Transformation ──
+  { id:'pioneer', iconId:'vanguard', name:'The Pioneer', quadrant:'power', quest:'To explore the unknown and bring bold new ideas',
+    hook:'You\'re the one who arrives somewhere first — and brings the language back',
+    desc:'You\'re wired for the frontier. Whether it\'s a new category, a new method, or a new way of thinking about an old problem — you go where the maps run out and make the territory legible for everyone who follows. Leaders like you don\'t just adopt the future. They name it.',
+    shadow:'Risk of outpacing your team and audience. Loneliness at the frontier. Confusing motion with progress.',
+    beliefs:['Optimism','Courage','Progress','Creativity'] },
+  { id:'rebel', iconId:'firestarter', name:'The Rebel', quadrant:'power', quest:'To challenge the status quo and show a better way',
+    hook:'You\'re the leader who says the thing the room is thinking but won\'t say',
+    desc:'You name the broken thing. You won\'t let the polite consensus stand if the consensus is wrong. The teams and audiences who follow you do so because you make them brave — because they\'ve been waiting for someone to say it out loud.',
+    shadow:'Can confuse disruption with leadership. Risk of being against things faster than you\'re for them. Burning bridges you needed.',
+    beliefs:['Freedom','Expression','Progress','Optimism'] },
+  { id:'magician', iconId:'shapeshifter', name:'The Magician', quadrant:'power', quest:'To transform reality through imagination and play',
+    hook:'You\'re the leader who makes the impossible feel inevitable',
+    desc:'You see the possibility in any room before anyone else does. Your gift is making "what if" feel reachable — to investors, to teams, to yourself. Leaders like you bend reality not by force but by invitation.',
+    shadow:'Risk of being seen as unserious or slippery. Always reframing can become never landing.',
+    beliefs:['Optimism','Fun','Vision','Imagination'] },
+  { id:'alchemist', iconId:'catalyst', name:'The Alchemist', quadrant:'power', quest:'To combine elements in new ways that create transformation',
+    hook:'You\'re the leader who takes two things nobody connected and shows everyone the third thing they make',
+    desc:'You\'re a synthesiser. The unique value you bring is your particular cross-pollination — disciplines, industries, ways of thinking. Leaders like you don\'t win on depth in one place; you win on the surprising connections only you would draw.',
+    shadow:'Risk of being a generalist nobody can pin down. Connecting everything without committing to anything.',
+    beliefs:['Curiosity','Progress','Vision','Empowerment'] },
+
+  // ── PASSION quadrant — Warmth, Inspiration, Discovery ──
+  { id:'muse', iconId:'spark', name:'The Muse', quadrant:'passion', quest:'To inspire creativity and transcendence in others',
+    hook:'You\'re the leader who leaves rooms more creative than you found them',
+    desc:'Your presence is the product. People feel braver, more imaginative, more permitted to try around you. The work you make matters, but the energy you transmit matters more — your leadership unlocks the work in others.',
+    shadow:'Risk of giving more than you keep. Energy as currency runs out. Being the spark without ever being the fire.',
+    beliefs:['Curiosity','Freedom','Humility','Expression'] },
+  { id:'jester', iconId:'jester', name:'The Jester', quadrant:'passion', quest:'To reveal truth through humour and play',
+    hook:'You\'re the leader who gets serious things heard because you don\'t take yourself seriously',
+    desc:'You\'re the disarming voice in the room. Your wit isn\'t entertainment — it\'s your method. You earn permission to say the hard thing because you said the funny thing first. The best leaders of this kind are smuggling truth past defences.',
+    shadow:'Risk of being underestimated. The joke that lets the truth land can become the joke that hides from it.',
+    beliefs:['Curiosity','Fun','Honesty','Truth'] },
+  { id:'healer', iconId:'harbour', name:'The Healer', quadrant:'passion', quest:'To restore wholeness and relieve suffering',
+    hook:'You\'re the leader people come to when something is broken in them, not just around them',
+    desc:'You hold space. You read the room — and the person — with a clarity others don\'t have. Whether it\'s coaching, recovery, transition, or simply being a steady presence in chaos, leaders like you build trust because you actually pay attention.',
+    shadow:'Risk of taking on what isn\'t yours. Caretaking can become losing yourself in the work of others.',
+    beliefs:['Health','Love','Prosperity','Stewardship'] },
+
+  // ── PROGRESS quadrant — Strategy, Authority, Vision, Knowledge ──
+  { id:'architect', iconId:'architect', name:'The Architect', quadrant:'progress', quest:'To bring order and clarity through design and systems',
+    hook:'You\'re the leader who walks into chaos and leaves behind a structure that holds',
+    desc:'You see the system before you see the parts. Leaders like you earn trust by making the complex feel obvious — through frameworks, organisational design, operating models, products that just work. Your authority comes from clarity, not volume.',
+    shadow:'Risk of over-engineering. The system can become the work; the humans inside it forgotten.',
+    beliefs:['Competence','Efficiency','Honesty','Creativity'] },
+  { id:'professor', iconId:'professor', name:'The Professor', quadrant:'progress', quest:'To seek knowledge and share wisdom',
+    hook:'You\'re the leader people want in the room because you actually know things',
+    desc:'Your authority is earned through depth. You\'ve gone deeper into your domain than people around you and you generously give that knowledge away — through writing, speaking, teaching, mentoring. Leaders like you build career-long compounding trust through expertise plus generosity.',
+    shadow:'Risk of teaching when you should be doing. Authority through credentials can curdle into status anxiety.',
+    beliefs:['Curiosity','Honesty','Generosity','Integrity'] },
+  { id:'oracle', iconId:'oracle', name:'The Oracle', quadrant:'progress', quest:'To guide others with timeless wisdom',
+    hook:'You\'re the leader people consult when the stakes are high and the path isn\'t clear',
+    desc:'You see patterns. You read the signal early. Leaders like you build a quiet kind of authority — the kind people whisper rather than shout about — by being the person who keeps being right about the things that matter. You earn trust through judgement.',
+    shadow:'Risk of preaching. Knowing everything is useless without doing anything. Detachment can become aloofness.',
+    beliefs:['Trust','Tradition','Justice','Empowerment'] },
+  { id:'detective', iconId:'detective', name:'The Detective', quadrant:'progress', quest:'To uncover hidden truths and solve mysteries',
+    hook:'You\'re the leader who finds what other people miss',
+    desc:'You\'re investigative by nature. You ask the question nobody else thought to ask. Whether it\'s research, audit, due diligence, investigation, journalism, forensic accounting — leaders like you build authority by being unusually unwilling to accept the surface answer.',
+    shadow:'Risk of paranoia. Looking for the hidden truth can become not trusting any answer at all.',
+    beliefs:['Curiosity','Precision','Justice','Stewardship'] },
+  { id:'captain', iconId:'strategist', name:'The Captain', quadrant:'progress', quest:'To lead others toward shared vision and action',
+    hook:'You\'re the leader people pick when something has to actually get done',
+    desc:'You\'re the operator. You set the destination, hold the line, run the play. Leaders like you build trust through reliability — through showing that you can be handed a hard thing and bring it back done. Your brand isn\'t big ideas; it\'s execution.',
+    shadow:'Risk of becoming the bottleneck. Doer\'s pride can become doer\'s burden.',
+    beliefs:['Trust','Vision','Courage','Empowerment'] },
+
+  // ── PROTECTION quadrant — Justice, Safety, Compassion ──
+  { id:'defender', iconId:'sentinel', name:'The Defender', quadrant:'protection', quest:'To protect what is most precious and vulnerable',
+    hook:'You\'re the leader who fights for the people and standards others won\'t',
+    desc:'You stand between something precious and the thing that would harm it. Whether it\'s your team, your craft, your community, your values — leaders like you earn devotion by being the one who didn\'t back down when it would have been easier to.',
+    shadow:'Risk of rigidity. Guarding something can become preventing it from changing.',
+    beliefs:['Safety','Justice','Stewardship'] },
+  { id:'witness', iconId:'detective', name:'The Witness', quadrant:'protection', quest:'To call out injustice and hold others accountable',
+    hook:'You\'re the leader who refuses to pretend not to see',
+    desc:'You\'re the truth-teller. Your authority comes from being the person who will say what you saw, on record, when others would rather forget. Leaders like you change institutions, industries, and accepted-as-normal behaviour because you make complicity visible.',
+    shadow:'Risk of righteousness. Being the truth-teller can become being the prosecutor.',
+    beliefs:['Safety','Justice','Love','Truth'] },
+  { id:'peacekeeper', iconId:'weaver', name:'The Peacekeeper', quadrant:'protection', quest:'To bring balance and calm in the face of conflict',
+    hook:'You\'re the leader who keeps the room from breaking',
+    desc:'You\'re the mediator. The translator. The steady centre when everyone else is reactive. Leaders like you don\'t win by being the loudest or the boldest — you win by being the one trusted by every faction in the room.',
+    shadow:'Risk of conflict-avoidance. Keeping the peace can become not naming the problem.',
+    beliefs:['Compassion','Respect','Courage','Selflessness'] },
 ];
 
 // ── COMPASS ICON GENERATOR ──
@@ -917,12 +1053,13 @@ function beginGame() {
   G.playerName = el('playerName').value.trim() || 'Player';
   if (isPersonal()) {
     G.role = (el('playerRole') && el('playerRole').value) || '';
-    // In personal mode the "brand" subject is the player themselves —
-    // we set brandName to the player name so downstream prompts read naturally.
     G.brandName = G.playerName;
-  } else {
-    G.brandName = el('brandName').value.trim() || 'your brand';
+    showScreen('gameScreen');
+    setProgress(5);
+    runPersonalChapter1Light();
+    return;
   }
+  G.brandName = el('brandName').value.trim() || 'your brand';
   showScreen('gameScreen');
   setProgress(5);
   runChapter1();
@@ -1933,6 +2070,438 @@ IMPORTANT for benchmarks: Choose 2 well-known ${isPersonal() ? 'real people from
   setProgress(92);
 }
 
+// ═══════════════════════════════════════════════════════════════
+// PERSONAL v2 — Light / Shadow / Dark / Source / Synthesis
+// 5 chapters specifically designed for personal brand development.
+// Completely independent from the business 5-chapter flow above.
+// ═══════════════════════════════════════════════════════════════
+
+// Words from which players select 3-5 they feel others affirm in them
+const LIGHT_WORDS = [
+  'Visionary','Reliable','Direct','Curious','Generous','Sharp','Calm','Brave','Funny','Strategic',
+  'Kind','Honest','Demanding','Patient','Decisive','Empathetic','Provocative','Loyal','Witty','Methodical',
+  'Restless','Grounded','Imaginative','Principled','Adaptable','Steady','Bold','Warm','Rigorous','Playful'
+];
+
+// Shadow-work prompts (Chapter 2)
+const SHADOW_PROMPTS = [
+  { id:'q1', prompt:'What part of yourself do you most often hide from work — and why?' },
+  { id:'q2', prompt:'Which quality do you admire in others and quietly suppress in yourself?' },
+  { id:'q3', prompt:'What recurring inner critic message holds you back?' }
+];
+
+// Dark-quadrant prompts (Chapter 3) — surface what others see that you don't
+const DARK_PROMPTS = [
+  { id:'d1', prompt:'What compliment do you brush off — but it keeps coming?' },
+  { id:'d2', prompt:'What feels ordinary to you that other people find rare?' },
+  { id:'d3', prompt:'When was the last time someone surprised you with what they said you\'re good at?' }
+];
+
+// ── CHAPTER 1: LIGHT ──
+async function runPersonalChapter1Light() {
+  G.chapter = 1;
+  const area = el('gameArea');
+
+  showLoading('Setting the stage...');
+  const intro = await askAI(
+    `Welcome ${G.playerName} to Chapter 1: Light. This is where we start with what's already true and visible. Tell them, warmly and briefly (2-3 sentences), that this first chapter is about what they already openly embody — the qualities the world already sees in them. Reference their role (${G.role || 'leader'}) once.`,
+    'PHASE: Personal Chapter 1 — Light Work opening.'
+  );
+  hideLoading();
+
+  area.innerHTML = `
+    <div class="chapter-header fade-up">
+      <div class="chapter-tag">Chapter 1 — Light</div>
+      <div class="chapter-title">What you <span class="grad-text">already embody</span></div>
+      <div class="chapter-sub">Pick the words others would use about you on your best day. Pick 3–5.</div>
+    </div>
+    <div class="narration fade-up-d1"><div class="gm-tag">Game Master</div>${intro}</div>
+    <div class="fade-up-d2" style="display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;max-width:760px;margin:1.5rem auto 1rem;">
+      ${LIGHT_WORDS.map(w => `<button class="light-chip" data-word="${esc(w)}" onclick="toggleLightWord(this)" style="font-family:'Sora',sans-serif;font-size:.78rem;font-weight:600;color:rgba(248,240,255,.6);background:rgba(123,47,190,.08);border:1px solid rgba(123,47,190,.15);padding:.5rem 1rem;border-radius:2px;cursor:pointer;transition:all .25s;">${w}</button>`).join('')}
+    </div>
+    <div style="max-width:520px;margin:1.4rem auto 0;" class="fade-up-d2">
+      <label style="display:block;font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(248,240,255,.4);margin-bottom:.4rem;">Or in your own words</label>
+      <textarea id="lightFreeText" rows="2" maxlength="200" placeholder="A word or short phrase others use about you that\'s not on this list..." style="width:100%;background:rgba(123,47,190,.07);border:1px solid rgba(123,47,190,.2);color:var(--white);font-family:'Sora',sans-serif;font-size:.85rem;padding:.7rem .9rem;outline:none;border-radius:2px;resize:vertical;"></textarea>
+    </div>
+    <div style="text-align:center;margin-top:1.5rem;" class="fade-up-d2">
+      <div id="lightCount" style="font-size:.7rem;color:rgba(248,240,255,.4);margin-bottom:.6rem;">Pick 3–5 words to continue</div>
+      <button class="btn-primary" id="lightContinue" onclick="finishLight()" disabled style="opacity:.4;">Continue to Shadow →</button>
+    </div>
+  `;
+  setProgress(20);
+}
+
+function esc(str) { if (!str) return ''; return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+window.toggleLightWord = function(btn) {
+  const word = btn.dataset.word;
+  const idx = G.light.words.indexOf(word);
+  if (idx >= 0) {
+    G.light.words.splice(idx, 1);
+    btn.style.background = 'rgba(123,47,190,.08)';
+    btn.style.borderColor = 'rgba(123,47,190,.15)';
+    btn.style.color = 'rgba(248,240,255,.6)';
+  } else if (G.light.words.length < 7) {
+    G.light.words.push(word);
+    btn.style.background = 'linear-gradient(90deg,#7B2FBE,#C724B1)';
+    btn.style.borderColor = 'transparent';
+    btn.style.color = '#fff';
+  }
+  const count = G.light.words.length;
+  const countEl = el('lightCount');
+  const btnEl = el('lightContinue');
+  if (countEl) countEl.textContent = count < 3 ? `Pick ${3-count} more to continue` : count > 5 ? 'Too many — narrow to 3-5' : `${count} selected — ready to continue`;
+  if (btnEl) {
+    const ok = count >= 3 && count <= 5;
+    btnEl.disabled = !ok;
+    btnEl.style.opacity = ok ? '1' : '.4';
+  }
+};
+
+window.finishLight = async function() {
+  G.light.freeText = el('lightFreeText') ? el('lightFreeText').value.trim() : '';
+  showLoading('Game Master is reading the light...');
+  const dist = await askAI(
+    `The player selected these words others affirm in them: ${G.light.words.join(', ')}.${G.light.freeText ? ` They added: "${G.light.freeText}".` : ''}\n\nDistill this into a single "Light Expression" — 1-2 sentences naming what they already openly embody. Warm, recognising, specific. Then add a single short reflection (1 sentence) that sets up Chapter 2 (Shadow work) — something like "now we go to what you've been quieter about."`,
+    'PHASE: Distilling Light into a Light Expression statement. Be specific to their words.'
+  );
+  hideLoading();
+  G.light.distilled = dist;
+  runPersonalChapter2Shadow();
+};
+
+// ── CHAPTER 2: SHADOW ──
+async function runPersonalChapter2Shadow() {
+  G.chapter = 2;
+  const area = el('gameArea');
+  showLoading('Setting the next stage...');
+  const intro = await askAI(
+    `The player just completed Chapter 1 (Light). They selected words like: ${G.light.words.join(', ')}. The Light Expression you just wrote was: "${G.light.distilled.slice(0,300)}".\n\nNow open Chapter 2 — Shadow. 2-3 sentences warming them up to the idea that there's a side of them they hide at work, and the work here is to reframe it as strength, not weakness. Be gentle and direct.`,
+    'PHASE: Personal Chapter 2 — Shadow opening. Warm and inviting, not therapeutic.'
+  );
+  hideLoading();
+  area.innerHTML = `
+    <div class="chapter-header fade-up">
+      <div class="chapter-tag">Chapter 2 — Shadow</div>
+      <div class="chapter-title">What you <span class="grad-text">quiet down</span></div>
+      <div class="chapter-sub">Three reflective prompts. Be honest — answers stay between you and the Game Master.</div>
+    </div>
+    <div class="narration fade-up-d1"><div class="gm-tag">Game Master</div>${intro}</div>
+    <div style="max-width:620px;margin:1.4rem auto 0;display:flex;flex-direction:column;gap:1.1rem;" class="fade-up-d2">
+      ${SHADOW_PROMPTS.map((p,i) => `
+        <div>
+          <label style="display:block;font-size:.75rem;font-weight:700;letter-spacing:.1em;color:#C724B1;text-transform:uppercase;margin-bottom:.45rem;">Prompt ${i+1}</label>
+          <div style="font-size:.95rem;font-weight:600;color:var(--white);margin-bottom:.55rem;line-height:1.4;">${p.prompt}</div>
+          <textarea id="shadow-${p.id}" rows="2" maxlength="280" placeholder="A sentence or two..." style="width:100%;background:rgba(123,47,190,.07);border:1px solid rgba(123,47,190,.2);color:var(--white);font-family:'Sora',sans-serif;font-size:.85rem;padding:.7rem .9rem;outline:none;border-radius:2px;resize:vertical;"></textarea>
+        </div>
+      `).join('')}
+    </div>
+    <div style="text-align:center;margin-top:1.5rem;" class="fade-up-d2">
+      <button class="btn-primary" onclick="finishShadow()">Reframe my Shadow →</button>
+    </div>
+  `;
+  setProgress(38);
+}
+
+window.finishShadow = async function() {
+  SHADOW_PROMPTS.forEach(p => {
+    const v = el(`shadow-${p.id}`);
+    G.shadow.answers[p.id] = v ? v.value.trim() : '';
+  });
+  showLoading('Reframing your shadow...');
+  const ans = SHADOW_PROMPTS.map(p => `Q: ${p.prompt}\nA: ${G.shadow.answers[p.id] || '(skipped)'}`).join('\n\n');
+  const dist = await askAI(
+    `The player answered shadow-work questions:\n\n${ans}\n\nDistill this into a single "Shadow Integration" statement (2-3 sentences). Take ONE quality they've been quieting and reframe it as a hidden strength of their leadership. Name it specifically. Don't be therapeutic — be strategic and warm. The goal: help them see that what they hide is part of what makes them remarkable.`,
+    'PHASE: Synthesising Shadow Integration. Strategic + reframing, not therapy.'
+  );
+  hideLoading();
+  G.shadow.distilled = dist;
+  runPersonalChapter3Dark();
+};
+
+// ── CHAPTER 3: DARK ──
+async function runPersonalChapter3Dark() {
+  G.chapter = 3;
+  const area = el('gameArea');
+  showLoading('Lighting the next chamber...');
+  const intro = await askAI(
+    `The player completed Chapter 2 (Shadow). Their Shadow Integration: "${G.shadow.distilled.slice(0,300)}".\n\nNow open Chapter 3 — Dark. The Dark quadrant is the inverse of Shadow: not what THEY hide, but what OTHERS see in them that they themselves cannot. 2 sentences setting up that this is where we surface a gift they've been undervaluing.`,
+    'PHASE: Personal Chapter 3 — Dark opening. The mirror chapter.'
+  );
+  hideLoading();
+  area.innerHTML = `
+    <div class="chapter-header fade-up">
+      <div class="chapter-tag">Chapter 3 — Dark</div>
+      <div class="chapter-title">What others see <span class="grad-text">that you don't</span></div>
+      <div class="chapter-sub">Three prompts about your blind-spot gifts. Three short answers.</div>
+    </div>
+    <div class="narration fade-up-d1"><div class="gm-tag">Game Master</div>${intro}</div>
+    <div style="max-width:620px;margin:1.4rem auto 0;display:flex;flex-direction:column;gap:1.1rem;" class="fade-up-d2">
+      ${DARK_PROMPTS.map((p,i) => `
+        <div>
+          <label style="display:block;font-size:.75rem;font-weight:700;letter-spacing:.1em;color:#E84D8A;text-transform:uppercase;margin-bottom:.45rem;">Prompt ${i+1}</label>
+          <div style="font-size:.95rem;font-weight:600;color:var(--white);margin-bottom:.55rem;line-height:1.4;">${p.prompt}</div>
+          <textarea id="dark-${p.id}" rows="2" maxlength="280" placeholder="A sentence or two..." style="width:100%;background:rgba(232,77,138,.06);border:1px solid rgba(232,77,138,.2);color:var(--white);font-family:'Sora',sans-serif;font-size:.85rem;padding:.7rem .9rem;outline:none;border-radius:2px;resize:vertical;"></textarea>
+        </div>
+      `).join('')}
+    </div>
+    <div style="text-align:center;margin-top:1.5rem;" class="fade-up-d2">
+      <button class="btn-primary" onclick="finishDark()">Surface the gift →</button>
+    </div>
+  `;
+  setProgress(55);
+}
+
+window.finishDark = async function() {
+  DARK_PROMPTS.forEach(p => {
+    const v = el(`dark-${p.id}`);
+    G.dark.answers[p.id] = v ? v.value.trim() : '';
+  });
+  showLoading('Naming what others see...');
+  const ans = DARK_PROMPTS.map(p => `Q: ${p.prompt}\nA: ${G.dark.answers[p.id] || '(skipped)'}`).join('\n\n');
+  const dist = await askAI(
+    `The player answered shadow-work prompts that surface what OTHERS see in them:\n\n${ans}\n\nDistill into a single "Dark Reflection" (2-3 sentences). Name ONE surprising gift that others see and the player has been undervaluing. Make them feel seen. This is the highest-leverage chapter — the gift they uncover here is the one they should lean into hardest in their personal brand.`,
+    'PHASE: Surfacing the Dark Gift. Be specific. Help them see what others see.'
+  );
+  hideLoading();
+  G.dark.distilled = dist;
+  runPersonalChapter4Source();
+};
+
+// ── CHAPTER 4: SOURCE — 15 Quest narrowing + future-self symbol ──
+async function runPersonalChapter4Source() {
+  G.chapter = 4;
+  const area = el('gameArea');
+  showLoading('Mapping your quests...');
+  const intro = await askAI(
+    `Chapter 4 — Source. The player has captured Light, Shadow and Dark. Now the future-self / archetype chapter. 2 sentences introducing the 15 Quest archetypes and asking them to pick the ones that pull at them — go with the gut, no overthinking.`,
+    'PHASE: Personal Chapter 4 — Source opening. Mystical without being precious.'
+  );
+  hideLoading();
+  area.innerHTML = `
+    <div class="chapter-header fade-up">
+      <div class="chapter-tag">Chapter 4 — Source</div>
+      <div class="chapter-title">The <span class="grad-text">Quest</span> pulling you forward</div>
+      <div class="chapter-sub">Pick the 3 that resonate. No overthinking — go with the pull.</div>
+    </div>
+    <div class="narration fade-up-d1"><div class="gm-tag">Game Master</div>${intro}</div>
+    <div class="fade-up-d2" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.8rem;max-width:1000px;margin:1.5rem auto 0;">
+      ${QUESTS.map(q => `
+        <div class="quest-card" data-id="${q.id}" onclick="toggleQuest(this)" style="cursor:pointer;padding:1rem .9rem;background:rgba(13,8,24,.5);border:1px solid rgba(123,47,190,.15);border-radius:3px;transition:all .25s;text-align:center;">
+          <div style="display:flex;justify-content:center;margin-bottom:.5rem;">${questIcon(q.iconId, 36)}</div>
+          <div style="font-size:.92rem;font-weight:800;color:var(--white);letter-spacing:-.01em;margin-bottom:.2rem;">${q.name}</div>
+          <div style="font-size:.7rem;line-height:1.4;color:rgba(248,240,255,.55);">${esc(q.hook)}</div>
+        </div>
+      `).join('')}
+    </div>
+    <div style="text-align:center;margin-top:1.5rem;" class="fade-up-d2">
+      <div id="questCount" style="font-size:.7rem;color:rgba(248,240,255,.4);margin-bottom:.6rem;">Pick 3 quests to narrow</div>
+      <button class="btn-primary" id="questNarrow" onclick="narrowQuests()" disabled style="opacity:.4;">Narrow to 3 →</button>
+    </div>
+  `;
+  setProgress(68);
+}
+
+window.toggleQuest = function(card) {
+  const id = card.dataset.id;
+  const idx = G.source.selectedQuests.indexOf(id);
+  if (idx >= 0) {
+    G.source.selectedQuests.splice(idx, 1);
+    card.style.background = 'rgba(13,8,24,.5)';
+    card.style.borderColor = 'rgba(123,47,190,.15)';
+    card.style.transform = 'none';
+  } else if (G.source.selectedQuests.length < 4) {
+    G.source.selectedQuests.push(id);
+    card.style.background = 'linear-gradient(135deg,rgba(123,47,190,.2),rgba(199,36,177,.08))';
+    card.style.borderColor = 'rgba(199,36,177,.45)';
+    card.style.transform = 'translateY(-2px)';
+  }
+  const c = G.source.selectedQuests.length;
+  const countEl = el('questCount');
+  const btn = el('questNarrow');
+  if (countEl) countEl.textContent = c < 3 ? `Pick ${3-c} more` : c > 3 ? 'Drop one — narrow to 3' : '3 selected — ready';
+  if (btn) { btn.disabled = c !== 3; btn.style.opacity = c === 3 ? '1' : '.4'; }
+};
+
+window.narrowQuests = async function() {
+  const picked = G.source.selectedQuests.map(id => QUESTS.find(q => q.id === id));
+  G.source.finalQuests = picked;
+  const area = el('gameArea');
+  showLoading('Reading the quests...');
+  const narration = await askAI(
+    `The player narrowed 15 Quests to 3: ${picked.map(q => `${q.name} (${q.quest})`).join(' / ')}. Reflect briefly (2 sentences) on what this trio together suggests about them. Then ask them to lock the ONE Quest that feels most like their future self speaking.`,
+    'PHASE: Quest narrowing. Reflect on the combination, push them to choose.'
+  );
+  hideLoading();
+  area.innerHTML = `
+    <div class="chapter-header fade-up">
+      <div class="chapter-tag">Chapter 4 — Lock your Quest</div>
+      <div class="chapter-title">Which of these <span class="grad-text">is the one?</span></div>
+    </div>
+    <div class="narration fade-up-d1"><div class="gm-tag">Game Master</div>${narration}</div>
+    <div class="fade-up-d2" style="display:grid;grid-template-columns:repeat(${picked.length},1fr);gap:1rem;max-width:820px;margin:1.5rem auto 0;">
+      ${picked.map(q => `
+        <div class="quest-final" data-id="${q.id}" onclick="lockQuest(this)" style="cursor:pointer;padding:1.4rem 1.2rem;background:rgba(13,8,24,.6);border:1px solid rgba(123,47,190,.2);border-radius:4px;transition:all .3s;text-align:center;">
+          <div style="display:flex;justify-content:center;margin-bottom:.7rem;">${questIcon(q.iconId, 56)}</div>
+          <div style="font-size:1.1rem;font-weight:800;color:var(--white);margin-bottom:.4rem;letter-spacing:-.01em;">${q.name}</div>
+          <div style="font-size:.72rem;font-weight:700;color:#E84D8A;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.55rem;">${esc(q.quest)}</div>
+          <div style="font-size:.78rem;line-height:1.55;color:rgba(248,240,255,.6);margin-bottom:.7rem;">${esc(q.desc)}</div>
+          <div style="font-size:.65rem;color:rgba(248,240,255,.32);"><strong style="color:rgba(248,240,255,.45);">Shadow:</strong> ${esc(q.shadow)}</div>
+        </div>
+      `).join('')}
+    </div>
+    <div style="text-align:center;margin-top:1.2rem;font-size:.72rem;color:rgba(248,240,255,.4);" class="fade-up-d2">Tap a Quest to lock it as yours.</div>
+  `;
+};
+
+window.lockQuest = async function(card) {
+  const id = card.dataset.id;
+  G.source.lockedQuest = QUESTS.find(q => q.id === id);
+  // Visually lock
+  document.querySelectorAll('.quest-final').forEach(c => {
+    if (c.dataset.id === id) {
+      c.style.background = 'linear-gradient(135deg,rgba(123,47,190,.2),rgba(199,36,177,.08))';
+      c.style.borderColor = 'rgba(199,36,177,.5)';
+      c.style.transform = 'translateY(-3px)';
+    } else {
+      c.style.opacity = '.35';
+    }
+    c.style.pointerEvents = 'none';
+  });
+
+  await delay(700);
+  // Future self symbol prompt
+  const area = el('gameArea');
+  showLoading('Listening for the future self...');
+  const narration = await askAI(
+    `The player just locked their Quest: ${G.source.lockedQuest.name} (${G.source.lockedQuest.quest}). 2 sentences honouring the choice, then a single closing prompt for Chapter 4: "If your future self — already living this Quest — sent you one message back, in one sentence, what would it say?"`,
+    'PHASE: Locking the Quest, asking the future-self message.'
+  );
+  hideLoading();
+  area.innerHTML = `
+    <div class="chapter-header fade-up">
+      <div class="chapter-tag">Chapter 4 — Source</div>
+      <div class="chapter-title">A message from your <span class="grad-text">future self</span></div>
+    </div>
+    <div class="narration fade-up-d1"><div class="gm-tag">Game Master</div>${narration}</div>
+    <div style="max-width:560px;margin:1.4rem auto 0;" class="fade-up-d2">
+      <label style="display:block;font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(248,240,255,.4);margin-bottom:.4rem;">Future self's message to you, in one sentence</label>
+      <textarea id="futureMsg" rows="2" maxlength="240" placeholder="Don't think. Just write the line." style="width:100%;background:rgba(123,47,190,.07);border:1px solid rgba(123,47,190,.2);color:var(--white);font-family:'Sora',sans-serif;font-size:1rem;padding:.8rem 1rem;outline:none;border-radius:2px;resize:vertical;line-height:1.5;"></textarea>
+    </div>
+    <div style="text-align:center;margin-top:1.4rem;" class="fade-up-d2">
+      <button class="btn-primary" onclick="finishSource()">Synthesize my Story →</button>
+    </div>
+  `;
+  setProgress(78);
+};
+
+window.finishSource = async function() {
+  G.source.futureMessage = el('futureMsg') ? el('futureMsg').value.trim() : '';
+  runPersonalChapter5Synthesis();
+};
+
+// ── CHAPTER 5: SYNTHESIS — pull everything into the final personal brand world ──
+async function runPersonalChapter5Synthesis() {
+  G.chapter = 5;
+  setProgress(85);
+  showLoading('Writing your personal brand world...');
+
+  const q = G.source.lockedQuest;
+  const ctx = `
+LIGHT (what they openly embody): ${G.light.words.join(', ')}${G.light.freeText ? ` / ${G.light.freeText}` : ''}
+LIGHT EXPRESSION: ${G.light.distilled}
+
+SHADOW ANSWERS:
+${SHADOW_PROMPTS.map(p => `Q: ${p.prompt}\nA: ${G.shadow.answers[p.id] || '(skipped)'}`).join('\n')}
+SHADOW INTEGRATION: ${G.shadow.distilled}
+
+DARK ANSWERS (what others see in them that they don't):
+${DARK_PROMPTS.map(p => `Q: ${p.prompt}\nA: ${G.dark.answers[p.id] || '(skipped)'}`).join('\n')}
+DARK REFLECTION: ${G.dark.distilled}
+
+QUEST (locked): ${q?.name} — ${q?.quest}. Beliefs: ${q?.beliefs?.join(', ')}. Shadow: ${q?.shadow}.
+FUTURE-SELF MESSAGE: "${G.source.futureMessage}"
+ROLE: ${G.role || 'unspecified'}
+`;
+
+  const synthText = await askAI(
+    `Synthesise the player's Personal Brand World as a single JSON object. Pull all four quadrants together.\n\n${ctx}\n\nReturn ONLY this JSON, no other text:\n{\n  "story_opening": "A vivid 2-3 sentence opening paragraph of this leader's story in third person — origin energy, who they're becoming.",\n  "pov": "A sharp 1-sentence personal point-of-view statement — the thing this leader is here to argue for. Their claimable stake in the ground.",\n  "positioning": "A one-sentence statement of HOW they show up — not a job title, but the role they play in any room.",\n  "light_expression": "Polished 1-2 sentence Light Expression — what they openly embody. Build on the Light input.",\n  "shadow_integration": "Polished 1-2 sentence Shadow Integration — the suppressed quality reframed as a leadership strength.",\n  "dark_reflection": "Polished 1-2 sentence Dark Reflection — the hidden gift others see, named clearly.",\n  "source_symbol": "1 vivid image or word capturing the future-self direction. Drawn from the future-self message and the Quest.",\n  "purpose": "1-sentence: the difference this leader creates",\n  "people": "1-sentence: who matters most to them",\n  "proof": "1-sentence: the evidence they are who they say they are",\n  "path": "1-sentence: how they make a living / what they get paid for",\n  "stop": ["3 specific habits, beliefs, or patterns this leader should stop"],\n  "continue": ["3 specific habits, strengths, or practices this leader should continue"],\n  "start": ["3 specific habits, practices, or actions this leader should start"],\n  "plan_30": "One concrete action for the next 30 days — specific, doable",\n  "plan_60": "One concrete action for the next 60 days — building on the 30",\n  "plan_90": "One concrete action for the next 90 days — the bigger move",\n  "personality": "3-4 adjectives describing how this leader feels in a room",\n  "recommended_tier": "Pick exactly ONE of: \\"Leader Sprint\\", \\"Fractional Brand Partner\\", \\"Leadership Cohort\\", \\"Game only\\". Match the player's role (${G.role || 'unspecified'}). Founder/CEO usually → Fractional. Senior exec in transition → Leader Sprint. Emerging leader → Leader Sprint or Cohort if team signal. Creator/solo → Leader Sprint or Fractional. Unclear → Game only."\n}\n\nCRITICAL: Return ONLY valid JSON, no markdown.`,
+    'CRITICAL: Return ONLY valid JSON. This is the most important AI generation in the game — give it your best.'
+  );
+  hideLoading();
+
+  let synth = {};
+  try {
+    const jsonStr = synthText.replace(/```json?\n?/g,'').replace(/```/g,'').trim();
+    synth = JSON.parse(jsonStr);
+  } catch(e) {
+    synth = {
+      story_opening: synthText.slice(0, 400),
+      pov: `${G.playerName} stands for the work of ${q?.quest || 'leadership'}.`,
+      positioning: `${G.playerName} — ${q?.hook || 'a leader on a quest'}`,
+      light_expression: G.light.distilled,
+      shadow_integration: G.shadow.distilled,
+      dark_reflection: G.dark.distilled,
+      source_symbol: G.source.futureMessage || 'A path being walked',
+      purpose: 'To do the work only they can do',
+      people: 'Those they are uniquely placed to serve',
+      proof: 'The trail of work they have left behind',
+      path: 'A career built around their Quest',
+      stop: ['Apologising for what makes you distinctive','Saying yes when the answer is no','Hiding the gift others already see'],
+      continue: ['Doing the work that fills you','Choosing depth over scale','Backing your judgement'],
+      start: ['Naming your Quest in public','Letting the gift others see be visible','Acting on the future-self message'],
+      plan_30: 'Write the one POV sentence and share it publicly',
+      plan_60: 'Run one piece of work that demonstrates your Quest',
+      plan_90: 'Build a rhythm — weekly, monthly, quarterly — that compounds',
+      personality: 'Sharp, warm, clear, brave',
+      recommended_tier: recommendTierFallback()
+    };
+  }
+  G.synthesis = synth;
+  G.pov = synth.pov || '';
+  G.recommendedTier = ['Leader Sprint','Fractional Brand Partner','Leadership Cohort','Game only'].includes(synth.recommended_tier) ? synth.recommended_tier : recommendTierFallback();
+  // Also write to G.brandWorld so the existing email/Notion pipeline picks it up
+  G.brandWorld = {
+    story_opening: synth.story_opening,
+    positioning: synth.positioning,
+    know: synth.purpose,
+    believe: synth.proof,
+    act: synth.path,
+    manifesto_why: synth.purpose,
+    manifesto_how: synth.positioning,
+    manifesto_what: synth.path,
+    personality: synth.personality,
+    light_expression: synth.light_expression,
+    shadow_integration: synth.shadow_integration,
+    dark_reflection: synth.dark_reflection,
+    source_symbol: synth.source_symbol,
+    purpose: synth.purpose,
+    people: synth.people,
+    proof: synth.proof,
+    path: synth.path,
+    stop: synth.stop,
+    continue_: synth.continue,
+    start: synth.start,
+    plan_30: synth.plan_30,
+    plan_60: synth.plan_60,
+    plan_90: synth.plan_90
+  };
+  // The "archetype" object used downstream maps to the locked Quest
+  G.synthesizedArchetype = q ? {
+    name: q.name,
+    territory: q.quest,
+    desc: q.desc,
+    shadow: q.shadow,
+    values: q.beliefs
+  } : null;
+  G.finalArchetypes = G.source.finalQuests.map(fq => ({ id: fq.id, name: fq.name, quadrant: fq.quadrant, values: fq.beliefs, desc: fq.desc, territory: fq.quest, shadow: fq.shadow }));
+  G.quadrant = q ? q.quadrant.charAt(0).toUpperCase() + q.quadrant.slice(1) : '';
+
+  // Hand off to the existing email gate (which already knows about personal mode)
+  showEmailGate(G.brandWorld);
+  setProgress(92);
+}
+
 // ═══════════════════════════════════════
 // EMAIL GATE — Capture lead before reveal
 // ═══════════════════════════════════════
@@ -2268,15 +2837,93 @@ function renderBrandWorld(bw) {
 
     <!-- CTA -->
     <div class="bw-cta fade-up-d2">
-      <div class="stag" style="text-align:center;">Your Story Begins Here</div>
-      <p>This is just the opening chapter. To build the full Brand World — identity system, strategy playbook, and live brand operations — Unicorn can take you there.</p>
-      <a href="https://unicornunited.co" target="_blank" class="btn-primary">Explore Unicorn</a>
+      ${isPersonal() ? `
+        <div class="stag" style="text-align:center;">One more thing</div>
+        <p>The deepest part of personal brand work is the mirror — what 3 people who see you most clearly would say back. Send them your Quest and ask them one question. They'll respond directly to you.</p>
+        <button class="btn-primary" onclick="showAllyShareScreen()">Send to 3 allies →</button>
+        <div style="margin-top:.9rem;"><a href="https://unicornunited.co/for-leaders" target="_blank" style="font-size:.7rem;color:rgba(248,240,255,.4);text-decoration:none;letter-spacing:.06em;">Or skip — explore Unicorn for Leaders →</a></div>
+      ` : `
+        <div class="stag" style="text-align:center;">Your Story Begins Here</div>
+        <p>This is just the opening chapter. To build the full Brand World — identity system, strategy playbook, and live brand operations — Unicorn can take you there.</p>
+        <a href="https://unicornunited.co" target="_blank" class="btn-primary">Explore Unicorn</a>
+      `}
     </div>
   `;
 
-  // Render final map
-  renderLiveMap('finalMapBW', true);
+  // Render final map (only for business mode — personal doesn't use the compass)
+  if (!isPersonal()) renderLiveMap('finalMapBW', true);
 }
+
+// ═══════════════════════════════════════
+// ALLY SHARE SCREEN (Personal v2)
+// ═══════════════════════════════════════
+window.showAllyShareScreen = function() {
+  const area = el('gameArea');
+  area.innerHTML = `
+    <div class="chapter-header fade-up">
+      <div class="chapter-tag">The Mirror</div>
+      <div class="chapter-title">Ask 3 people <span class="grad-text">who see you</span></div>
+      <div class="chapter-sub">They'll get one question — "what do you see in ${esc(G.playerName)} when they're at their best?" — and reply directly to you.</div>
+    </div>
+    <div style="max-width:560px;margin:1.6rem auto 0;" class="fade-up-d1">
+      ${[1,2,3].map(i => `
+        <div style="display:grid;grid-template-columns:1fr 1.5fr;gap:.6rem;margin-bottom:.7rem;">
+          <input type="text" id="allyName${i}" placeholder="Their first name" maxlength="40" style="background:rgba(123,47,190,.07);border:1px solid rgba(123,47,190,.2);color:var(--white);font-family:'Sora',sans-serif;font-size:.85rem;padding:.65rem .85rem;outline:none;border-radius:2px;">
+          <input type="email" id="allyEmail${i}" placeholder="their@email.com" maxlength="80" style="background:rgba(123,47,190,.07);border:1px solid rgba(123,47,190,.2);color:var(--white);font-family:'Sora',sans-serif;font-size:.85rem;padding:.65rem .85rem;outline:none;border-radius:2px;">
+        </div>
+      `).join('')}
+      <div id="allyShareStatus" style="text-align:center;font-size:.7rem;color:rgba(248,240,255,.4);margin-top:.6rem;height:1.2em;"></div>
+    </div>
+    <div style="text-align:center;margin-top:1.4rem;" class="fade-up-d2">
+      <button class="btn-primary" id="allySendBtn" onclick="sendAllyShare()">Send the question →</button>
+      <div style="margin-top:.9rem;"><a href="https://unicornunited.co/for-leaders" target="_blank" style="font-size:.7rem;color:rgba(248,240,255,.4);text-decoration:none;letter-spacing:.06em;">Skip — explore Unicorn for Leaders →</a></div>
+    </div>
+  `;
+};
+
+window.sendAllyShare = async function() {
+  const allies = [];
+  for (let i = 1; i <= 3; i++) {
+    const name = el(`allyName${i}`) ? el(`allyName${i}`).value.trim() : '';
+    const email = el(`allyEmail${i}`) ? el(`allyEmail${i}`).value.trim() : '';
+    if (email && email.includes('@')) allies.push({ name, email });
+  }
+  const status = el('allyShareStatus');
+  const btn = el('allySendBtn');
+  if (!allies.length) {
+    if (status) status.textContent = 'Add at least one ally email.';
+    return;
+  }
+  if (btn) { btn.disabled = true; btn.textContent = 'Sending...'; btn.style.opacity = '.6'; }
+  try {
+    const res = await fetch('/api/send-ally-share', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        playerName: G.playerName,
+        playerEmail: G.leadEmail || '',
+        lockedQuest: G.source.lockedQuest ? { name: G.source.lockedQuest.name, quest: G.source.lockedQuest.quest } : null,
+        allies
+      })
+    });
+    const data = await res.json();
+    G.allyShares = allies;
+    const area = el('gameArea');
+    area.innerHTML = `
+      <div class="chapter-header fade-up">
+        <div class="chapter-tag">Sent</div>
+        <div class="chapter-title">${data.sent || allies.length} ${(data.sent || allies.length) === 1 ? 'message' : 'messages'} <span class="grad-text">on their way</span></div>
+        <div class="chapter-sub">They'll reply directly to you. Watch your inbox — and notice the patterns when they do.</div>
+      </div>
+      <div style="text-align:center;margin-top:2rem;" class="fade-up-d1">
+        <a href="https://unicornunited.co/for-leaders" target="_blank" class="btn-primary">Explore Unicorn for Leaders →</a>
+      </div>
+    `;
+  } catch (e) {
+    if (status) status.textContent = 'Send failed — try again or reply later.';
+    if (btn) { btn.disabled = false; btn.textContent = 'Send the question →'; btn.style.opacity = '1'; }
+  }
+};
 </script>
 </body>
 </html>
