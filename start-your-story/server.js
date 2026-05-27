@@ -21,6 +21,7 @@ const RESEND_KEY = process.env.RESEND_API_KEY || '';
 const NOTIFY_EMAIL = process.env.NOTIFY_EMAIL || ''; // Your email for lead notifications
 const NOTION_KEY = process.env.NOTION_API_KEY || '';
 const NOTION_DB_ID = process.env.NOTION_GAME_COMPLETIONS_DB_ID || '';
+const NOTION_PERSONAL_DB_ID = process.env.NOTION_PERSONAL_DB_ID || '';
 const notion = NOTION_KEY ? new NotionClient({ auth: NOTION_KEY }) : null;
 
 // ── Basic rate limiting (per IP) ──
@@ -101,47 +102,73 @@ app.post('/api/send-results', async (req, res) => {
     return res.status(500).json({ error: 'Email not configured.' });
   }
 
-  const { email, playerName, brandName, company, brandWorld, archetype, sourceArchetypes, quadrant, values, manifesto, moodSelections, brandWords } = req.body;
+  const {
+    email, playerName, brandName, company, brandWorld, archetype,
+    sourceArchetypes, quadrant, values, manifesto, moodSelections, brandWords,
+    // Personal-mode-only fields:
+    mode, role, pov, recommendedTier
+  } = req.body;
 
   if (!email || !email.includes('@')) {
     return res.status(400).json({ error: 'Valid email required.' });
   }
 
+  const isPersonal = mode === 'personal';
   const resend = new Resend(RESEND_KEY);
   const bw = brandWorld || {};
   const vals = values || { foundation: [], current: [], constellation: [] };
   const man = manifesto || {};
 
   // ── Build the styled HTML email ──
-  const playerEmail = buildResultsEmail({
-    playerName, brandName, company, bw, archetype,
-    sourceArchetypes, quadrant, vals, man,
-    moodSelections, brandWords
-  });
+  const playerEmail = isPersonal
+    ? buildPersonalResultsEmail({
+        playerName, role, pov, recommendedTier, bw, archetype,
+        sourceArchetypes, quadrant, vals, man, moodSelections, brandWords
+      })
+    : buildResultsEmail({
+        playerName, brandName, company, bw, archetype,
+        sourceArchetypes, quadrant, vals, man, moodSelections, brandWords
+      });
 
   // ── Persist completion to Notion (non-blocking — never block the email) ──
-  saveCompletionToNotion({
-    email, playerName, brandName, company, brandWorld: bw,
-    archetype, sourceArchetypes, quadrant, values: vals,
-    manifesto: man, brandWords
-  }).catch(err => console.error('Notion save error:', err?.message || err));
+  if (isPersonal) {
+    savePersonalCompletionToNotion({
+      email, playerName, role, pov, recommendedTier,
+      archetype, sourceArchetypes, quadrant, brandWorld: bw,
+      values: vals, manifesto: man, brandWords
+    }).catch(err => console.error('Notion personal save error:', err?.message || err));
+  } else {
+    saveCompletionToNotion({
+      email, playerName, brandName, company, brandWorld: bw,
+      archetype, sourceArchetypes, quadrant, values: vals,
+      manifesto: man, brandWords
+    }).catch(err => console.error('Notion save error:', err?.message || err));
+  }
 
   try {
     // 1. Send results to the player
+    const subject = isPersonal
+      ? `${playerName} — Your Personal Brand World`
+      : `${brandName} — Your Brand World`;
     await resend.emails.send({
       from: 'Start your Story <results@unicornunited.co>',
       to: email,
-      subject: `${brandName} — Your Brand World`,
+      subject,
       html: playerEmail
     });
 
     // 2. Notify Dustin about the new lead (if configured)
     if (NOTIFY_EMAIL) {
+      const notifySubject = isPersonal
+        ? `New Leader Lead: ${playerName} (${role || 'role unknown'}) — ${recommendedTier || 'no tier'}`
+        : `New Game Lead: ${playerName} — ${brandName}`;
       await resend.emails.send({
         from: 'Start your Story <results@unicornunited.co>',
         to: NOTIFY_EMAIL,
-        subject: `New Game Lead: ${playerName} — ${brandName}`,
-        html: buildLeadNotification({ playerName, brandName, company, email, quadrant, archetype, sourceArchetypes })
+        subject: notifySubject,
+        html: isPersonal
+          ? buildPersonalLeadNotification({ playerName, role, email, quadrant, archetype, sourceArchetypes, pov, recommendedTier })
+          : buildLeadNotification({ playerName, brandName, company, email, quadrant, archetype, sourceArchetypes })
       });
     }
 
@@ -385,6 +412,211 @@ function esc(str) {
 }
 
 // ═══════════════════════════════════════════════════════════════
+// PERSONAL MODE — Email templates (Unicorn for Leaders)
+// ═══════════════════════════════════════════════════════════════
+
+const TIER_COPY = {
+  'Leader Sprint': {
+    line: '1–2 day intensive · From £2,500',
+    why: 'You\'re ready for a focused, deliverable-led session. The Sprint takes you from intuition to a working personal-brand playbook in two days.',
+    cta: 'Book a Leader Sprint',
+    url: 'https://unicornunited.co/for-leaders#tiers'
+  },
+  'Fractional Brand Partner': {
+    line: 'Monthly retainer · From £1,500/mo',
+    why: 'You don\'t need a one-off — you need a brand owner in your corner. Ongoing partnership across LinkedIn, keynote, founder voice and comms.',
+    cta: 'Start the conversation',
+    url: 'https://unicornunited.co/for-leaders#tiers'
+  },
+  'Leadership Cohort': {
+    line: '12-week group programme · From £15,000',
+    why: 'You\'re thinking about your team, not just yourself. The cohort runs the method across 6–12 leaders with a shared language.',
+    cta: 'Scope a cohort',
+    url: 'https://unicornunited.co/for-leaders#tiers'
+  },
+  'Game only': {
+    line: 'Continue exploring',
+    why: 'You\'ve got a working direction — that may be all you need right now. Come back when you want to go deeper.',
+    cta: 'See the offer',
+    url: 'https://unicornunited.co/for-leaders'
+  }
+};
+
+function buildPersonalResultsEmail({ playerName, role, pov, recommendedTier, bw, archetype, sourceArchetypes, quadrant, vals, man, moodSelections, brandWords }) {
+  const allValues = [...(vals.foundation || []), ...(vals.current || []), ...(vals.constellation || [])];
+  const tier = TIER_COPY[recommendedTier] || TIER_COPY['Game only'];
+
+  return `
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background:#0d0818;font-family:'Helvetica Neue',Arial,sans-serif;color:#ffffff;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#0d0818;">
+<tr><td align="center" style="padding:40px 20px;">
+<table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
+
+  <!-- Header -->
+  <tr><td style="text-align:center;padding:30px 0;">
+    <div style="font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(248,240,255,.35);margin-bottom:12px;">A Unicorn for Leaders Experience</div>
+    <h1 style="font-size:32px;font-weight:800;margin:0;letter-spacing:-1px;background:linear-gradient(90deg,#7B2FBE,#C724B1,#E84D8A);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Your Personal Brand World</h1>
+  </td></tr>
+
+  <!-- Origin Story -->
+  <tr><td style="padding:30px;background:#170d2a;border:1px solid rgba(123,47,190,.15);">
+    <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#C724B1;margin-bottom:10px;">Your Origin Story</div>
+    <h2 style="font-size:24px;font-weight:800;margin:0 0 12px;letter-spacing:-0.5px;">${esc(playerName)}</h2>
+    ${role ? `<div style="font-size:12px;font-weight:600;color:#E84D8A;margin-bottom:8px;text-transform:uppercase;letter-spacing:1.5px;">${esc(role)}</div>` : ''}
+    <p style="font-size:15px;line-height:1.7;color:rgba(248,240,255,.7);margin:0;">${esc(bw.story_opening || '')}</p>
+  </td></tr>
+
+  <tr><td style="height:16px;"></td></tr>
+
+  ${archetype ? `
+  <!-- Archetype -->
+  <tr><td style="padding:24px 30px;background:#1e1136;border:1px solid rgba(123,47,190,.12);">
+    <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#C724B1;margin-bottom:12px;">Your Quest</div>
+    <h3 style="font-size:20px;font-weight:800;margin:0 0 4px;">${esc(archetype.name)}</h3>
+    <div style="font-size:12px;font-weight:600;color:#E84D8A;margin-bottom:8px;">${esc(archetype.territory || '')}</div>
+    <p style="font-size:14px;line-height:1.65;color:rgba(248,240,255,.6);margin:0 0 12px;">${esc(archetype.desc || '')}</p>
+    <div style="font-size:11px;color:rgba(248,240,255,.3);"><strong style="color:rgba(248,240,255,.45);">Shadow:</strong> ${esc(archetype.shadow || '')}</div>
+    ${sourceArchetypes && sourceArchetypes.length ? `<div style="font-size:11px;color:rgba(248,240,255,.2);margin-top:8px;">Forged from ${sourceArchetypes.map(n => esc(n)).join(' + ')}</div>` : ''}
+  </td></tr>
+  <tr><td style="height:16px;"></td></tr>
+  ` : ''}
+
+  <!-- POV -->
+  ${pov ? `
+  <tr><td style="padding:24px 30px;background:#170d2a;border:1px solid rgba(123,47,190,.15);">
+    <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#C724B1;margin-bottom:10px;">Your Point of View</div>
+    <p style="font-size:16px;font-weight:600;line-height:1.6;color:rgba(248,240,255,.85);margin:0;">${esc(pov)}</p>
+  </td></tr>
+  <tr><td style="height:16px;"></td></tr>
+  ` : ''}
+
+  <!-- Brand Positioning -->
+  ${bw.positioning ? `
+  <tr><td style="padding:24px 30px;background:#1e1136;border:1px solid rgba(123,47,190,.12);">
+    <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#C724B1;margin-bottom:10px;">How You Show Up</div>
+    <p style="font-size:16px;font-weight:600;line-height:1.6;color:rgba(248,240,255,.85);margin:0;">${esc(bw.positioning)}</p>
+  </td></tr>
+  <tr><td style="height:16px;"></td></tr>
+  ` : ''}
+
+  <!-- Know Believe Act -->
+  <tr><td style="padding:24px 30px;background:#170d2a;border:1px solid rgba(123,47,190,.15);">
+    <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#C724B1;margin-bottom:14px;">Know → Believe → Act</div>
+    <table width="100%" cellpadding="0" cellspacing="0">
+      <tr><td style="padding:10px 12px;background:rgba(123,47,190,.06);border-left:3px solid #7B2FBE;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:#7B2FBE;margin-bottom:4px;">KNOW</div>
+        <div style="font-size:13px;color:rgba(248,240,255,.65);line-height:1.5;">${esc(bw.know || '')}</div>
+      </td></tr>
+      <tr><td style="height:8px;"></td></tr>
+      <tr><td style="padding:10px 12px;background:rgba(199,36,177,.04);border-left:3px solid #C724B1;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:#C724B1;margin-bottom:4px;">BELIEVE</div>
+        <div style="font-size:13px;color:rgba(248,240,255,.65);line-height:1.5;">${esc(bw.believe || '')}</div>
+      </td></tr>
+      <tr><td style="height:8px;"></td></tr>
+      <tr><td style="padding:10px 12px;background:rgba(232,77,138,.04);border-left:3px solid #E84D8A;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:#E84D8A;margin-bottom:4px;">ACT</div>
+        <div style="font-size:13px;color:rgba(248,240,255,.65);line-height:1.5;">${esc(bw.act || '')}</div>
+      </td></tr>
+    </table>
+  </td></tr>
+
+  <tr><td style="height:16px;"></td></tr>
+
+  <!-- Manifesto -->
+  <tr><td style="padding:24px 30px;background:#1e1136;border:1px solid rgba(123,47,190,.12);">
+    <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#C724B1;margin-bottom:14px;">Your Personal Manifesto</div>
+    <div style="margin-bottom:14px;">
+      <div style="font-size:11px;font-weight:700;color:#E84D8A;margin-bottom:4px;">WHY</div>
+      <p style="font-size:14px;line-height:1.65;color:rgba(248,240,255,.7);margin:0;">${esc(bw.manifesto_why || man.why || '')}</p>
+    </div>
+    <div style="margin-bottom:14px;">
+      <div style="font-size:11px;font-weight:700;color:#C724B1;margin-bottom:4px;">HOW</div>
+      <p style="font-size:14px;line-height:1.65;color:rgba(248,240,255,.7);margin:0;">${esc(bw.manifesto_how || man.how || '')}</p>
+    </div>
+    <div>
+      <div style="font-size:11px;font-weight:700;color:#7B2FBE;margin-bottom:4px;">WHAT</div>
+      <p style="font-size:14px;line-height:1.65;color:rgba(248,240,255,.7);margin:0;">${esc(bw.manifesto_what || man.what || '')}</p>
+    </div>
+  </td></tr>
+
+  <tr><td style="height:16px;"></td></tr>
+
+  <!-- Values + Personality -->
+  <tr><td style="padding:24px 30px;background:#170d2a;border:1px solid rgba(123,47,190,.15);">
+    <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#C724B1;margin-bottom:10px;">Values Profile</div>
+    <div style="margin-bottom:14px;">
+      ${allValues.map(v => `<span style="display:inline-block;padding:4px 12px;margin:3px 4px 3px 0;font-size:12px;font-weight:600;color:rgba(248,240,255,.6);background:rgba(123,47,190,.1);border:1px solid rgba(123,47,190,.15);border-radius:2px;">${esc(v)}</span>`).join('')}
+    </div>
+    <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#C724B1;margin-bottom:8px;">Your Energy</div>
+    <p style="font-size:14px;color:rgba(248,240,255,.6);margin:0;">${esc(bw.personality || '')}</p>
+    ${brandWords && brandWords.length ? `
+    <div style="margin-top:10px;">
+      ${brandWords.map(w => `<span style="display:inline-block;padding:4px 12px;margin:3px 4px 3px 0;font-size:12px;font-weight:600;color:rgba(248,240,255,.5);background:rgba(199,36,177,.06);border:1px solid rgba(199,36,177,.1);border-radius:2px;">${esc(w)}</span>`).join('')}
+    </div>` : ''}
+  </td></tr>
+
+  <tr><td style="height:16px;"></td></tr>
+
+  <!-- Tier Recommendation -->
+  <tr><td style="padding:30px;background:linear-gradient(135deg,rgba(123,47,190,.18),rgba(199,36,177,.06));border:1px solid rgba(199,36,177,.28);">
+    <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#f4a0c0;margin-bottom:14px;">Your Recommended Path</div>
+    <h3 style="font-size:22px;font-weight:800;margin:0 0 4px;background:linear-gradient(90deg,#7B2FBE,#C724B1,#E84D8A);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">${esc(recommendedTier || 'Game only')}</h3>
+    <div style="font-size:12px;font-weight:600;color:rgba(248,240,255,.4);margin-bottom:14px;">${esc(tier.line)}</div>
+    <p style="font-size:14px;line-height:1.7;color:rgba(248,240,255,.7);margin:0 0 18px;">${esc(tier.why)}</p>
+    <a href="${esc(tier.url)}" target="_blank" style="display:inline-block;padding:12px 32px;background:linear-gradient(90deg,#7B2FBE,#C724B1);color:#fff;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;text-decoration:none;border-radius:2px;">${esc(tier.cta)} →</a>
+  </td></tr>
+
+  <tr><td style="height:16px;"></td></tr>
+
+  <!-- Footer CTA -->
+  <tr><td style="padding:30px;text-align:center;background:#1e1136;border:1px solid rgba(123,47,190,.12);">
+    <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(248,240,255,.25);margin-bottom:10px;">Your Leadership Begins Here</div>
+    <p style="font-size:14px;color:rgba(248,240,255,.55);line-height:1.65;margin:0 0 18px;">This is the opening chapter. Unicorn for Leaders is the fractional partner for the brand of the leader behind the business.</p>
+    <a href="https://unicornunited.co/for-leaders" target="_blank" style="display:inline-block;padding:12px 32px;background:linear-gradient(90deg,#7B2FBE,#C724B1);color:#fff;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;text-decoration:none;border-radius:2px;">Explore Unicorn for Leaders</a>
+  </td></tr>
+
+  <tr><td style="padding:30px 0;text-align:center;">
+    <div style="font-size:11px;color:rgba(248,240,255,.15);">Made with intention by <a href="https://unicornunited.co" style="color:rgba(248,240,255,.25);text-decoration:none;">Unicorn</a></div>
+  </td></tr>
+
+</table>
+</td></tr>
+</table>
+</body>
+</html>`;
+}
+
+function buildPersonalLeadNotification({ playerName, role, email, quadrant, archetype, sourceArchetypes, pov, recommendedTier }) {
+  return `
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body style="margin:0;padding:40px;background:#0d0818;font-family:'Helvetica Neue',Arial,sans-serif;color:#ffffff;">
+<table width="100%" cellpadding="0" cellspacing="0"><tr><td align="center">
+<table width="500" cellpadding="0" cellspacing="0" style="max-width:500px;width:100%;">
+  <tr><td style="padding:24px 30px;background:#170d2a;border:1px solid rgba(123,47,190,.15);">
+    <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#f4a0c0;margin-bottom:14px;">New Leader Lead — Unicorn for Leaders</div>
+    <h2 style="margin:0 0 16px;font-size:22px;">${esc(playerName)}</h2>
+    <table cellpadding="0" cellspacing="0" style="font-size:14px;line-height:2;">
+      <tr><td style="color:rgba(248,240,255,.4);padding-right:16px;">Email</td><td><a href="mailto:${esc(email)}" style="color:#C724B1;">${esc(email)}</a></td></tr>
+      <tr><td style="color:rgba(248,240,255,.4);padding-right:16px;">Role</td><td>${esc(role || '—')}</td></tr>
+      <tr><td style="color:rgba(248,240,255,.4);padding-right:16px;">Quadrant</td><td>${esc(quadrant || '')}</td></tr>
+      ${archetype ? `<tr><td style="color:rgba(248,240,255,.4);padding-right:16px;">Archetype</td><td>${esc(archetype.name)}</td></tr>` : ''}
+      ${sourceArchetypes && sourceArchetypes.length ? `<tr><td style="color:rgba(248,240,255,.4);padding-right:16px;">Sources</td><td>${sourceArchetypes.map(n => esc(n)).join(' + ')}</td></tr>` : ''}
+      <tr><td style="color:rgba(248,240,255,.4);padding-right:16px;">Recommended</td><td><strong style="color:#E84D8A;">${esc(recommendedTier || '—')}</strong></td></tr>
+    </table>
+    ${pov ? `<div style="margin-top:16px;padding:12px;background:rgba(123,47,190,.08);border-left:3px solid #C724B1;"><div style="font-size:11px;font-weight:700;letter-spacing:1.5px;color:#C724B1;margin-bottom:4px;">POV</div><div style="font-size:13px;color:rgba(248,240,255,.7);line-height:1.55;">${esc(pov)}</div></div>` : ''}
+  </td></tr>
+</table>
+</td></tr></table>
+</body>
+</html>`;
+}
+
+// ═══════════════════════════════════════════════════════════════
 // NOTION — Persist completion to Game Completions database
 // ═══════════════════════════════════════════════════════════════
 
@@ -513,14 +745,29 @@ function buildBrandWorldBlocks({ bw, archetype, sourceArchetypes, vals, man, bra
   return blocks;
 }
 
-// Known multi-select values in the Notion DB. Filter incoming values to these
+// Known multi-select values in the Notion DBs. Filter incoming values to these
 // so Notion doesn't reject the whole page over a mismatched archetype name.
+// (Business DB keeps its original 10-name set — left as-is to avoid breaking history.)
 const KNOWN_SOURCE_ARCHETYPES = new Set([
   'The Forgemaster', 'The Weaver', 'The Catalyst', 'The Alchemist',
   'The Sage', 'The Guardian', 'The Explorer', 'The Sovereign',
   'The Trickster', 'The Maverick'
 ]);
+// Personal DB uses the current 12 in-game archetypes
+const PERSONAL_SOURCE_ARCHETYPES = new Set([
+  'The Firestarter', 'The Catalyst', 'The Vanguard',
+  'The Shapeshifter', 'The Wayfinder', 'The Spark',
+  'The Strategist', 'The Oracle', 'The Forgemaster',
+  'The Sentinel', 'The Harbour', 'The Weaver'
+]);
 const KNOWN_QUADRANTS = new Set(['Power', 'Passion', 'Progress', 'Protection']);
+const KNOWN_ROLES = new Set([
+  'Founder / CEO', 'Senior exec in transition', 'Emerging leader / director',
+  'Creator / solo practitioner', 'Something else'
+]);
+const KNOWN_TIERS = new Set([
+  'Leader Sprint', 'Fractional Brand Partner', 'Leadership Cohort', 'Game only'
+]);
 
 async function saveCompletionToNotion(data) {
   if (!notion || !NOTION_DB_ID) return; // Notion not configured — skip silently
@@ -562,6 +809,51 @@ async function saveCompletionToNotion(data) {
   }
 }
 
+async function savePersonalCompletionToNotion(data) {
+  if (!notion || !NOTION_PERSONAL_DB_ID) return; // Personal Notion not configured — skip silently
+
+  const {
+    email, playerName, role, pov, recommendedTier,
+    archetype, sourceArchetypes, quadrant, brandWorld, values, manifesto, brandWords
+  } = data;
+  const bw = brandWorld || {};
+  const vals = values || {};
+  const man = manifesto || {};
+
+  const cleanSources = (sourceArchetypes || [])
+    .filter(s => PERSONAL_SOURCE_ARCHETYPES.has(s))
+    .map(name => ({ name }));
+
+  const properties = {
+    'Player Name': { title: [{ text: { content: playerName || 'Unknown' } }] },
+    'Archetype': { rich_text: [{ text: { content: archetype?.name || '' } }] },
+    'Source Archetypes': { multi_select: cleanSources },
+    'POV': { rich_text: [{ text: { content: (pov || '').slice(0, 2000) } }] },
+    'Status': { select: { name: 'New' } },
+  };
+
+  if (email) properties['Email'] = { email };
+  if (role && KNOWN_ROLES.has(role)) {
+    properties['Role'] = { select: { name: role } };
+  }
+  if (quadrant && KNOWN_QUADRANTS.has(quadrant)) {
+    properties['Quadrant'] = { select: { name: quadrant } };
+  }
+  if (recommendedTier && KNOWN_TIERS.has(recommendedTier)) {
+    properties['Recommended Tier'] = { select: { name: recommendedTier } };
+  }
+
+  try {
+    await notion.pages.create({
+      parent: { database_id: NOTION_PERSONAL_DB_ID },
+      properties,
+      children: buildBrandWorldBlocks({ bw, archetype, sourceArchetypes, vals, man, brandWords }),
+    });
+  } catch (err) {
+    console.error('Notion personal save failed:', err?.message || err);
+  }
+}
+
 // ── Health check ──
 app.get('/api/health', (req, res) => {
   res.json({ ok: true, hasKey: !!API_KEY });
@@ -572,5 +864,6 @@ app.listen(PORT, () => {
   console.log(`\n  ✦ Start your Story is running at http://localhost:${PORT}`);
   console.log(`  ${API_KEY ? '✓ API key loaded' : '✗ No API key — set ANTHROPIC_API_KEY in .env'}`);
   console.log(`  ${RESEND_KEY ? '✓ Email configured' : '✗ No email key — set RESEND_API_KEY in .env'}`);
-  console.log(`  ${notion && NOTION_DB_ID ? '✓ Notion configured (Game Completions)' : '✗ Notion not configured — set NOTION_API_KEY and NOTION_GAME_COMPLETIONS_DB_ID'}\n`);
+  console.log(`  ${notion && NOTION_DB_ID ? '✓ Notion configured (Game Completions — Business)' : '✗ Notion Business not configured — set NOTION_API_KEY and NOTION_GAME_COMPLETIONS_DB_ID'}`);
+  console.log(`  ${notion && NOTION_PERSONAL_DB_ID ? '✓ Notion configured (Personal Brand Game Completions)' : '✗ Notion Personal not configured — set NOTION_PERSONAL_DB_ID'}\n`);
 });

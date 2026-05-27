@@ -333,7 +333,7 @@ a{color:inherit;text-decoration:none;}
     <h1 class="landing-title">Start your<br><span class="grad-text">Story.</span></h1>
     <p class="landing-sub">A brand workshop, reimagined as a game. Play to discover who you are, what you stand for, and the story only you can tell.</p>
     <div class="landing-actions">
-      <button class="btn-primary" onclick="showScreen('setup')">Begin the Game</button>
+      <button class="btn-primary" onclick="showScreen('fork')">Begin the Game</button>
     </div>
   </div>
   <div class="landing-footer">
@@ -342,24 +342,60 @@ a{color:inherit;text-decoration:none;}
   </div>
 </div>
 
+<!-- ═══ FORK — Business vs Personal ═══ -->
+<div class="screen" id="fork">
+  <div class="landing-bg"></div>
+  <div class="setup-box" style="max-width:680px;">
+    <div class="stag" style="text-align:center;">First question</div>
+    <h2 class="setup-title" style="text-align:center;">Is this brand for<br><span class="grad-text">a business — or for you?</span></h2>
+    <p class="setup-sub" style="text-align:center;margin-bottom:1.6rem;">Two paths. Same craft. The Game Master will tailor every question to the one you choose.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:.5rem;">
+      <div class="fork-card" onclick="pickMode('business')" style="cursor:pointer;padding:1.6rem 1.4rem;background:rgba(13,8,24,.5);border:1px solid rgba(123,47,190,.18);border-radius:4px;transition:all .3s;text-align:center;">
+        <div style="font-size:.58rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#b57eff;margin-bottom:.8rem;">Path A</div>
+        <div style="font-size:1.15rem;font-weight:800;color:var(--white);letter-spacing:-.01em;margin-bottom:.4rem;">For a Business</div>
+        <p style="font-size:.78rem;line-height:1.55;color:rgba(248,240,255,.55);margin:0;">A company, product, venture or organisation you're building or leading.</p>
+      </div>
+      <div class="fork-card" onclick="pickMode('personal')" style="cursor:pointer;padding:1.6rem 1.4rem;background:rgba(13,8,24,.5);border:1px solid rgba(199,36,177,.28);border-radius:4px;transition:all .3s;text-align:center;">
+        <div style="font-size:.58rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#f4a0c0;margin-bottom:.8rem;">Path B · New</div>
+        <div style="font-size:1.15rem;font-weight:800;color:var(--white);letter-spacing:-.01em;margin-bottom:.4rem;">For You Personally</div>
+        <p style="font-size:.78rem;line-height:1.55;color:rgba(248,240,255,.55);margin:0;">Your personal brand. Leadership, identity, the story you want to be known for.</p>
+      </div>
+    </div>
+    <button class="btn-ghost" style="width:100%;margin-top:1.2rem;" onclick="showScreen('landing')">Back</button>
+  </div>
+</div>
+
 <!-- ═══ SETUP ═══ -->
 <div class="screen" id="setup">
   <div class="landing-bg"></div>
   <div class="setup-box">
-    <div class="stag" style="text-align:center;">Game Setup</div>
+    <div class="stag" style="text-align:center;" id="setupTag">Game Setup</div>
     <h2 class="setup-title" style="text-align:center;">Before we start</h2>
-    <p class="setup-sub" style="text-align:center;">A few details so the Game Master can tailor the experience.</p>
+    <p class="setup-sub" style="text-align:center;" id="setupSub">A few details so the Game Master can tailor the experience.</p>
     <div class="field">
       <label>Your Name</label>
       <input type="text" id="playerName" placeholder="e.g. Dustin" maxlength="24">
     </div>
-    <div class="field">
+    <!-- Business field (shown when mode === 'business') -->
+    <div class="field" id="brandField">
       <label>Your Company / Brand Name</label>
       <input type="text" id="brandName" placeholder="e.g. Acme Studios" maxlength="40">
     </div>
+    <!-- Personal field (shown when mode === 'personal') -->
+    <div class="field" id="roleField" style="display:none;">
+      <label>Where are you right now?</label>
+      <select id="playerRole" style="width:100%;background:rgba(123,47,190,.07);border:1px solid rgba(123,47,190,.2);color:var(--white);font-family:'Sora',sans-serif;font-size:.85rem;padding:.7rem .9rem;outline:none;border-radius:2px;appearance:none;">
+        <option value="">Choose one…</option>
+        <option>Founder / CEO</option>
+        <option>Senior exec in transition</option>
+        <option>Emerging leader / director</option>
+        <option>Creator / solo practitioner</option>
+        <option>Something else</option>
+      </select>
+    </div>
     <div id="keyError" style="display:none;color:var(--rose);font-size:.72rem;margin-bottom:.8rem;text-align:center;"></div>
     <button class="btn-primary" style="width:100%;justify-content:center;margin-top:.5rem;" onclick="beginGame()">Start your Story</button>
-    <button class="btn-ghost" style="width:100%;margin-top:.6rem;" onclick="showScreen('landing')">Back</button>
+    <button class="btn-ghost" style="width:100%;margin-top:.6rem;" onclick="showScreen('fork')">Back</button>
   </div>
 </div>
 
@@ -378,6 +414,11 @@ a{color:inherit;text-decoration:none;}
 // STATE
 // ═══════════════════════════════════════
 const G = {
+  // Mode fork — Business or Personal (Unicorn for Leaders)
+  mode: 'business',           // 'business' | 'personal'
+  role: '',                   // personal-mode only: Founder/CEO, etc.
+  recommendedTier: '',        // personal-mode only: AI-routed tier recommendation
+  pov: '',                    // personal-mode only: distilled personal POV statement
   playerName: '', brandName: '',
   chapter: 0,
   // Chapter 1 — Compass
@@ -397,6 +438,43 @@ const G = {
   // AI context
   aiContext: {}
 };
+
+// ── Mode-aware copy helpers ──
+function isPersonal() { return G.mode === 'personal'; }
+function subjectLabel() { return isPersonal() ? G.playerName : G.brandName; }
+function brandWord(cap) { return isPersonal() ? (cap ? 'Personal Brand' : 'personal brand') : (cap ? 'Brand' : 'brand'); }
+
+// Deterministic fallback if AI didn't return a valid recommended_tier
+function recommendTierFallback() {
+  if (!isPersonal()) return '';
+  const r = (G.role || '').toLowerCase();
+  if (r.includes('founder') || r.includes('ceo')) return 'Fractional Brand Partner';
+  if (r.includes('transition')) return 'Leader Sprint';
+  if (r.includes('emerging') || r.includes('director')) return 'Leader Sprint';
+  if (r.includes('creator') || r.includes('solo')) return 'Leader Sprint';
+  return 'Game only';
+}
+
+// Called from the fork screen
+function pickMode(mode) {
+  G.mode = mode;
+  const brandField = document.getElementById('brandField');
+  const roleField = document.getElementById('roleField');
+  const setupTag = document.getElementById('setupTag');
+  const setupSub = document.getElementById('setupSub');
+  if (mode === 'personal') {
+    if (brandField) brandField.style.display = 'none';
+    if (roleField) roleField.style.display = 'block';
+    if (setupTag) setupTag.textContent = 'Personal Mode';
+    if (setupSub) setupSub.textContent = 'Two details and the Game Master starts. The questions ahead are about you — not a company.';
+  } else {
+    if (brandField) brandField.style.display = 'block';
+    if (roleField) roleField.style.display = 'none';
+    if (setupTag) setupTag.textContent = 'Game Setup';
+    if (setupSub) setupSub.textContent = 'A few details so the Game Master can tailor the experience.';
+  }
+  showScreen('setup');
+}
 
 // ═══════════════════════════════════════
 // ARCHETYPE DATA (based on Dustin's model)
@@ -577,31 +655,40 @@ function compassIcon(key, sz=44) {
 }
 
 // Compass binary choices — each nudges scores
+// Personal-mode variants (qP/aP/bP) keep the same scoring but reframe the question for a human, not a company.
 const COMPASS_ROUNDS = [
   { q:'Which world feels more like your brand?',
-    a:{ icon:'challenge', word:'Challenge', desc:'Break conventions. Question everything.', scores:{freedom:2,ego:1} },
-    b:{ icon:'nurture', word:'Nurture', desc:'Grow roots. Build something that lasts.', scores:{order:2,social:1} }},
+    qP:'Which feels more like you, on your best day?',
+    a:{ icon:'challenge', word:'Challenge', desc:'Break conventions. Question everything.', descP:'You push against the way things are. You can\'t help it.', scores:{freedom:2,ego:1} },
+    b:{ icon:'nurture', word:'Nurture', desc:'Grow roots. Build something that lasts.', descP:'You build people up. You make things grow.', scores:{order:2,social:1} }},
   { q:'When your brand enters a room, what happens?',
-    a:{ icon:'energy', word:'Energy shifts', desc:'Heads turn. The conversation changes.', scores:{ego:2,freedom:1} },
-    b:{ icon:'trust', word:'Trust deepens', desc:'People relax. They feel understood.', scores:{social:2,order:1} }},
+    qP:'When you walk into a room, what happens?',
+    a:{ icon:'energy', word:'Energy shifts', desc:'Heads turn. The conversation changes.', descP:'The conversation changes. People look up.', scores:{ego:2,freedom:1} },
+    b:{ icon:'trust', word:'Trust deepens', desc:'People relax. They feel understood.', descP:'People exhale. They feel safer with you there.', scores:{social:2,order:1} }},
   { q:'Your brand\'s superpower is closer to…',
-    a:{ icon:'vision', word:'Vision', desc:'Seeing what others can\'t. Shaping the future.', scores:{freedom:2,ego:1} },
-    b:{ icon:'certainty', word:'Certainty', desc:'Being the rock. The one people count on.', scores:{order:2,social:1} }},
+    qP:'Your superpower is closer to…',
+    a:{ icon:'vision', word:'Vision', desc:'Seeing what others can\'t. Shaping the future.', descP:'You see around corners. You bring the future closer.', scores:{freedom:2,ego:1} },
+    b:{ icon:'certainty', word:'Certainty', desc:'Being the rock. The one people count on.', descP:'You\'re the steady one. People count on you.', scores:{order:2,social:1} }},
   { q:'Which tension drives you more?',
-    a:{ icon:'ambition', word:'Ambition', desc:'The gap between where you are and where you could be.', scores:{ego:2,freedom:1} },
-    b:{ icon:'purpose', word:'Purpose', desc:'The gap between how things are and how they should be.', scores:{social:2,order:1} }},
+    qP:'Which tension drives you more?',
+    a:{ icon:'ambition', word:'Ambition', desc:'The gap between where you are and where you could be.', descP:'The gap between where you are and where you could be.', scores:{ego:2,freedom:1} },
+    b:{ icon:'purpose', word:'Purpose', desc:'The gap between how things are and how they should be.', descP:'The gap between how things are and how they should be.', scores:{social:2,order:1} }},
   { q:'Your customers come to you because…',
-    a:{ icon:'transform', word:'Transformation', desc:'You change how they see the world.', scores:{freedom:2,ego:1} },
-    b:{ icon:'belong', word:'Belonging', desc:'You make them feel part of something.', scores:{social:2,order:1} }},
+    qP:'People come to you because…',
+    a:{ icon:'transform', word:'Transformation', desc:'You change how they see the world.', descP:'You change how they see themselves.', scores:{freedom:2,ego:1} },
+    b:{ icon:'belong', word:'Belonging', desc:'You make them feel part of something.', descP:'You make them feel like they belong.', scores:{social:2,order:1} }},
   { q:'If your brand were a force of nature…',
-    a:{ icon:'wave', word:'The Wave', desc:'Unstoppable momentum. Reshaping the landscape.', scores:{freedom:1,ego:2} },
-    b:{ icon:'mountain', word:'The Mountain', desc:'Immovable. Dependable. There through every storm.', scores:{order:1,social:2} }},
+    qP:'If you were a force of nature…',
+    a:{ icon:'wave', word:'The Wave', desc:'Unstoppable momentum. Reshaping the landscape.', descP:'Unstoppable momentum. You reshape what you touch.', scores:{freedom:1,ego:2} },
+    b:{ icon:'mountain', word:'The Mountain', desc:'Immovable. Dependable. There through every storm.', descP:'Immovable. Dependable. There through every storm.', scores:{order:1,social:2} }},
   { q:'What matters more to your brand?',
-    a:{ icon:'standout', word:'Standing out', desc:'Being distinctive. Unmistakably you.', scores:{ego:2,freedom:1} },
-    b:{ icon:'fitin', word:'Fitting in', desc:'Being woven into people\'s lives. Essential.', scores:{social:2,order:1} }},
+    qP:'What matters more to you?',
+    a:{ icon:'standout', word:'Standing out', desc:'Being distinctive. Unmistakably you.', descP:'Being unmistakably yourself. Recognisable.', scores:{ego:2,freedom:1} },
+    b:{ icon:'fitin', word:'Fitting in', desc:'Being woven into people\'s lives. Essential.', descP:'Being woven into the lives of the people you serve.', scores:{social:2,order:1} }},
   { q:'Your brand\'s origin story is about…',
-    a:{ icon:'fight', word:'A fight', desc:'Something was broken and you couldn\'t ignore it.', scores:{freedom:2,ego:1} },
-    b:{ icon:'calling', word:'A calling', desc:'You saw a need and felt compelled to serve it.', scores:{social:2,order:1} }},
+    qP:'Your story is really about…',
+    a:{ icon:'fight', word:'A fight', desc:'Something was broken and you couldn\'t ignore it.', descP:'Something was broken and you couldn\'t look away.', scores:{freedom:2,ego:1} },
+    b:{ icon:'calling', word:'A calling', desc:'You saw a need and felt compelled to serve it.', descP:'You felt a pull you couldn\'t explain — and followed it.', scores:{social:2,order:1} }},
 ];
 
 // ── VALUES TIER ICONS ──
@@ -721,7 +808,7 @@ const TONE_AXES = [
 // ═══════════════════════════════════════
 // GAME MASTER PROMPT
 // ═══════════════════════════════════════
-const SYS_PROMPT = `You are Dustin, the Game Master of "Start your Story" — a brand workshop game by Unicorn. You're a seasoned brand strategist with deep enterprise experience, but you speak with warmth, wit, and zero jargon.
+const SYS_PROMPT_BUSINESS = `You are Dustin, the Game Master of "Start your Story" — a brand workshop game by Unicorn. You're a seasoned brand strategist with deep enterprise experience, but you speak with warmth, wit, and zero jargon.
 
 Your personality:
 - Provocative but supportive — challenge assumptions without being harsh
@@ -736,6 +823,31 @@ CRITICAL RULES:
 - Use <strong> for emphasis, never markdown
 - Sound like a real person running a workshop, not an AI
 - Reference what the player has actually told you — make it personal`;
+
+const SYS_PROMPT_PERSONAL = `You are Dustin, the Game Master of "Start your Story" — a personal brand workshop game by Unicorn for Leaders. The player is NOT building a company brand — they're building the brand of the leader they're becoming. You're a brand strategist who applies brand thinking to people: founders, execs, emerging leaders, and creators.
+
+Your personality:
+- Reflective, sharp, and warm — like the best coaching partner crossed with a strategist
+- Short, punchy sentences mixed with deeper observations and the occasional reframing question
+- NEVER use bullet points, markdown, or lists — speak in natural flowing prose
+- Genuinely curious about the person, not their company
+- Dry British wit, occasional irreverence
+- Treat the work seriously without being precious
+
+CRITICAL RULES:
+- This is about a HUMAN — never refer to them as "the brand" or "your brand" as if they're a company
+- Use "you" liberally. Mirror their language back. Make them feel seen.
+- Keep responses to 2-3 SHORT paragraphs maximum
+- Use <strong> for emphasis, never markdown
+- Sound like a real person running a 1:1 session, not an AI
+- Their role context: ${'${role}'} — adjust the lens accordingly`;
+
+function getSysPrompt() {
+  if (isPersonal()) {
+    return SYS_PROMPT_PERSONAL.replace('${role}', G.role || 'leader (role not specified)');
+  }
+  return SYS_PROMPT_BUSINESS;
+}
 
 // ═══════════════════════════════════════
 // NAVIGATION & UTILITIES
@@ -764,7 +876,10 @@ function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
 // AI CALLS
 // ═══════════════════════════════════════
 async function askAI(prompt, context) {
-  const sysPrompt = SYS_PROMPT + `\n\nPLAYER: ${G.playerName}\nBRAND: ${G.brandName}\n\n${context || ''}`;
+  const subjectLine = isPersonal()
+    ? `PLAYER: ${G.playerName}\nROLE: ${G.role || '—'}\n(MODE: PERSONAL — this is about the human, not a company)`
+    : `PLAYER: ${G.playerName}\nBRAND: ${G.brandName}`;
+  const sysPrompt = getSysPrompt() + `\n\n${subjectLine}\n\n${context || ''}`;
   try {
     const res = await fetch('/api/ai', {
       method: 'POST',
@@ -800,7 +915,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 function beginGame() {
   G.playerName = el('playerName').value.trim() || 'Player';
-  G.brandName = el('brandName').value.trim() || 'your brand';
+  if (isPersonal()) {
+    G.role = (el('playerRole') && el('playerRole').value) || '';
+    // In personal mode the "brand" subject is the player themselves —
+    // we set brandName to the player name so downstream prompts read naturally.
+    G.brandName = G.playerName;
+  } else {
+    G.brandName = el('brandName').value.trim() || 'your brand';
+  }
   showScreen('gameScreen');
   setProgress(5);
   runChapter1();
@@ -827,6 +949,10 @@ async function runChapter1() {
 
   function renderCompassRound(idx, narrationText) {
     const round = COMPASS_ROUNDS[idx];
+    // Pick mode-appropriate question + descriptions
+    const qText = isPersonal() ? (round.qP || round.q) : round.q;
+    const aDesc = isPersonal() ? (round.a.descP || round.a.desc) : round.a.desc;
+    const bDesc = isPersonal() ? (round.b.descP || round.b.desc) : round.b.desc;
     area.innerHTML = `
       <div class="chapter-header fade-up">
         <div class="chapter-tag">Chapter 1 — The Compass</div>
@@ -840,17 +966,17 @@ async function runChapter1() {
         <div class="round-label">Round ${idx+1} of ${COMPASS_ROUNDS.length}</div>
       </div>
       ${narrationText ? `<div class="narration fade-up-d1"><div class="gm-tag">Game Master</div>${narrationText}</div>` : ''}
-      <div style="text-align:center;font-size:1.05rem;font-weight:700;margin-bottom:1.2rem;color:var(--white);animation:fadeUp .5s .15s ease both;">${round.q}</div>
+      <div style="text-align:center;font-size:1.05rem;font-weight:700;margin-bottom:1.2rem;color:var(--white);animation:fadeUp .5s .15s ease both;">${qText}</div>
       <div class="binary-choices fade-up-d2">
         <div class="binary-card" onclick="pickCompass(this,'a',${idx})">
           <div class="card-svg">${compassIcon(round.a.icon)}</div>
           <div class="card-word">${round.a.word}</div>
-          <div class="card-desc">${round.a.desc}</div>
+          <div class="card-desc">${aDesc}</div>
         </div>
         <div class="binary-card" onclick="pickCompass(this,'b',${idx})">
           <div class="card-svg">${compassIcon(round.b.icon)}</div>
           <div class="card-word">${round.b.word}</div>
-          <div class="card-desc">${round.b.desc}</div>
+          <div class="card-desc">${bDesc}</div>
         </div>
       </div>
       <div class="map-container fade-up-d2" id="liveMap"></div>
@@ -1654,48 +1780,104 @@ async function runChapter5() {
     : '';
 
   showLoading('The Game Master is writing your story...');
-  const brandWorldText = await askAI(
-    `Generate the final Brand World for "${G.brandName}".
 
+  // ── Mode-aware prompt for Chapter 5 ──
+  const personalCtx = isPersonal()
+    ? `
+IMPORTANT: This is about a PERSON — ${G.playerName} (${G.role || 'role unspecified'}). They are NOT a company. This is their PERSONAL BRAND — who they are, how they show up, what they stand for as a human leader. Never refer to them as "the brand" or "a brand" — they are a person.
+`
+    : `
 IMPORTANT: This is about IDENTITY — not product or service. The brand is a force, a belief system, a way of showing up in the world.
+`;
 
+  const personalFields = isPersonal()
+    ? `,
+  "pov": "A sharp, 1-sentence personal point-of-view statement — the THING this leader is here to argue for. Their stake in the ground. Should feel claimable in any room.",
+  "recommended_tier": "Based on the player's role and their answers, pick exactly ONE of these strings — no other value, no explanation: \\"Leader Sprint\\" (best for solo practitioners, founders ready to act fast, or anyone who wants a defined deliverable), \\"Fractional Brand Partner\\" (best for founders/CEOs growing past themselves, or execs who need ongoing partnership), \\"Leadership Cohort\\" (best when they signal team / multiple leaders / executive team), \\"Game only\\" (best when they're clearly early-stage exploration / not commercially ready)."`
+    : '';
+
+  const positioningField = isPersonal()
+    ? `"positioning": "A one-sentence statement of how this leader shows up — not a job title, not a service, but the role they play in the world",`
+    : `"positioning": "A one-sentence brand positioning statement — what this brand IS, not what it sells",`;
+
+  const knowBelieveActFields = isPersonal()
+    ? `"know": "What people should KNOW about this leader (1 sentence)",
+  "believe": "What people should BELIEVE about this leader (1 sentence)",
+  "act": "What people should DO / feel compelled to do after meeting this leader (1 sentence)",`
+    : `"know": "What people should KNOW about this brand identity (1 sentence)",
+  "believe": "What people should BELIEVE about this brand (1 sentence)",
+  "act": "What people should DO / feel compelled to do because of this brand (1 sentence)",`;
+
+  const storyOpeningField = isPersonal()
+    ? `"story_opening": "A vivid 2-3 sentence opening paragraph for THIS LEADER'S story — their origin energy, what drives them, what they're on the way to becoming. Written about them, in third person.",`
+    : `"story_opening": "A vivid 2-3 sentence 'Once upon a time' opening paragraph for this brand's story. This is identity, not product.",`;
+
+  const manifestoFields = isPersonal()
+    ? `"manifesto_why": "A polished 1-2 sentence manifesto WHY — the deep belief driving this person. Build on their answer if provided, elevate it.",
+  "manifesto_how": "A polished 1-2 sentence manifesto HOW — the distinctive way this person shows up. Build on their answer.",
+  "manifesto_what": "A polished 1-2 sentence manifesto WHAT — the change this person creates in the world. Not a service. An impact.",
+  "personality": "3-4 adjectives that define this person's leadership energy",`
+    : `"manifesto_why": "A polished 1-2 sentence manifesto WHY — the deep belief driving this brand. Build on the player's answer if provided, elevate it.",
+  "manifesto_how": "A polished 1-2 sentence manifesto HOW — the distinctive way this brand shows up. Build on the player's answer.",
+  "manifesto_what": "A polished 1-2 sentence manifesto WHAT — what this brand creates or changes in the world. Not a product. An impact.",
+  "personality": "3-4 adjectives that define the brand personality",`;
+
+  const visualFields = isPersonal()
+    ? `"visual_shapes": "The shape language of how this person shows up visually (e.g. angular crystalline forms, soft organic curves, bold geometric blocks). 3-5 words.",
+  "visual_imagery": "The imagery themes that match this person (e.g. vast landscapes, intimate moments, urban energy, celestial bodies). 3-5 words.",
+  "visual_motion": "How this person moves through the world (e.g. fluid and continuous, sharp and decisive, slow and deliberate, explosive bursts). 3-5 words.",
+  "visual_texture": "The texture of this person's presence (e.g. smooth polished metal, raw natural grain, soft fabric, rough concrete). 3-5 words.",
+  "visual_experience": "The experience this person evokes when they enter a room (e.g. the moment before a leap, sunrise after a storm, a hand reaching out). One vivid image/moment.",`
+    : `"visual_shapes": "The shape language of this brand (e.g. angular crystalline forms, soft organic curves, bold geometric blocks). 3-5 words.",
+  "visual_imagery": "The imagery themes (e.g. vast landscapes, intimate moments, urban energy, celestial bodies). 3-5 words.",
+  "visual_motion": "How this brand moves (e.g. fluid and continuous, sharp and decisive, slow and deliberate, explosive bursts). 3-5 words.",
+  "visual_texture": "The texture of this brand (e.g. smooth polished metal, raw natural grain, soft fabric, rough concrete). 3-5 words.",
+  "visual_experience": "The experiences this brand evokes (e.g. the moment before a leap, sunrise after a storm, a hand reaching out). One vivid image/moment.",`;
+
+  const benchmarkFields = isPersonal()
+    ? `"benchmark_1_name": "Name of a real-world public figure or leader (could be a CEO, creator, public intellectual, executive, athlete, artist) with similar personal-brand energy",
+  "benchmark_1_why": "One sentence — why this person is a kindred spirit",
+  "benchmark_1_examples": ["A specific way they live their personal brand — example 1", "Example 2", "Example 3"],
+  "benchmark_2_name": "Name of a second well-known person from a DIFFERENT field with similar energy",
+  "benchmark_2_why": "One sentence — why this person shares the same DNA",
+  "benchmark_2_examples": ["A specific way they live their personal brand — example 1", "Example 2", "Example 3"]`
+    : `"benchmark_1_name": "Name of a real-world brand with a similar positioning/archetype energy",
+  "benchmark_1_why": "One sentence — why this brand is a kindred spirit in positioning",
+  "benchmark_1_examples": ["How they bring their positioning to life — example 1 (specific campaign, design choice, experience, or behaviour)", "Example 2", "Example 3"],
+  "benchmark_2_name": "Name of a second real-world brand with similar energy but from a DIFFERENT industry",
+  "benchmark_2_why": "One sentence — why this brand shares the same identity DNA",
+  "benchmark_2_examples": ["How they bring their positioning to life — example 1", "Example 2", "Example 3"]`;
+
+  const subject = isPersonal()
+    ? `${G.playerName} (${G.role || 'leader'})`
+    : `"${G.brandName}"`;
+
+  const brandWorldText = await askAI(
+    `Generate the final ${isPersonal() ? 'Personal Brand World' : 'Brand World'} for ${subject}.
+${personalCtx}
 Based on everything:
 - Quadrant: ${G.quadrant}
 - Archetype: ${archNames}${G.synthesizedArchetype ? ` (synthesized from ${G.finalArchetypes.map(a=>a.name).join(' & ')})` : ''}
 - Values — Foundation: ${G.values.foundation.join(', ')}; Current: ${G.values.current.join(', ')}; Constellation: ${G.values.constellation.join(', ')}
 - Mood: ${moods}
 - Tone: ${tones}
-- Brand words: ${G.brandWords.join(', ') || 'none'}${manifestoCtx}
+- Brand words: ${G.brandWords.join(', ') || 'none'}${manifestoCtx}${isPersonal() ? `\n- Role context: ${G.role || 'unspecified'}` : ''}
 
 Write a JSON object (and ONLY the JSON, no other text) with these fields:
 {
-  "story_opening": "A vivid 2-3 sentence 'Once upon a time' opening paragraph for this brand's story. This is identity, not product.",
-  "positioning": "A one-sentence brand positioning statement — what this brand IS, not what it sells",
-  "know": "What people should KNOW about this brand identity (1 sentence)",
-  "believe": "What people should BELIEVE about this brand (1 sentence)",
-  "act": "What people should DO / feel compelled to do because of this brand (1 sentence)",
-  "manifesto_why": "A polished 1-2 sentence manifesto WHY — the deep belief driving this brand. Build on the player's answer if provided, elevate it.",
-  "manifesto_how": "A polished 1-2 sentence manifesto HOW — the distinctive way this brand shows up. Build on the player's answer.",
-  "manifesto_what": "A polished 1-2 sentence manifesto WHAT — what this brand creates or changes in the world. Not a product. An impact.",
-  "personality": "3-4 adjectives that define the brand personality",
-  "visual_shapes": "The shape language of this brand (e.g. angular crystalline forms, soft organic curves, bold geometric blocks). 3-5 words.",
-  "visual_imagery": "The imagery themes (e.g. vast landscapes, intimate moments, urban energy, celestial bodies). 3-5 words.",
-  "visual_motion": "How this brand moves (e.g. fluid and continuous, sharp and decisive, slow and deliberate, explosive bursts). 3-5 words.",
-  "visual_texture": "The texture of this brand (e.g. smooth polished metal, raw natural grain, soft fabric, rough concrete). 3-5 words.",
-  "visual_experience": "The experiences this brand evokes (e.g. the moment before a leap, sunrise after a storm, a hand reaching out). One vivid image/moment.",
+  ${storyOpeningField}
+  ${positioningField}
+  ${knowBelieveActFields}
+  ${manifestoFields}
+  ${visualFields}
   "associations": ["word1","word2","word3","word4","word5","word6","word7","word8"],
-  "benchmark_1_name": "Name of a real-world brand with a similar positioning/archetype energy",
-  "benchmark_1_why": "One sentence — why this brand is a kindred spirit in positioning",
-  "benchmark_1_examples": ["How they bring their positioning to life — example 1 (specific campaign, design choice, experience, or behaviour)", "Example 2", "Example 3"],
-  "benchmark_2_name": "Name of a second real-world brand with similar energy but from a DIFFERENT industry",
-  "benchmark_2_why": "One sentence — why this brand shares the same identity DNA",
-  "benchmark_2_examples": ["How they bring their positioning to life — example 1", "Example 2", "Example 3"]
+  ${benchmarkFields}${personalFields}
 }
 
-IMPORTANT for associations: Think about the sensory, emotional, and cultural associations this brand identity evokes. These are NOT values or adjectives — they are nouns, places, moments, textures, sounds, and imagery. Examples: "midnight", "campfire", "thunder", "velvet", "rooftop", "atlas", "neon", "cathedral". Pick 8 evocative association words that capture the FEELING of this brand identity.
+IMPORTANT for associations: Think about the sensory, emotional, and cultural associations this ${isPersonal() ? 'leader' : 'brand identity'} evokes. These are NOT values or adjectives — they are nouns, places, moments, textures, sounds, and imagery. Examples: "midnight", "campfire", "thunder", "velvet", "rooftop", "atlas", "neon", "cathedral". Pick 8 evocative association words that capture the FEELING of this ${isPersonal() ? 'person' : 'brand identity'}.
 
-IMPORTANT for benchmarks: Choose 2 well-known brands from DIFFERENT industries that share a similar positioning energy, archetype, or belief system. These must be real brands. For each, give 2-3 SPECIFIC examples of how they bring their positioning to life through design, campaigns, experiences, or brand behaviour — not vague statements.`,
-    'CRITICAL: Return ONLY valid JSON. No markdown, no explanation, just the JSON object. Remember: this is about IDENTITY — never mention products or services. Benchmark brands must be real and well-known.'
+IMPORTANT for benchmarks: Choose 2 well-known ${isPersonal() ? 'real people from DIFFERENT fields' : 'brands from DIFFERENT industries'} that share a similar ${isPersonal() ? 'personal-brand energy' : 'positioning energy, archetype, or belief system'}. ${isPersonal() ? 'These must be real, well-known people.' : 'These must be real brands.'} For each, give 2-3 SPECIFIC examples — not vague statements.${isPersonal() ? '\n\nIMPORTANT for recommended_tier: Match the player\'s role to the right Unicorn for Leaders tier. Founder/CEO building authority → usually Fractional Brand Partner. Senior exec in transition → usually Leader Sprint. Emerging leader/director → Leader Sprint or Cohort if they signal team. Creator/solo practitioner → Leader Sprint or Fractional Brand Partner depending on stage. If unclear or "Something else" → Game only.' : ''}`,
+    `CRITICAL: Return ONLY valid JSON. No markdown, no explanation, just the JSON object. Remember: this is about ${isPersonal() ? 'a HUMAN LEADER — never refer to them as a brand or company' : 'IDENTITY — never mention products or services'}. Benchmark ${isPersonal() ? 'people' : 'brands'} must be real and well-known.`
   );
   hideLoading();
 
@@ -1705,15 +1887,16 @@ IMPORTANT for benchmarks: Choose 2 well-known brands from DIFFERENT industries t
     const jsonStr = brandWorldText.replace(/```json?\n?/g,'').replace(/```/g,'').trim();
     bw = JSON.parse(jsonStr);
   } catch(e) {
+    const subjName = isPersonal() ? G.playerName : G.brandName;
     bw = {
       story_opening: brandWorldText,
-      positioning: `${G.brandName} — where ${G.quadrant} meets purpose.`,
-      know: `${G.brandName} is a ${G.quadrant}-driven identity.`,
-      believe: `${G.brandName} stands for what matters.`,
-      act: `Join ${G.brandName} when you're ready to believe in something.`,
-      manifesto_why: G.manifesto.why || 'We exist because the world needs this.',
-      manifesto_how: G.manifesto.how || 'We show up with intention and energy.',
-      manifesto_what: G.manifesto.what || 'We change how people see what\'s possible.',
+      positioning: `${subjName} — where ${G.quadrant} meets purpose.`,
+      know: `${subjName} is a ${G.quadrant}-driven ${isPersonal() ? 'leader' : 'identity'}.`,
+      believe: `${subjName} stands for what matters.`,
+      act: `${isPersonal() ? 'Work with' : 'Join'} ${subjName} when you're ready to believe in something.`,
+      manifesto_why: G.manifesto.why || (isPersonal() ? 'I exist because this work needs me.' : 'We exist because the world needs this.'),
+      manifesto_how: G.manifesto.how || (isPersonal() ? 'I show up with intention and energy.' : 'We show up with intention and energy.'),
+      manifesto_what: G.manifesto.what || (isPersonal() ? 'I change how people see what\'s possible.' : 'We change how people see what\'s possible.'),
       personality: archNames,
       visual_shapes: 'Geometric and bold',
       visual_imagery: 'Horizons and open space',
@@ -1721,15 +1904,29 @@ IMPORTANT for benchmarks: Choose 2 well-known brands from DIFFERENT industries t
       visual_texture: 'Smooth polished surfaces',
       visual_experience: 'The moment before everything changes',
       associations: ['midnight','compass','thunder','horizon','atlas','ember','signal','cathedral'],
-      benchmark_1_name: 'Patagonia',
-      benchmark_1_why: 'A brand built on belief, not product.',
-      benchmark_1_examples: ['Don\'t Buy This Jacket campaign','Worn Wear repair programme','1% for the Planet commitment'],
-      benchmark_2_name: 'Apple',
-      benchmark_2_why: 'Identity-first positioning that transcends category.',
-      benchmark_2_examples: ['Think Different campaign','Minimalist retail temple experience','Product launches as cultural events']
+      benchmark_1_name: isPersonal() ? 'Brené Brown' : 'Patagonia',
+      benchmark_1_why: isPersonal() ? 'A leader built on belief, not credentials.' : 'A brand built on belief, not product.',
+      benchmark_1_examples: isPersonal()
+        ? ['Vulnerability TED talk','Dare to Lead methodology','Op-ed presence in HBR & beyond']
+        : ['Don\'t Buy This Jacket campaign','Worn Wear repair programme','1% for the Planet commitment'],
+      benchmark_2_name: isPersonal() ? 'Reid Hoffman' : 'Apple',
+      benchmark_2_why: isPersonal() ? 'A leader whose personal brand transcends a single role.' : 'Identity-first positioning that transcends category.',
+      benchmark_2_examples: isPersonal()
+        ? ['Masters of Scale podcast','Investor + thinker dual identity','Public essays on AI and society']
+        : ['Think Different campaign','Minimalist retail temple experience','Product launches as cultural events'],
+      pov: isPersonal() ? `${G.playerName} stands for ${G.quadrant} — and they\'re only just getting started.` : undefined,
+      recommended_tier: isPersonal() ? recommendTierFallback() : undefined
     };
   }
   G.brandWorld = bw;
+
+  // Capture personal-mode-only fields
+  if (isPersonal()) {
+    G.pov = bw.pov || '';
+    G.recommendedTier = (bw.recommended_tier && ['Leader Sprint','Fractional Brand Partner','Leadership Cohort','Game only'].includes(bw.recommended_tier))
+      ? bw.recommended_tier
+      : recommendTierFallback();
+  }
 
   // Show email gate before revealing results
   showEmailGate(bw);
@@ -1810,7 +2007,12 @@ window.submitEmailGate = async function(skip) {
           values: G.values,
           manifesto: G.manifesto,
           moodSelections: G.moodSelections.map(i => MOOD_TILES[i]?.label || ''),
-          brandWords: G.brandWords
+          brandWords: G.brandWords,
+          // Personal-mode fields (ignored by server when mode === 'business')
+          mode: G.mode,
+          role: G.role,
+          pov: G.pov,
+          recommendedTier: G.recommendedTier
         })
       });
     } catch(e) {
@@ -1829,12 +2031,34 @@ function renderBrandWorld(bw) {
   const allValues = [...G.values.foundation, ...G.values.current, ...G.values.constellation];
   const selectedMoods = G.moodSelections.map(i => MOOD_TILES[i]);
 
+  // Tier copy for the personal-mode recommendation panel
+  const tierCopy = {
+    'Leader Sprint': { line: '1–2 day intensive · From £2,500', cta: 'Book a Leader Sprint', url: 'https://unicornunited.co/for-leaders#tiers' },
+    'Fractional Brand Partner': { line: 'Monthly retainer · From £1,500/mo', cta: 'Start the conversation', url: 'https://unicornunited.co/for-leaders#tiers' },
+    'Leadership Cohort': { line: '12-week group programme · From £15,000', cta: 'Scope a cohort', url: 'https://unicornunited.co/for-leaders#tiers' },
+    'Game only': { line: 'Continue exploring', cta: 'See the offer', url: 'https://unicornunited.co/for-leaders' }
+  };
+  const tierBlock = isPersonal() && G.recommendedTier
+    ? `
+    <div class="bw-hero fade-up-d1" style="background:linear-gradient(135deg,rgba(123,47,190,.18),rgba(199,36,177,.06));border:1px solid rgba(199,36,177,.32);padding:2rem;border-radius:4px;margin:1.4rem 0;">
+      <div class="stag" style="text-align:center;color:#f4a0c0;">Your Recommended Path</div>
+      <h3 style="text-align:center;font-size:clamp(1.5rem,3vw,2.1rem);font-weight:800;letter-spacing:-.02em;margin:.4rem 0 .2rem;background:linear-gradient(90deg,#7B2FBE,#C724B1,#E84D8A);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">${G.recommendedTier}</h3>
+      <div style="text-align:center;font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(248,240,255,.4);margin-bottom:1rem;">${tierCopy[G.recommendedTier]?.line || ''}</div>
+      ${G.pov ? `<div style="text-align:center;font-size:1rem;line-height:1.6;color:rgba(248,240,255,.75);max-width:520px;margin:.8rem auto 1.4rem;font-style:italic;">"${G.pov}"</div>` : ''}
+      <div style="text-align:center;">
+        <a class="btn-primary" href="${tierCopy[G.recommendedTier]?.url || 'https://unicornunited.co/for-leaders'}" target="_blank" style="display:inline-block;">${tierCopy[G.recommendedTier]?.cta || 'See the offer'} →</a>
+      </div>
+    </div>`
+    : '';
+
   area.innerHTML = `
     <div class="bw-hero fade-up">
-      <div class="stag" style="text-align:center;">Your Brand World</div>
-      <h2>${G.brandName}</h2>
+      <div class="stag" style="text-align:center;">${isPersonal() ? 'Your Personal Brand World' : 'Your Brand World'}</div>
+      <h2>${isPersonal() ? G.playerName : G.brandName}</h2>
+      ${isPersonal() && G.role ? `<div style="text-align:center;font-size:.75rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#E84D8A;margin-bottom:.6rem;">${G.role}</div>` : ''}
       <p>${bw.story_opening || ''}</p>
     </div>
+    ${tierBlock}
 
     <!-- Archetype Card -->
     ${G.synthesizedArchetype ? `
