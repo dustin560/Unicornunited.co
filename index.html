@@ -317,6 +317,7 @@ footer{background:var(--ink);border-top:1px solid rgba(123,47,190,.1);padding:3.
   .hero,.kba,.products,.services,.sys-callout,.mc-bridge,.manifesto,.cta-sec{padding:5rem 1.5rem;}
   .kba-bridge{grid-template-columns:1fr;gap:0;}.kba-arr{display:none;}
   .product-grid{grid-template-columns:1fr 1fr;}
+  #leaders-fork > div{grid-template-columns:1fr !important;text-align:left;}
   .svc-filters{gap:.35rem;}.svc-filter{padding:.5rem 1rem;font-size:.6rem;}
   .svc-grid{grid-template-columns:1fr;}
   .svc.featured{grid-column:1;grid-template-columns:1fr;}
@@ -346,6 +347,7 @@ footer{background:var(--ink);border-top:1px solid rgba(123,47,190,.1);padding:3.
   <ul class="nav-links">
     <li><a href="#how-it-works">How It Works</a></li>
     <li><a href="#products">Services</a></li>
+    <li><a href='/for-leaders'>For Leaders</a></li>
     <li><a href='/ai'>AI for Business</a></li>
     <li><a href='/workbooks'>Workbooks</a></li>
     <li><a href="https://start-your-story-production-75f3.up.railway.app" target="_blank">Start Your Story</a></li>
@@ -368,6 +370,7 @@ footer{background:var(--ink);border-top:1px solid rgba(123,47,190,.1);padding:3.
         <button class="hc-send" id="hcSend" aria-label="Go"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
       </div>
       <div class="hc-suggestions" id="hcSugs">
+        <span class="hc-sug" data-q="I want to build my personal brand">Personal brand</span>
         <span class="hc-sug" data-q="I need to use AI">Use AI</span>
         <span class="hc-sug" data-q="I need to launch a product">Launch a brand</span>
         <span class="hc-sug" data-q="I need ongoing brand leadership">Brand leadership</span>
@@ -458,6 +461,18 @@ footer{background:var(--ink);border-top:1px solid rgba(123,47,190,.1);padding:3.
       <a href="/brand-to-market" class="product-cta" style="text-align:center;">Learn more →</a>
     </div>
   </div>
+
+  <!-- TWO HALVES FORK — Unicorn for Leaders -->
+  <a href="/for-leaders" id="leaders-fork" style="display:block;margin-top:3rem;text-decoration:none;color:inherit;">
+    <div style="background:linear-gradient(135deg,rgba(123,47,190,.14),rgba(199,36,177,.06));border:1px solid rgba(199,36,177,.28);padding:2.4rem 2.6rem;border-radius:4px;display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:center;transition:all .4s;">
+      <div>
+        <div style="display:inline-block;font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;background:rgba(232,77,138,.18);color:#f4a0c0;padding:.28rem .7rem;margin-bottom:.9rem;border-radius:2px;">New · For Leaders</div>
+        <h3 style="font-size:clamp(1.4rem,2.6vw,1.9rem);font-weight:800;letter-spacing:-.02em;color:var(--white);line-height:1.2;margin-bottom:.6rem;">The brand of <span style="background:var(--grad3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">the leader</span> behind the business.</h3>
+        <p style="font-size:.92rem;line-height:1.7;color:var(--mist);max-width:640px;">The brand you build for your company is half the work. The brand you build as its leader is the other half. Unicorn for Leaders is personal brand &amp; leadership development — the same disciplined craft, applied to you.</p>
+      </div>
+      <div style="display:inline-flex;align-items:center;gap:.5rem;background:var(--grad);color:var(--white);font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.85rem 1.6rem;border-radius:2px;white-space:nowrap;">See the offer →</div>
+    </div>
+  </a>
 </section>
 
 <!-- SERVICES -->
@@ -699,6 +714,7 @@ footer{background:var(--ink);border-top:1px solid rgba(123,47,190,.1);padding:3.
       <ul class="footer-nav-list">
         <li><a href="#how-it-works">How It Works</a></li>
         <li><a href="#products">Services</a></li>
+        <li><a href="/for-leaders">For Leaders</a></li>
         <li><a href="/ai">AI for Business</a></li>
         <li><a href="/workbooks">Workbooks</a></li>
         <li><a href="https://start-your-story-production-75f3.up.railway.app" target="_blank">Start Your Story</a></li>
@@ -1126,9 +1142,10 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){
 // ════════════════════════════════════════
 (function(){
   var offers = [
+    {keys:['personal brand','leadership development','executive brand','founder brand','linkedin','speak','keynote','exec','executive','my brand','myself','personal','transition','next chapter','career','board','portfolio','solo','consultant','coach','fractional exec','creator'],name:'Unicorn for Leaders',desc:'Personal brand &amp; leadership development — the brand of the leader behind the business',url:'/for-leaders',action:'link'},
     {keys:['ai','artificial','automat','chatgpt','gpt','machine','tech','efficien'],name:'AI for Business',desc:'Practical AI strategy for your brand and operations',url:'/ai',action:'link'},
     {keys:['launch','market','product','dtc','revenue','go to market','validate','first sale'],name:'Brand to Market',desc:'From positioning to first revenue — validated',url:'/brand-to-market',action:'link'},
-    {keys:['leader','partner','fractional','strateg','direction','ongoing','month','cmo','dedicated','retained'],name:'Dedicated Brand Partner',desc:'Ongoing strategy, coaching, and creative direction',url:null,action:'partner'},
+    {keys:['business partner','company partner','fractional brand','retain','dedicated brand','strateg','direction','ongoing','month','cmo','retained'],name:'Dedicated Brand Partner',desc:'Ongoing strategy, coaching, and creative direction',url:null,action:'partner'},
     {keys:['team','align','internal','culture','workshop','staff','onboard','employ','get on board','away day'],name:'Brand Workshop',desc:'Get your whole team behind your brand',url:null,action:'contact'},
     {keys:['foundation','toolkit','basics','identity','logo','guid','asset','brand kit','start from scratch','visual'],name:'Brand Toolkit',desc:'The foundations your brand needs to grow',url:null,action:'contact'},
     {keys:['sprint','intensive','fast','quick','two week','2 week','rapid','clarity','positioning','messaging'],name:'Brand Sprint',desc:'2-week intensive to build clarity, positioning, and messaging',url:'#products',action:'link'},

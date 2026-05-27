@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unicorn for Leaders — Fractional Brand Partner for People Worth Following</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#1A0A2E;--violet:#7B2FBE;--magenta:#C724B1;--rose:#E84D8A;
+  --lavender:#F8F0FF;--ink:#0d0818;--surface:#170d2a;--card:#1e1136;
+  --mist:rgba(248,240,255,.55);--soft:rgba(248,240,255,.35);--white:#fff;
+  --grad:linear-gradient(90deg,var(--violet),var(--magenta));
+  --grad3:linear-gradient(135deg,var(--violet) 0%,var(--magenta) 50%,var(--rose) 100%);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Sora',sans-serif;background:var(--ink);color:var(--white);overflow-x:hidden;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.2rem 4rem;transition:background .4s;}
+nav.scrolled{background:rgba(13,8,24,.97);border-bottom:1px solid rgba(123,47,190,.15);}
+.nav-logo{display:flex;align-items:center;gap:.55rem;text-decoration:none;}
+.nav-mark{width:20px;height:24px;}
+.nav-name{font-size:.88rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.nav-sub{font-size:.62rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(248,240,255,.4);margin-left:.4rem;padding-left:.6rem;border-left:1px solid rgba(248,240,255,.15);}
+.nav-links{display:flex;gap:2rem;list-style:none;}
+.nav-links a{font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(248,240,255,.45);text-decoration:none;transition:color .3s;cursor:pointer;}
+.nav-links a:hover{color:var(--lavender);}
+.nav-cta{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--grad);color:var(--white);padding:.55rem 1.4rem;text-decoration:none;border-radius:2px;transition:opacity .3s;cursor:pointer;}
+.nav-cta:hover{opacity:.85;}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:8rem 4rem 6rem;text-align:center;}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 40%,rgba(123,47,190,.18) 0%,transparent 65%),radial-gradient(ellipse 40% 40% at 80% 80%,rgba(199,36,177,.08) 0%,transparent 60%),var(--ink);}
+.hero-ring{position:absolute;border-radius:50%;border:1px solid rgba(123,47,190,.1);top:50%;left:50%;transform:translate(-50%,-50%);z-index:0;}
+.hero-ring:nth-child(2){width:500px;height:500px;animation:hpulse 7s ease infinite;}
+.hero-ring:nth-child(3){width:720px;height:720px;border-color:rgba(199,36,177,.06);animation:hpulse 7s 2s ease infinite;}
+.hero-ring:nth-child(4){width:940px;height:940px;border-color:rgba(232,77,138,.03);animation:hpulse 7s 4s ease infinite;}
+@keyframes hpulse{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:1;}50%{transform:translate(-50%,-50%) scale(1.05);opacity:.5;}}
+.hero-kicker{display:inline-flex;align-items:center;gap:.6rem;font-size:.65rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(248,240,255,.55);margin-bottom:1.8rem;position:relative;z-index:2;}
+.hero-kicker::before,.hero-kicker::after{content:'';display:block;width:24px;height:1px;background:rgba(248,240,255,.25);}
+.hero-title{font-size:clamp(3rem,8vw,7rem);font-weight:800;line-height:1;letter-spacing:-.04em;color:var(--white);position:relative;z-index:2;}
+.hero-title .g{background:var(--grad3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block;}
+.hero-sub{max-width:580px;font-size:.98rem;font-weight:400;line-height:1.72;color:rgba(248,240,255,.75);margin:1.8rem auto 2.8rem;position:relative;z-index:2;}
+.hero-actions{display:flex;gap:1.1rem;justify-content:center;flex-wrap:wrap;position:relative;z-index:2;}
+.btn-p{background:var(--grad);color:var(--white);font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.85rem 2rem;text-decoration:none;border-radius:2px;transition:opacity .3s;border:none;cursor:pointer;font-family:'Sora',sans-serif;display:inline-flex;align-items:center;gap:.5rem;}
+.btn-p:hover{opacity:.85;}
+.btn-g{color:rgba(248,240,255,.5);font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;display:inline-flex;align-items:center;gap:.45rem;transition:color .3s;background:none;border:1px solid rgba(248,240,255,.12);padding:.85rem 1.8rem;cursor:pointer;font-family:'Sora',sans-serif;border-radius:2px;}
+.btn-g:hover{color:var(--lavender);border-color:rgba(248,240,255,.25);}
+.hero-tag{font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:0 0 1.6rem;position:relative;z-index:2;}
+.scroll-hint{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;color:rgba(248,240,255,.3);font-size:.58rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;z-index:2;}
+.scroll-line{width:1px;height:32px;background:linear-gradient(to bottom,rgba(123,47,190,.5),transparent);animation:sl 2s ease infinite;}
+@keyframes sl{0%{transform:scaleY(0);transform-origin:top;}50%{transform:scaleY(1);transform-origin:top;}51%{transform:scaleY(1);transform-origin:bottom;}100%{transform:scaleY(0);transform-origin:bottom;}}
+
+/* SHARED */
+.stag{font-size:.6rem;font-weight:700;letter-spacing:.25em;text-transform:uppercase;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block;margin-bottom:.9rem;}
+.sh2{font-size:clamp(2rem,4vw,3.2rem);font-weight:800;line-height:1.05;letter-spacing:-.03em;color:var(--white);}
+.sh2 .g{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.sbody{font-size:.88rem;line-height:1.75;color:var(--mist);}
+.abar{width:32px;height:3px;background:var(--grad);border-radius:2px;}
+
+/* POV — the bridge from company brand to leader brand */
+.pov{padding:7rem 4rem;background:var(--surface);position:relative;overflow:hidden;}
+.pov::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);background-size:60px 60px;}
+.pov-inner{max-width:1180px;margin:0 auto;position:relative;z-index:2;}
+.pov-hdr{text-align:center;margin-bottom:3.5rem;}
+.pov-hdr .abar{margin:0 auto 1rem;}
+.pov-headline{font-size:clamp(1.4rem,2.5vw,1.9rem);font-weight:400;line-height:1.55;color:rgba(248,240,255,.6);max-width:720px;margin:.8rem auto 0;}
+.pov-headline strong{color:var(--white);font-weight:700;}
+.pov-split{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:0;margin-top:2.2rem;}
+.pov-col{padding:2.5rem 2.2rem;text-align:left;}
+.pov-col.company{border:1px solid rgba(248,240,255,.06);}
+.pov-col.leader{background:linear-gradient(135deg,rgba(123,47,190,.12),rgba(199,36,177,.05));border:1px solid rgba(123,47,190,.22);}
+.pov-col-lbl{font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(248,240,255,.3);margin-bottom:.8rem;}
+.pov-col.leader .pov-col-lbl{color:rgba(199,36,177,.65);}
+.pov-col-title{font-size:1.5rem;font-weight:800;letter-spacing:-.02em;color:var(--white);margin-bottom:.7rem;line-height:1.2;}
+.pov-col-title .g{background:var(--grad3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.pov-col-desc{font-size:.86rem;line-height:1.7;color:var(--mist);}
+.pov-plus{font-size:1.8rem;font-weight:300;color:rgba(199,36,177,.4);padding:0 1rem;}
+.pov-bar{background:linear-gradient(135deg,rgba(123,47,190,.12),rgba(199,36,177,.07));border:1px solid rgba(123,47,190,.18);padding:1.8rem 2.2rem;text-align:center;margin-top:2rem;}
+.pov-bar p{font-size:.95rem;font-weight:400;line-height:1.7;color:rgba(248,240,255,.7);}
+.pov-bar strong{color:var(--white);font-weight:700;}
+
+/* QUADRANTS — Light / Dark / Shadow / Source */
+.quad{padding:7rem 4rem;max-width:1180px;margin:0 auto;}
+.quad-hdr{text-align:center;margin-bottom:3.5rem;}
+.quad-hdr .abar{margin:0 auto 1rem;}
+.quad-headline{font-size:clamp(1.4rem,2.5vw,1.9rem);font-weight:400;line-height:1.55;color:rgba(248,240,255,.6);max-width:680px;margin:.7rem auto 0;}
+.quad-headline strong{color:var(--white);font-weight:700;}
+.quad-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;}
+.q-card{padding:2.4rem 2.2rem;border:1px solid rgba(123,47,190,.15);background:var(--surface);position:relative;overflow:hidden;transition:all .4s;border-radius:4px;}
+.q-card:hover{border-color:rgba(123,47,190,.35);transform:translateY(-3px);}
+.q-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--grad);opacity:.6;}
+.q-card.dark::before{background:linear-gradient(90deg,var(--magenta),var(--rose));}
+.q-card.shadow::before{background:linear-gradient(90deg,#3a1e5a,var(--violet));opacity:.8;}
+.q-card.source::before{background:var(--grad3);}
+.q-num{font-size:.6rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(181,126,255,.5);margin-bottom:.5rem;}
+.q-name{font-size:1.6rem;font-weight:800;letter-spacing:-.02em;color:var(--white);margin-bottom:.4rem;}
+.q-tagline{font-size:.78rem;font-weight:500;color:rgba(248,240,255,.45);margin-bottom:1.2rem;font-style:italic;}
+.q-desc{font-size:.86rem;line-height:1.72;color:var(--mist);margin-bottom:1.1rem;}
+.q-prompt{font-size:.78rem;line-height:1.65;color:rgba(248,240,255,.4);border-left:2px solid rgba(123,47,190,.4);padding-left:.9rem;font-style:italic;}
+
+/* QUESTS */
+.quests{padding:7rem 4rem;background:var(--surface);position:relative;overflow:hidden;}
+.quests-inner{max-width:1180px;margin:0 auto;}
+.quests-hdr{text-align:center;margin-bottom:3.5rem;}
+.quests-hdr .abar{margin:0 auto 1rem;}
+.quests-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2.5rem;}
+.quest{padding:1.5rem 1.4rem;background:rgba(13,8,24,.5);border:1px solid rgba(123,47,190,.1);transition:all .35s;border-radius:3px;}
+.quest:hover{border-color:rgba(123,47,190,.3);background:rgba(13,8,24,.7);transform:translateY(-2px);}
+.quest-name{font-size:.95rem;font-weight:800;letter-spacing:-.01em;color:var(--white);margin-bottom:.3rem;}
+.quest-name .g{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.quest-quest{font-size:.74rem;line-height:1.55;color:rgba(248,240,255,.55);margin-bottom:.55rem;}
+.quest-vals{font-size:.62rem;font-weight:600;letter-spacing:.06em;color:rgba(181,126,255,.5);}
+
+/* AUDIENCES */
+.aud{padding:7rem 4rem;max-width:1180px;margin:0 auto;}
+.aud-hdr{text-align:center;margin-bottom:3.5rem;}
+.aud-hdr .abar{margin:0 auto 1rem;}
+.aud-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.4rem;margin-top:2.5rem;}
+.aud-card{padding:2.4rem 2.2rem;background:var(--surface);border:1px solid rgba(123,47,190,.12);transition:all .4s;border-radius:4px;}
+.aud-card:hover{border-color:rgba(123,47,190,.3);transform:translateY(-3px);}
+.aud-badge{display:inline-block;font-size:.58rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;padding:.25rem .7rem;margin-bottom:1rem;border-radius:2px;}
+.aud-card:nth-child(1) .aud-badge{background:rgba(123,47,190,.2);color:#b57eff;}
+.aud-card:nth-child(2) .aud-badge{background:rgba(199,36,177,.2);color:#e87ae2;}
+.aud-card:nth-child(3) .aud-badge{background:rgba(232,77,138,.2);color:#f4a0c0;}
+.aud-card:nth-child(4) .aud-badge{background:rgba(123,47,190,.2);color:#b57eff;}
+.aud-name{font-size:1.3rem;font-weight:800;letter-spacing:-.02em;color:var(--white);margin-bottom:.5rem;line-height:1.2;}
+.aud-tag{font-size:.82rem;font-weight:500;color:rgba(248,240,255,.45);margin-bottom:1.1rem;line-height:1.5;}
+.aud-desc{font-size:.84rem;line-height:1.7;color:var(--mist);margin-bottom:1.2rem;}
+.aud-outcomes{list-style:none;display:flex;flex-direction:column;gap:.4rem;}
+.aud-outcomes li{font-size:.78rem;color:rgba(248,240,255,.55);display:flex;align-items:flex-start;gap:.55rem;line-height:1.5;}
+.aud-outcomes li::before{content:'→';color:var(--violet);opacity:.7;flex-shrink:0;font-size:.7rem;margin-top:.15rem;}
+
+/* TIERS — engagement model */
+.tiers{padding:7rem 4rem;background:var(--surface);position:relative;}
+.tiers-inner{max-width:1180px;margin:0 auto;}
+.tiers-hdr{text-align:center;margin-bottom:3.5rem;}
+.tiers-hdr .abar{margin:0 auto 1rem;}
+.tiers-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.4rem;}
+.tier{padding:2.2rem 1.8rem;background:rgba(13,8,24,.65);border:1px solid rgba(123,47,190,.12);transition:all .4s;border-radius:4px;display:flex;flex-direction:column;}
+.tier:hover{border-color:rgba(123,47,190,.3);transform:translateY(-3px);}
+.tier.featured{background:linear-gradient(160deg,rgba(123,47,190,.12),rgba(199,36,177,.04));border-color:rgba(123,47,190,.28);}
+.tier-badge{display:inline-block;font-size:.55rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;background:rgba(123,47,190,.2);color:rgba(181,126,255,.7);padding:.22rem .6rem;margin-bottom:.9rem;border-radius:2px;align-self:flex-start;}
+.tier.featured .tier-badge{background:rgba(232,77,138,.18);color:#f4a0c0;}
+.tier-name{font-size:1.15rem;font-weight:800;letter-spacing:-.02em;color:var(--white);margin-bottom:.45rem;line-height:1.2;}
+.tier-format{font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(248,240,255,.32);margin-bottom:.9rem;}
+.tier-desc{font-size:.8rem;line-height:1.65;color:var(--mist);margin-bottom:1.2rem;flex:1;}
+.tier-incl{list-style:none;display:flex;flex-direction:column;gap:.35rem;margin-bottom:1.4rem;}
+.tier-incl li{font-size:.74rem;color:rgba(248,240,255,.55);display:flex;align-items:flex-start;gap:.45rem;line-height:1.5;}
+.tier-incl li::before{content:'•';color:var(--violet);flex-shrink:0;}
+.tier-price{font-size:1.4rem;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.3rem;}
+.tier-price-from{font-size:.6rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:rgba(248,240,255,.3);margin-bottom:1.1rem;}
+.tier-cta{display:inline-block;background:transparent;color:var(--lavender);font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.7rem 1.2rem;text-decoration:none;border:1px solid rgba(123,47,190,.3);border-radius:2px;text-align:center;cursor:pointer;transition:all .3s;font-family:'Sora',sans-serif;}
+.tier-cta:hover{background:var(--grad);border-color:transparent;}
+.tier.featured .tier-cta{background:var(--grad);border-color:transparent;color:var(--white);}
+.tier.featured .tier-cta:hover{opacity:.85;}
+
+/* GAME CALLOUT */
+.game{padding:7rem 4rem;background:var(--ink);position:relative;overflow:hidden;}
+.game::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 50% 50%,rgba(199,36,177,.1) 0%,transparent 70%);pointer-events:none;}
+.game-inner{max-width:980px;margin:0 auto;position:relative;z-index:2;display:grid;grid-template-columns:1.1fr 1fr;gap:4rem;align-items:center;}
+.game-text .stag{margin-bottom:.7rem;}
+.game-title{font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:800;letter-spacing:-.03em;color:var(--white);line-height:1.1;margin-bottom:1rem;}
+.game-title .g{background:var(--grad3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.game-desc{font-size:.92rem;line-height:1.75;color:rgba(248,240,255,.65);margin-bottom:1.2rem;}
+.game-fork{display:flex;gap:.6rem;margin-bottom:1.8rem;}
+.fork{flex:1;padding:1.1rem 1rem;border:1px solid rgba(123,47,190,.2);border-radius:3px;text-align:center;}
+.fork.active{background:linear-gradient(135deg,rgba(123,47,190,.18),rgba(199,36,177,.08));border-color:rgba(199,36,177,.45);}
+.fork-lbl{font-size:.58rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(248,240,255,.4);margin-bottom:.3rem;}
+.fork.active .fork-lbl{color:rgba(199,36,177,.7);}
+.fork-name{font-size:.95rem;font-weight:800;color:var(--white);letter-spacing:-.01em;}
+.game-cta{display:inline-flex;align-items:center;gap:.5rem;background:var(--grad);color:var(--white);font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.85rem 2rem;text-decoration:none;border-radius:2px;transition:opacity .3s;}
+.game-cta:hover{opacity:.85;}
+.game-vis{position:relative;height:340px;display:flex;align-items:center;justify-content:center;}
+.game-vis-ring{position:absolute;border-radius:50%;border:1px solid rgba(123,47,190,.18);}
+.game-vis-ring.r1{width:160px;height:160px;animation:hpulse 6s ease infinite;}
+.game-vis-ring.r2{width:240px;height:240px;border-color:rgba(199,36,177,.14);animation:hpulse 6s 1.5s ease infinite;}
+.game-vis-ring.r3{width:320px;height:320px;border-color:rgba(232,77,138,.08);animation:hpulse 6s 3s ease infinite;}
+.game-vis-core{position:relative;width:120px;height:120px;border-radius:50%;background:var(--grad3);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--white);box-shadow:0 0 60px rgba(199,36,177,.4);}
+
+/* PROCESS — what working with us looks like */
+.process{padding:7rem 4rem;max-width:1180px;margin:0 auto;}
+.process-hdr{text-align:center;margin-bottom:3.5rem;}
+.process-hdr .abar{margin:0 auto 1rem;}
+.process-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1.4rem;margin-top:2.5rem;position:relative;}
+.pstep{padding:2rem 1.6rem;background:var(--surface);border:1px solid rgba(123,47,190,.12);border-radius:4px;transition:all .4s;position:relative;}
+.pstep:hover{border-color:rgba(123,47,190,.3);transform:translateY(-3px);}
+.pstep-num{font-size:1.5rem;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.5rem;letter-spacing:-.04em;}
+.pstep-name{font-size:1rem;font-weight:800;letter-spacing:-.01em;color:var(--white);margin-bottom:.45rem;line-height:1.2;}
+.pstep-desc{font-size:.78rem;line-height:1.65;color:var(--mist);}
+
+/* MANIFESTO */
+.manifesto{padding:7rem 4rem;text-align:center;position:relative;overflow:hidden;background:var(--ink);}
+.manifesto::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 50% 50%,rgba(123,47,190,.1) 0%,transparent 70%);}
+.mq{position:relative;font-size:clamp(1.5rem,3.2vw,2.6rem);font-weight:700;line-height:1.35;letter-spacing:-.02em;color:var(--white);max-width:820px;margin:0 auto;}
+.mq .g{background:var(--grad3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.mattr{margin-top:1.8rem;font-size:.62rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(248,240,255,.2);}
+
+/* FAQ */
+.faq{padding:7rem 4rem;background:var(--surface);}
+.faq-inner{max-width:820px;margin:0 auto;}
+.faq-hdr{text-align:center;margin-bottom:3rem;}
+.faq-hdr .abar{margin:0 auto 1rem;}
+.faq-item{border-top:1px solid rgba(123,47,190,.12);padding:1.6rem 0;cursor:pointer;}
+.faq-item:last-child{border-bottom:1px solid rgba(123,47,190,.12);}
+.faq-q{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;font-size:1.02rem;font-weight:700;letter-spacing:-.01em;color:var(--white);line-height:1.4;}
+.faq-toggle{flex-shrink:0;width:22px;height:22px;display:flex;align-items:center;justify-content:center;color:rgba(199,36,177,.6);font-size:1.2rem;font-weight:300;transition:transform .3s;}
+.faq-item.open .faq-toggle{transform:rotate(45deg);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease,margin .4s ease;font-size:.86rem;line-height:1.72;color:var(--mist);}
+.faq-item.open .faq-a{max-height:300px;margin-top:.9rem;}
+
+/* CTA */
+.cta-sec{padding:7rem 4rem;background:var(--ink);text-align:center;position:relative;overflow:hidden;}
+.cta-sec::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 70% at 50% 50%,rgba(123,47,190,.12) 0%,transparent 70%);pointer-events:none;}
+.cta-inner{position:relative;z-index:2;}
+.cta-sec h2{font-size:clamp(2rem,5vw,3.8rem);font-weight:800;letter-spacing:-.04em;color:var(--white);margin-bottom:1rem;line-height:1.05;}
+.cta-sec h2 .g{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.cta-sec p{font-size:.95rem;line-height:1.7;color:var(--mist);max-width:520px;margin:0 auto 2.2rem;}
+.cta-btns{display:flex;gap:1.1rem;justify-content:center;flex-wrap:wrap;}
+
+/* FOOTER */
+footer{background:var(--ink);border-top:1px solid rgba(123,47,190,.1);padding:3.5rem 5% 2rem;}
+.footer-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:40px;max-width:1200px;margin:0 auto;padding-bottom:32px;}
+.footer-col h4{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(248,240,255,.4);margin-bottom:18px;}
+.footer-col p{font-size:.82rem;line-height:1.7;color:rgba(248,240,255,.4);}
+.footer-brand-name{font-size:1.1rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px;}
+.footer-brand-tagline{font-size:.78rem;color:rgba(248,240,255,.35);margin-top:6px;}
+.footer-brand-desc{font-size:.76rem;line-height:1.65;color:rgba(248,240,255,.3);margin-top:10px;}
+.footer-nav-list{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.footer-nav-list a{font-size:.82rem;color:rgba(248,240,255,.4);transition:color .2s;text-decoration:none;cursor:pointer;}
+.footer-nav-list a:hover{color:var(--violet);}
+.footer-legal{max-width:1200px;margin:0 auto;padding-top:24px;border-top:1px solid rgba(248,240,255,.06);font-size:.72rem;color:rgba(248,240,255,.2);line-height:1.8;}
+
+/* GRADIENT RIPPLE */
+@keyframes grad-ripple{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+.hero-title .g,.sh2 .g,.mq .g,.cta-sec h2 .g,.pov-col-title .g,.game-title .g,.nav-name,.footer-brand-name{background:linear-gradient(135deg,var(--violet) 0%,var(--magenta) 25%,var(--rose) 50%,var(--magenta) 75%,var(--violet) 100%);background-size:300% 300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:grad-ripple 8s ease infinite;}
+@media(prefers-reduced-motion:reduce){.hero-title .g,.sh2 .g,.mq .g,.cta-sec h2 .g,.pov-col-title .g,.game-title .g,.nav-name,.footer-brand-name{animation:none;}}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1);}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.reveal-d1{transition-delay:.1s;}.reveal-d2{transition-delay:.2s;}.reveal-d3{transition-delay:.3s;}.reveal-d4{transition-delay:.4s;}
+
+/* CONTACT MODAL */
+.contact-overlay{position:fixed;inset:0;z-index:600;background:rgba(13,8,24,.92);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;opacity:0;transition:opacity .35s;padding:1rem;}
+.contact-overlay.open{display:flex;opacity:1;}
+.contact-box{background:var(--surface);border:1px solid rgba(123,47,190,.25);width:100%;max-width:520px;max-height:90vh;overflow-y:auto;position:relative;border-radius:4px;}
+.contact-header{padding:2rem 2rem 1.5rem;border-bottom:1px solid rgba(123,47,190,.1);}
+.contact-close{position:absolute;top:1.2rem;right:1.5rem;background:none;border:none;color:rgba(248,240,255,.3);font-size:1.2rem;cursor:pointer;font-family:'Sora',sans-serif;transition:color .3s;}
+.contact-close:hover{color:var(--lavender);}
+.contact-title{font-size:1.3rem;font-weight:800;letter-spacing:-.02em;color:var(--white);margin-bottom:.4rem;line-height:1.2;}
+.contact-sub{font-size:.82rem;color:var(--mist);line-height:1.55;}
+.contact-form{padding:1.5rem 2rem;}
+.contact-field{margin-bottom:1rem;}
+.contact-field label{display:block;font-size:.72rem;font-weight:600;color:rgba(248,240,255,.5);margin-bottom:.35rem;letter-spacing:.04em;}
+.contact-field input,.contact-field select,.contact-field textarea{width:100%;background:rgba(123,47,190,.07);border:1px solid rgba(123,47,190,.18);color:var(--white);font-family:'Sora',sans-serif;font-size:.82rem;padding:.65rem .9rem;outline:none;border-radius:2px;transition:border-color .3s;}
+.contact-field input:focus,.contact-field select:focus,.contact-field textarea:focus{border-color:rgba(123,47,190,.4);}
+.contact-field input::placeholder,.contact-field textarea::placeholder{color:rgba(248,240,255,.2);}
+.contact-field select option{background:var(--surface);color:var(--white);}
+.contact-field textarea{resize:vertical;min-height:80px;}
+.contact-submit{width:100%;background:var(--grad);color:var(--white);font-family:'Sora',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.9rem;border:none;cursor:pointer;border-radius:2px;margin-top:.5rem;transition:opacity .3s;}
+.contact-submit:hover{opacity:.85;}
+.contact-thanks{display:none;padding:2.5rem 2rem;text-align:center;}
+.contact-thanks h3{font-size:1.2rem;font-weight:800;color:var(--white);margin-bottom:.8rem;}
+.contact-thanks p{font-size:.85rem;color:var(--mist);line-height:1.65;}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  nav{padding:1rem 1.5rem;}.nav-links{display:none;}.nav-sub{display:none;}
+  .hero,.pov,.quad,.quests,.aud,.tiers,.game,.process,.manifesto,.faq,.cta-sec{padding:5rem 1.5rem;}
+  .pov-split{grid-template-columns:1fr;}.pov-plus{padding:1rem 0;text-align:center;}
+  .quad-grid,.aud-grid,.tiers-grid,.process-steps{grid-template-columns:1fr;}
+  .quests-grid{grid-template-columns:1fr 1fr;}
+  .game-inner{grid-template-columns:1fr;gap:2.5rem;}
+  .game-vis{height:240px;}
+  .footer-grid{grid-template-columns:1fr;gap:32px;}
+}
+@media(max-width:560px){.quests-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a class='nav-logo' href='/'>
+    <svg class="nav-mark" viewBox="0 0 120 148" fill="none">
+      <defs>
+        <linearGradient id="nmg" x1="0" y1="148" x2="120" y2="0">
+          <stop offset="0%" stop-color="#7B2FBE"/><stop offset="100%" stop-color="#C724B1"/>
+        </linearGradient>
+        <clipPath id="nmc"><path d="M4,8 L30,136 L60,60 L90,136 L116,8 Z"/></clipPath>
+      </defs>
+      <rect width="120" height="148" fill="url(#nmg)" clip-path="url(#nmc)"/>
+    </svg>
+    <span class="nav-name">Unicorn</span>
+    <span class="nav-sub">For Leaders</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/#how-it-works">How It Works</a></li>
+    <li><a href="/#products">For Business</a></li>
+    <li><a href="#tiers">For Leaders</a></li>
+    <li><a href="/ai">AI for Business</a></li>
+    <li><a href="https://start-your-story-production-75f3.up.railway.app" target="_blank">Start Your Story</a></li>
+  </ul>
+  <a href="#" class="nav-cta" onclick="openContact();return false;">Let's Talk</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-ring"></div><div class="hero-ring"></div><div class="hero-ring"></div>
+  <div class="hero-kicker">Unicorn for Leaders · Personal Brand &amp; Leadership Development</div>
+  <h1 class="hero-title">We help leaders<br><span class="g">build belief.</span></h1>
+  <p class="hero-sub">The brand you build for your company is half the work. The brand you build as its leader is the other half. Unicorn is the fractional partner for both — and this is where the second half begins.</p>
+  <div class="hero-tag">Your leadership deserves an owner.</div>
+  <div class="hero-actions">
+    <a class="btn-p" onclick="openContact();return false;">Book a discovery call →</a>
+    <a class="btn-g" href="#tiers">See the offer</a>
+  </div>
+  <div class="scroll-hint"><div class="scroll-line"></div>Scroll</div>
+</section>
+
+<!-- POV -->
+<section class="pov" id="pov">
+  <div class="pov-inner">
+    <div class="pov-hdr reveal">
+      <div class="abar"></div>
+      <span class="stag" style="text-align:center;">The POV</span>
+      <h2 class="sh2" style="text-align:center;">Leadership development is brand work.<br>It's just <span class="g">never been treated like it.</span></h2>
+      <p class="pov-headline">Most leadership programmes teach you to manage. <strong>Unicorn helps you become someone worth following.</strong> Through brand strategy — the same disciplined craft we apply to companies, applied to the human who leads one.</p>
+    </div>
+    <div class="pov-split">
+      <div class="pov-col company reveal">
+        <div class="pov-col-lbl">Half the Work</div>
+        <div class="pov-col-title">The company brand</div>
+        <p class="pov-col-desc">Positioning. Identity. Story. The strategic frame customers, hires and investors recognise. This is what Unicorn already does for growing businesses.</p>
+      </div>
+      <div class="pov-plus reveal reveal-d1">+</div>
+      <div class="pov-col leader reveal reveal-d2">
+        <div class="pov-col-lbl">The Other Half</div>
+        <div class="pov-col-title"><span class="g">The leader brand</span></div>
+        <p class="pov-col-desc">The voice, values, presence and point-of-view that makes a leader fundable, followable and worth the time of the people they want to attract. This is Unicorn for Leaders.</p>
+      </div>
+    </div>
+    <div class="pov-bar reveal reveal-d3">
+      <p>Two lenses, one method, one partner. <strong>Brand is what people believe about you when you're not in the room.</strong> The company's brand earns belief from the market. The leader's brand earns it from everyone else — team, investors, hires, peers, future customers, future selves.</p>
+    </div>
+  </div>
+</section>
+
+<!-- QUADRANTS — Light / Dark / Shadow / Source -->
+<section class="quad" id="quadrants">
+  <div class="quad-hdr reveal">
+    <div class="abar"></div>
+    <span class="stag">The Method</span>
+    <h2 class="sh2">Four quadrants. One <span class="g">whole leader.</span></h2>
+    <p class="quad-headline">We don't run a personality test. We run a brand strategy session — on you. Four lenses mapped to a Johari-style window, surfacing the parts of your leadership that the world already sees, the parts it doesn't, and the parts <strong>you don't yet know you have.</strong></p>
+  </div>
+  <div class="quad-grid">
+    <div class="q-card light reveal">
+      <div class="q-num">Quadrant 01</div>
+      <h3 class="q-name">Light</h3>
+      <p class="q-tagline">Known to self and others — what you already illuminate</p>
+      <p class="q-desc">The qualities others openly affirm in you — captured from letters, testimonials, performance reviews, biographies and the words people use when they introduce you. The starting frame for what you'll amplify.</p>
+      <p class="q-prompt">"Where do others already affirm you — and where do you affirm yourself?"</p>
+    </div>
+    <div class="q-card dark reveal reveal-d1">
+      <div class="q-num">Quadrant 02</div>
+      <h3 class="q-name">Dark</h3>
+      <p class="q-tagline">Unknown to self, seen by others — your blind-spot gifts</p>
+      <p class="q-desc">We interview your most trusted allies with one question — "what do you see in me when I'm at my best?" — and surface hidden qualities you can't see in yourself. The biggest source of unfair advantage in any personal brand.</p>
+      <p class="q-prompt">"What surprising gift do others see in you that you've been undervaluing?"</p>
+    </div>
+    <div class="q-card shadow reveal reveal-d2">
+      <div class="q-num">Quadrant 03</div>
+      <h3 class="q-name">Shadow</h3>
+      <p class="q-tagline">Known to self, hidden from others — what you conceal</p>
+      <p class="q-desc">The strengths and stories you suppress because they feel risky, niche, or "too much." Most leaders are leaking authority by hiding the very things that would make them magnetic. We help you reframe these as proof, not problem.</p>
+      <p class="q-prompt">"What part of you have you been quieting that the world actually needs to hear?"</p>
+    </div>
+    <div class="q-card source reveal reveal-d3">
+      <div class="q-num">Quadrant 04</div>
+      <h3 class="q-name">Source</h3>
+      <p class="q-tagline">Unknown to all — the future self pulling you forward</p>
+      <p class="q-desc">The territory of intuition, symbol, archetype and emerging direction. Using a structured archetypal profile and quiet reflection, we surface the leader you're becoming — before you're entirely sure yourself. The compass for the next decade.</p>
+      <p class="q-prompt">"If your future self sent a message back, what would it say you were ready for?"</p>
+    </div>
+  </div>
+</section>
+
+<!-- QUESTS -->
+<section class="quests" id="quests">
+  <div class="quests-inner">
+    <div class="quests-hdr reveal">
+      <div class="abar" style="margin:0 auto 1rem;"></div>
+      <span class="stag" style="text-align:center;">The Territory</span>
+      <h2 class="sh2" style="text-align:center;">Fifteen Quests. <span class="g">One belongs to you.</span></h2>
+      <p class="pov-headline">Every leader is on a quest. The most magnetic ones know which. We use a 15-archetype model — battle-tested through Unicorn's brand work and the Start Your Story game — to anchor your personal brand to a story the world already understands.</p>
+    </div>
+    <div class="quests-grid">
+      <div class="quest reveal"><div class="quest-name"><span class="g">The Pioneer</span></div><p class="quest-quest">Explore the unknown and bring bold new ideas.</p><div class="quest-vals">Optimism · Courage · Progress · Creativity</div></div>
+      <div class="quest reveal"><div class="quest-name"><span class="g">The Defender</span></div><p class="quest-quest">Protect what is most precious and vulnerable.</p><div class="quest-vals">Safety · Justice · Stewardship</div></div>
+      <div class="quest reveal"><div class="quest-name"><span class="g">The Magician</span></div><p class="quest-quest">Transform reality through imagination and play.</p><div class="quest-vals">Optimism · Fun · Vision · Imagination</div></div>
+      <div class="quest reveal reveal-d1"><div class="quest-name"><span class="g">The Architect</span></div><p class="quest-quest">Bring order and clarity through design and systems.</p><div class="quest-vals">Competence · Efficiency · Honesty · Creativity</div></div>
+      <div class="quest reveal reveal-d1"><div class="quest-name"><span class="g">The Alchemist</span></div><p class="quest-quest">Combine elements in new ways that create transformation.</p><div class="quest-vals">Curiosity · Progress · Vision · Empowerment</div></div>
+      <div class="quest reveal reveal-d1"><div class="quest-name"><span class="g">The Rebel</span></div><p class="quest-quest">Challenge the status quo and show a better way.</p><div class="quest-vals">Freedom · Expression · Progress · Optimism</div></div>
+      <div class="quest reveal reveal-d2"><div class="quest-name"><span class="g">The Jester</span></div><p class="quest-quest">Reveal truth through humour and play.</p><div class="quest-vals">Curiosity · Fun · Honesty · Truth</div></div>
+      <div class="quest reveal reveal-d2"><div class="quest-name"><span class="g">The Professor</span></div><p class="quest-quest">Seek knowledge and share wisdom.</p><div class="quest-vals">Curiosity · Honesty · Generosity · Integrity</div></div>
+      <div class="quest reveal reveal-d2"><div class="quest-name"><span class="g">The Oracle</span></div><p class="quest-quest">Guide others with timeless wisdom.</p><div class="quest-vals">Trust · Tradition · Justice · Empowerment</div></div>
+      <div class="quest reveal reveal-d3"><div class="quest-name"><span class="g">The Witness</span></div><p class="quest-quest">Call out injustice and hold others accountable.</p><div class="quest-vals">Safety · Justice · Love · Truth</div></div>
+      <div class="quest reveal reveal-d3"><div class="quest-name"><span class="g">The Muse</span></div><p class="quest-quest">Inspire creativity and transcendence in others.</p><div class="quest-vals">Curiosity · Freedom · Humility · Expression</div></div>
+      <div class="quest reveal reveal-d3"><div class="quest-name"><span class="g">The Detective</span></div><p class="quest-quest">Uncover hidden truths and solve mysteries.</p><div class="quest-vals">Curiosity · Precision · Justice · Stewardship</div></div>
+      <div class="quest reveal reveal-d4"><div class="quest-name"><span class="g">The Captain</span></div><p class="quest-quest">Lead others toward shared vision and action.</p><div class="quest-vals">Trust · Vision · Courage · Empowerment</div></div>
+      <div class="quest reveal reveal-d4"><div class="quest-name"><span class="g">The Healer</span></div><p class="quest-quest">Restore wholeness and relieve suffering.</p><div class="quest-vals">Health · Love · Prosperity · Stewardship</div></div>
+      <div class="quest reveal reveal-d4"><div class="quest-name"><span class="g">The Peacekeeper</span></div><p class="quest-quest">Bring balance and calm in the face of conflict.</p><div class="quest-vals">Compassion · Respect · Courage · Selflessness</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- AUDIENCES -->
+<section class="aud" id="audiences">
+  <div class="aud-hdr reveal">
+    <div class="abar"></div>
+    <span class="stag">Who It's For</span>
+    <h2 class="sh2">Four leaders. <span class="g">One method.</span></h2>
+    <p class="pov-headline">Personal brand isn't a category. It's a craft. <strong>We apply it to the moment in your career when you most need to be understood.</strong></p>
+  </div>
+  <div class="aud-grid">
+    <div class="aud-card reveal">
+      <div class="aud-badge">Founders &amp; CEOs</div>
+      <h3 class="aud-name">The leader your company sells</h3>
+      <p class="aud-tag">Build the authority that makes your company fundable, followable, and sellable.</p>
+      <p class="aud-desc">Investors fund people. Customers buy belief. Hires choose stories. If your company is growing past you, the leader brand is the lever that compounds — and the one most founders neglect until the round, the press cycle, or the exit forces the question.</p>
+      <ul class="aud-outcomes">
+        <li>A POV the market repeats back to you</li>
+        <li>A LinkedIn presence that earns inbound</li>
+        <li>A keynote / story / origin you can defend in any room</li>
+        <li>Alignment between the company brand and the founder behind it</li>
+      </ul>
+    </div>
+    <div class="aud-card reveal reveal-d1">
+      <div class="aud-badge">Senior Execs in Transition</div>
+      <h3 class="aud-name">The identity beyond the role</h3>
+      <p class="aud-tag">Build the brand that travels with you — between roles, into boards, into the next chapter.</p>
+      <p class="aud-desc">Most senior careers are defined by employers. Most senior identities aren't. When you step out of a role — by choice or by change — the question shifts from "what did you do?" to "who are you?" Unicorn helps you answer it before the market does it for you.</p>
+      <ul class="aud-outcomes">
+        <li>A clear next-chapter narrative</li>
+        <li>Board / advisory / fractional positioning</li>
+        <li>A LinkedIn rewrite that signals direction, not history</li>
+        <li>A POV worth being known for</li>
+      </ul>
+    </div>
+    <div class="aud-card reveal reveal-d2">
+      <div class="aud-badge">Emerging Leaders</div>
+      <h3 class="aud-name">The brand before the title</h3>
+      <p class="aud-tag">Build the leadership identity that earns the next role — instead of waiting for the role to define you.</p>
+      <p class="aud-desc">Most leadership development teaches frameworks. Few teach you who you are. We use brand strategy as the bridge between potential and presence — so directors and heads-of stop being defined by their function and start being recognised for their leadership.</p>
+      <ul class="aud-outcomes">
+        <li>A point-of-view your peers and exec sponsor recognise</li>
+        <li>Clarity on the leader you're becoming</li>
+        <li>A communications craft that scales beyond your title</li>
+        <li>Confidence to take up the right space, sooner</li>
+      </ul>
+    </div>
+    <div class="aud-card reveal reveal-d3">
+      <div class="aud-badge">Creators &amp; Solo Practitioners</div>
+      <h3 class="aud-name">The category of one</h3>
+      <p class="aud-tag">Build the personal brand that makes the offer obvious, the pricing premium, and the inbound continuous.</p>
+      <p class="aud-desc">Consultants, coaches, fractional execs, freelancers — anyone whose business <em>is</em> their name. We help you stop competing on capability and start owning a category only you can occupy.</p>
+      <ul class="aud-outcomes">
+        <li>A named territory, not a generic service list</li>
+        <li>Premium pricing logic backed by brand</li>
+        <li>A content engine you can actually maintain</li>
+        <li>A pipeline that comes to you</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- TIERS -->
+<section class="tiers" id="tiers">
+  <div class="tiers-inner">
+    <div class="tiers-hdr reveal">
+      <div class="abar" style="margin:0 auto 1rem;"></div>
+      <span class="stag" style="text-align:center;">Ways to Work</span>
+      <h2 class="sh2" style="text-align:center;">From a 25-minute game<br>to a <span class="g">fractional partnership.</span></h2>
+      <p class="pov-headline">Four entry points, designed so every leader can start at the depth they need — and step up when the work calls for it.</p>
+    </div>
+    <div class="tiers-grid">
+      <div class="tier reveal">
+        <span class="tier-badge">Free · Entry</span>
+        <h3 class="tier-name">Start Your Story</h3>
+        <div class="tier-format">The Game · 25 min</div>
+        <p class="tier-desc">Play the personal mode of our flagship brand game. AI-guided, archetype-based. You walk away with a working brand direction and a personalised next-step recommendation.</p>
+        <ul class="tier-incl">
+          <li>Fork: Business or Personal at the start</li>
+          <li>Your Quest archetype + values stack</li>
+          <li>A starter Light / Dark / Shadow / Source map</li>
+          <li>Emailed PDF + next-step path</li>
+        </ul>
+        <div class="tier-price">Free</div>
+        <div class="tier-price-from">Play anytime</div>
+        <a class="tier-cta" href="#game">Play the game →</a>
+      </div>
+      <div class="tier reveal reveal-d1">
+        <span class="tier-badge">Sprint</span>
+        <h3 class="tier-name">The Leader Sprint</h3>
+        <div class="tier-format">1:1 Intensive · 1–2 days</div>
+        <p class="tier-desc">A focused, deliverable-led sprint that turns a leader's brand from intuition into a working playbook. Pre-work, two working sessions, and a polished output you can use the next morning.</p>
+        <ul class="tier-incl">
+          <li>Light / Dark / Shadow / Source mapping</li>
+          <li>Locked Quest, values stack, POV</li>
+          <li>LinkedIn headline + bio rewrite</li>
+          <li>30 / 60 / 90 day activation plan</li>
+        </ul>
+        <div class="tier-price">From £2,500</div>
+        <div class="tier-price-from">One-off engagement</div>
+        <a class="tier-cta" onclick="openContact();return false;">Book a sprint →</a>
+      </div>
+      <div class="tier featured reveal reveal-d2">
+        <span class="tier-badge">Most popular</span>
+        <h3 class="tier-name">Fractional Brand Partner</h3>
+        <div class="tier-format">Retainer · Monthly</div>
+        <p class="tier-desc">Ongoing partnership for leaders who want a real brand owner in their corner. Fortnightly sprints, asynchronous craft, and a brand that actually grows in market — not just on a slide.</p>
+        <ul class="tier-incl">
+          <li>Brand foundations + ongoing evolution</li>
+          <li>LinkedIn / keynote / comms production</li>
+          <li>Founder voice + ghostwriting partnership</li>
+          <li>Quarterly off-sites + always-on Slack</li>
+        </ul>
+        <div class="tier-price">From £1,500/mo</div>
+        <div class="tier-price-from">3-month minimum</div>
+        <a class="tier-cta" onclick="openContact();return false;">Start the conversation →</a>
+      </div>
+      <div class="tier reveal reveal-d3">
+        <span class="tier-badge">Cohort</span>
+        <h3 class="tier-name">Leadership Cohort</h3>
+        <div class="tier-format">Group Programme · 12 weeks</div>
+        <p class="tier-desc">Leadership development run as brand strategy. 6–12 leaders, fortnightly working sessions, peer feedback, and a shared language for what each of them stands for. Built for ELTs, founder cohorts, or mixed peer groups.</p>
+        <ul class="tier-incl">
+          <li>Full quadrant + Quest method per leader</li>
+          <li>Six working sessions + two off-sites</li>
+          <li>Cohort-wide brand language &amp; rituals</li>
+          <li>Individual playbooks per participant</li>
+        </ul>
+        <div class="tier-price">From £15,000</div>
+        <div class="tier-price-from">Per cohort of 6–12</div>
+        <a class="tier-cta" onclick="openContact();return false;">Scope a cohort →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GAME CALLOUT -->
+<section class="game" id="game">
+  <div class="game-inner">
+    <div class="game-text reveal">
+      <span class="stag">Start Your Story</span>
+      <h2 class="game-title">One game.<br>Two paths. <span class="g">A choice at the start.</span></h2>
+      <p class="game-desc">Our flagship brand game now asks the question we should have asked from day one — <em>is this brand for a business, or for the human behind it?</em> Same engine, two journeys. The personal path walks you through your Quest archetype, your Light/Dark/Shadow/Source map, and a working brand direction in 25 minutes.</p>
+      <div class="game-fork">
+        <div class="fork">
+          <div class="fork-lbl">Path A</div>
+          <div class="fork-name">Business</div>
+        </div>
+        <div class="fork active">
+          <div class="fork-lbl">Path B · New</div>
+          <div class="fork-name">Personal</div>
+        </div>
+      </div>
+      <a class="game-cta" href="https://start-your-story-production-75f3.up.railway.app" target="_blank">Play the game →</a>
+    </div>
+    <div class="game-vis reveal reveal-d2">
+      <div class="game-vis-ring r3"></div>
+      <div class="game-vis-ring r2"></div>
+      <div class="game-vis-ring r1"></div>
+      <div class="game-vis-core">Story<br>Begins</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process">
+  <div class="process-hdr reveal">
+    <div class="abar"></div>
+    <span class="stag">How It Runs</span>
+    <h2 class="sh2">Four steps from <span class="g">unclear to unmistakable.</span></h2>
+    <p class="pov-headline">Whether it's a sprint, a cohort, or a retainer — the underlying method is the same. Discipline applied to identity.</p>
+  </div>
+  <div class="process-steps">
+    <div class="pstep reveal">
+      <div class="pstep-num">01</div>
+      <div class="pstep-name">Gather</div>
+      <p class="pstep-desc">We collect the raw evidence — letters, testimonials, profiles, bios, ally interviews, an astrologic / archetypal profile. Brand strategy starts with primary material, not a vibe.</p>
+    </div>
+    <div class="pstep reveal reveal-d1">
+      <div class="pstep-num">02</div>
+      <div class="pstep-name">Map</div>
+      <p class="pstep-desc">We work the four quadrants together — Light, Dark, Shadow, Source — and surface the patterns. This is the working session most leaders never get to have.</p>
+    </div>
+    <div class="pstep reveal reveal-d2">
+      <div class="pstep-num">03</div>
+      <div class="pstep-name">Anchor</div>
+      <p class="pstep-desc">We lock the Quest, values, POV and Purpose · People · Proof · Profit frame. The whole identity sits on one page you can defend in any room.</p>
+    </div>
+    <div class="pstep reveal reveal-d3">
+      <div class="pstep-num">04</div>
+      <div class="pstep-name">Act</div>
+      <p class="pstep-desc">STOP / CONTINUE / START — three columns, three concrete shifts. A 30 / 60 / 90 plan that turns identity into evidence in the world.</p>
+    </div>
+  </div>
+</section>
+
+<!-- MANIFESTO -->
+<section class="manifesto">
+  <p class="mq reveal">"Belief is the bridge between knowing who you are and acting like it.<br><span class="g">The company brand earns belief from the market. The leader brand earns it from everyone else.</span>"</p>
+  <p class="mattr reveal reveal-d1">Unicorn · Build Belief</p>
+</section>
+
+<!-- FAQ -->
+<section class="faq">
+  <div class="faq-inner">
+    <div class="faq-hdr reveal">
+      <div class="abar" style="margin:0 auto 1rem;"></div>
+      <span class="stag" style="text-align:center;">Questions, Answered</span>
+      <h2 class="sh2" style="text-align:center;">The questions <span class="g">leaders ask first.</span></h2>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q"><span>Is this coaching?</span><span class="faq-toggle">+</span></div>
+      <div class="faq-a">No. Coaching helps you become a better version of who you already are. Unicorn for Leaders is brand strategy — applied to a human. We're not your therapist; we're your strategic partner for becoming legible to the world.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q"><span>How is this different from "personal branding"?</span><span class="faq-toggle">+</span></div>
+      <div class="faq-a">Most personal branding is content tips. Unicorn for Leaders is brand strategy — the same craft we use for businesses — applied to the leader. You walk away with positioning, a POV, a story architecture and an activation plan, not just a content calendar.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q"><span>Can it run alongside the Unicorn business engagement?</span><span class="faq-toggle">+</span></div>
+      <div class="faq-a">That's where it works best. The company brand and the leader brand are two halves of the same equation, and running them together means the founder, the company and the market are telling one coherent story — not three competing ones.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q"><span>What if I'm not the founder — I'm an exec or emerging leader?</span><span class="faq-toggle">+</span></div>
+      <div class="faq-a">The method is the same; the application changes. We adapt the sprint or cohort to the moment in your career — promotion, transition, board portfolio, fractional practice, or moving into the next room you're meant to be in.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q"><span>How long is the commitment?</span><span class="faq-toggle">+</span></div>
+      <div class="faq-a">A sprint is 1–2 days. A cohort is 12 weeks. The fractional partnership runs on a 3-month minimum and continues for as long as it's the right thing. Most retainer relationships go a year or more.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q"><span>Where do I start if I'm not sure which tier fits?</span><span class="faq-toggle">+</span></div>
+      <div class="faq-a">Play the game. It's free, takes 25 minutes, and the recommendation it gives you at the end is the honest first take on which tier is right. From there we'll talk.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-sec">
+  <div class="cta-inner">
+    <span class="stag" style="text-align:center;display:block;">Start the Conversation</span>
+    <h2>Your leadership deserves<br><span class="g">an owner.</span></h2>
+    <p>If your company is growing past you, your team is asking sharper questions, or the next chapter is starting to call — let's talk. Discovery calls are free, honest, and short.</p>
+    <div class="cta-btns">
+      <a class="btn-p" onclick="openContact();return false;">Book a discovery call →</a>
+      <a class="btn-g" href="https://start-your-story-production-75f3.up.railway.app" target="_blank">Play the game first</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <div class="footer-brand-name">Unicorn</div>
+      <div class="footer-brand-tagline">For Leaders · Fractional brand partner for people worth following.</div>
+      <p class="footer-brand-desc">Unicorn United Ltd · Company No. 09522884 · 26 Blyth Road, London E17 8HR · A sister offer of unicornunited.co</p>
+    </div>
+    <div class="footer-col">
+      <h4>On This Page</h4>
+      <ul class="footer-nav-list">
+        <li><a href="#pov">The POV</a></li>
+        <li><a href="#quadrants">The Method</a></li>
+        <li><a href="#audiences">Who It's For</a></li>
+        <li><a href="#tiers">Ways to Work</a></li>
+        <li><a href="#game">The Game</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Unicorn</h4>
+      <ul class="footer-nav-list">
+        <li><a href="/">Brand for businesses</a></li>
+        <li><a href="/ai">AI for business</a></li>
+        <li><a href="/workbooks">Workbooks</a></li>
+        <li><a href="https://start-your-story-production-75f3.up.railway.app" target="_blank">Start Your Story</a></li>
+        <li><a href="#" onclick="openContact();return false;">Let's talk</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-legal">© 2026 Unicorn United Ltd · All rights reserved · A Warpspeed company</div>
+</footer>
+
+<!-- CONTACT MODAL -->
+<div class="contact-overlay" id="contactOverlay" onclick="if(event.target===this)closeContact();">
+  <div class="contact-box">
+    <button class="contact-close" onclick="closeContact()">&times;</button>
+    <div class="contact-header">
+      <h3 class="contact-title">Let's talk leadership.</h3>
+      <p class="contact-sub">Tell us where you are, where you're going, and the right path will get clear quickly.</p>
+    </div>
+    <form class="contact-form" id="contactForm" method="POST" name="leaders-contact" data-netlify="true" onsubmit="submitContact(event)">
+      <input type="hidden" name="form-name" value="leaders-contact">
+      <div class="contact-field">
+        <label>Your name</label>
+        <input type="text" name="name" id="cfName" required placeholder="First and last name">
+      </div>
+      <div class="contact-field">
+        <label>Email</label>
+        <input type="email" name="email" id="cfEmail" required placeholder="you@example.com">
+      </div>
+      <div class="contact-field">
+        <label>Where are you right now?</label>
+        <select name="role" id="cfRole" required>
+          <option value="">Choose one…</option>
+          <option>Founder / CEO</option>
+          <option>Senior exec in transition</option>
+          <option>Emerging leader / director</option>
+          <option>Creator / solo practitioner</option>
+          <option>Something else</option>
+        </select>
+      </div>
+      <div class="contact-field">
+        <label>Which path is calling?</label>
+        <select name="path" id="cfTier">
+          <option value="">Not sure yet</option>
+          <option>Leader Sprint (1–2 day intensive)</option>
+          <option>Fractional Brand Partner (retainer)</option>
+          <option>Leadership Cohort (group programme)</option>
+          <option>Just exploring</option>
+        </select>
+      </div>
+      <div class="contact-field">
+        <label>What's on your mind?</label>
+        <textarea name="message" id="cfMsg" placeholder="Even a sentence helps."></textarea>
+      </div>
+      <button type="submit" class="contact-submit">Send →</button>
+    </form>
+    <div class="contact-thanks" id="contactThanks">
+      <div class="abar" style="margin:0 auto 1.5rem;"></div>
+      <h3>Thanks — we'll be in touch.</h3>
+      <p>Expect a reply within one working day. If it's urgent, dustin@warpspeed.agency is the fastest line. While you wait — try the game.</p>
+      <a href="https://start-your-story-production-75f3.up.railway.app" target="_blank" class="btn-p" style="margin-top:.5rem;">Start Your Story →</a>
+    </div>
+  </div>
+</div>
+
+<!-- Hidden Netlify form registration (needed for Netlify Forms to detect the form at build time) -->
+<form name="leaders-contact" data-netlify="true" hidden>
+  <input type="text" name="name">
+  <input type="email" name="email">
+  <input type="text" name="role">
+  <input type="text" name="path">
+  <textarea name="message"></textarea>
+</form>
+
+<script>
+// NAV scroll state
+const nav=document.getElementById('mainNav');
+window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>40);});
+
+// Reveal on scroll
+const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');}});},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// FAQ
+function toggleFaq(el){el.classList.toggle('open');}
+
+// Contact modal
+function openContact(){
+  const o=document.getElementById('contactOverlay');
+  document.getElementById('contactForm').style.display='block';
+  document.getElementById('contactThanks').style.display='none';
+  document.getElementById('contactForm').reset();
+  o.classList.add('open'); document.body.style.overflow='hidden';
+}
+function closeContact(){
+  document.getElementById('contactOverlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+function submitContact(e){
+  e.preventDefault();
+  const form=document.getElementById('contactForm');
+  const email=document.getElementById('cfEmail').value.trim();
+  if(!email||!email.includes('@')){document.getElementById('cfEmail').style.borderColor='#e84d8a';return;}
+  fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(new FormData(form)).toString()}).then(()=>{
+    form.style.display='none';
+    document.getElementById('contactThanks').style.display='block';
+  }).catch(()=>{
+    form.style.display='none';
+    document.getElementById('contactThanks').style.display='block';
+  });
+}
+</script>
+</body>
+</html>
