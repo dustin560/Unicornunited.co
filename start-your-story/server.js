@@ -96,6 +96,8 @@ app.post('/api/ai', async (req, res) => {
 // ═══════════════════════════════════════════════════════════════
 const { registerV3Routes } = require('./lib/v3-routes');
 registerV3Routes(app, { apiKey: () => API_KEY, rateCheck });
+const { registerV3Delivery } = require('./lib/v3-delivery');
+registerV3Delivery(app, { ResendCtor: Resend, resendKey: RESEND_KEY, notifyEmail: NOTIFY_EMAIL, notion, personalDbId: NOTION_PERSONAL_DB_ID, knownTiers: { has: t => KNOWN_TIERS.has(t) }, rateCheck });
 
 // ═══════════════════════════════════════════════════════════════
 // EMAIL — Send Brand World results + notify Dustin

@@ -758,13 +758,45 @@ function renderPlaybook() {
         ${G.personalised.map(p => `<div style="margin-bottom:.9rem;"><div class="syn-title">${esc(p.title)}</div><div class="syn-body">${ed(p.anchor)} ${ed(p.rep)}<br><em style="color:var(--magenta);">${ed(p.reinforce)}</em><br><span class="small-note">${esc(p.why_this_practice_for_you||'')}</span></div></div>`).join('')}
       </div>` : ''}
 
+      <div class="syn-card" style="border-color:rgba(199,36,177,.5);text-align:center;" id="sendCard">
+        <div class="syn-kicker">Keep this</div>
+        <div class="syn-body" style="margin-bottom:.8rem;">Get the playbook in your inbox — plus a two-minute check-in in 30 days to see which reps actually happened.</div>
+        <input class="txt" id="playerEmail" type="email" placeholder="you@yourwork.com" style="max-width:320px;display:inline-block;">
+        <div style="margin-top:.8rem;"><button class="btn-primary" id="sendBtn" onclick="sendPlaybook()">Email me my playbook</button></div>
+        <div class="small-note" id="sendStatus" style="margin-top:.6rem;"></div>
+      </div>
       <div style="text-align:center;margin:1.6rem 0;">
         <button class="btn-ghost" onclick="runLever()">Recalibrate — regenerate the whole playbook</button>
-        <button class="btn-primary" style="margin-left:.6rem;" onclick="copyPlaybook(this)">Copy playbook as text</button>
+        <button class="btn-ghost" style="margin-left:.6rem;" onclick="copyPlaybook(this)">Copy as text</button>
       </div>
-      <p class="small-note" style="text-align:center;">Email + Notion delivery lands in the next build phase. Day-30 re-mirror invitation will arrive with it.</p>
     </div>`;
 }
+
+window.sendPlaybook = async () => {
+  const email = el('playerEmail').value.trim();
+  const status = el('sendStatus');
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { status.textContent = 'That email doesn\'t look right.'; return; }
+  el('sendBtn').disabled = true; status.textContent = 'Sending…';
+  const weeklyTitles = G.picks.weekly.map(key => {
+    const [quest, idx] = key.split(':');
+    const set = G.weeklySets.find(s => s.quest === quest);
+    return set ? set.options[+idx].title : '';
+  }).filter(Boolean);
+  try {
+    const res = await fetch('/api/v3/complete', { method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ email, player: buildPlayerObject(), playbook: {
+        coinedName: G.coinedName, blend: G.finalBlend, revealLine: G.revealLine,
+        quad: G.quad, coaching: G.coaching, contentLens: G.contentLens,
+        roleModels: G.roleModels, personalised: G.personalised, weeklyTitles,
+        recalibration: G.recalibration,
+      } }) });
+    const data = await res.json();
+    if (data.ok) {
+      status.innerHTML = '<strong style="color:#fff;">Sent ✓</strong>' + (data.remirror ? ' — and your 30-day check-in is booked.' : '');
+      el('sendBtn').textContent = 'Sent ✓';
+    } else { status.textContent = data.error || 'Sending failed — try again?'; el('sendBtn').disabled = false; }
+  } catch(e) { status.textContent = 'Connection issue — try again.'; el('sendBtn').disabled = false; }
+};
 
 window.copyPlaybook = btn => {
   const text = el('gameArea').innerText;

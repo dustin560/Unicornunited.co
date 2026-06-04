@@ -8,3 +8,4 @@ eval/quickrun.js
 eval/tune*.js
 eval/full.js
 eval/prompts.js.bak*
+qa-*.html
