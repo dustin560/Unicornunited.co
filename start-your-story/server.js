@@ -90,6 +90,14 @@ app.post('/api/ai', async (req, res) => {
 });
 
 // ═══════════════════════════════════════════════════════════════
+// V3 — Personal Mode (Phase 2.1): scoring engine + validated prompt suite
+// Routes live in lib/v3-routes.js; prompts imported from eval/prompts.js
+// so the eval harness and the game can never drift apart.
+// ═══════════════════════════════════════════════════════════════
+const { registerV3Routes } = require('./lib/v3-routes');
+registerV3Routes(app, { apiKey: () => API_KEY, rateCheck });
+
+// ═══════════════════════════════════════════════════════════════
 // EMAIL — Send Brand World results + notify Dustin
 // ═══════════════════════════════════════════════════════════════
 app.post('/api/send-results', async (req, res) => {

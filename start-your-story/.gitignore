@@ -1,2 +1,10 @@
 .env
 node_modules/
+
+eval/run.log
+eval/checkpoint*.json
+eval/results-*.json
+eval/quickrun.js
+eval/tune*.js
+eval/full.js
+eval/prompts.js.bak*

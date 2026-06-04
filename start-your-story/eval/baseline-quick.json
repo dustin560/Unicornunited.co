@@ -1,0 +1,95 @@
+{
+  "timestamp": "2026-06-03T15:31:53.686Z",
+  "model": "claude-sonnet-4-6",
+  "phase": "tuned-final",
+  "note": "prompt5 ungated (universal micro-habit; QA on anchor/rep/reinforce quality, not swap discrimination)",
+  "gatedOverall": 1.469,
+  "summary": {
+    "prompt1": {
+      "mean": 1,
+      "n": 8
+    },
+    "prompt2": {
+      "mean": 1.25,
+      "n": 8
+    },
+    "prompt3": {
+      "mean": 1.5,
+      "n": 8
+    },
+    "prompt4": {
+      "mean": 2.13,
+      "n": 8
+    },
+    "prompt5": {
+      "mean": 3.88,
+      "n": 8
+    }
+  },
+  "grades": {
+    "Sarah Chen->Amaka Okafor": {
+      "prompt3": 1,
+      "prompt5": 5,
+      "prompt2": 1,
+      "prompt4": 2,
+      "prompt1": 1,
+      "_tuned": true
+    },
+    "Sarah Chen->Felix Hartmann": {
+      "prompt1": 1,
+      "prompt2": 1,
+      "prompt4": 2,
+      "prompt3": 2,
+      "prompt5": 4,
+      "_tuned": true
+    },
+    "Sarah Chen->Mei-Lin Park": {
+      "prompt1": 1,
+      "prompt2": 2,
+      "prompt4": 2,
+      "prompt3": 2,
+      "prompt5": 4,
+      "_tuned": true
+    },
+    "Sarah Chen->Otieno Mwangi": {
+      "prompt2": 2,
+      "prompt3": 2,
+      "prompt1": 1,
+      "prompt4": 2,
+      "prompt5": 5,
+      "_tuned": true
+    },
+    "Sarah Chen->Iris Bellweather": {
+      "prompt3": 1,
+      "prompt1": 1,
+      "prompt2": 1,
+      "prompt4": 2,
+      "prompt5": 5,
+      "_tuned": true
+    },
+    "Amaka Okafor->Sarah Chen": {
+      "prompt2": 1,
+      "prompt1": 1,
+      "prompt3": 1,
+      "prompt5": 4,
+      "prompt4": 2,
+      "_tuned": true
+    },
+    "Amaka Okafor->Felix Hartmann": {
+      "prompt1": 1,
+      "prompt2": 1,
+      "prompt3": 1,
+      "prompt4": 1,
+      "prompt5": 2,
+      "_tuned": true
+    },
+    "Amaka Okafor->Mei-Lin Park": {
+      "prompt1": 1,
+      "prompt2": 1,
+      "prompt3": 2,
+      "prompt5": 2,
+      "prompt4": 4,
+      "_tuned": true
+    }
+  }
+}
