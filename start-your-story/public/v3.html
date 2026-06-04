@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Start Your Story — Personal Mode</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --night:#1A0A2E;--violet:#7B2FBE;--magenta:#C724B1;--rose:#E84D8A;
+  --lavender:#F8F0FF;--ink:#0d0818;--surface:#170d2a;--card:#1e1136;
+  --mist:rgba(248,240,255,.55);--soft:rgba(248,240,255,.35);--white:#fff;
+  --grad:linear-gradient(90deg,var(--violet),var(--magenta));
+  --grad3:linear-gradient(135deg,var(--violet) 0%,var(--magenta) 50%,var(--rose) 100%);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Sora',sans-serif;background:var(--ink);color:var(--white);overflow-x:hidden;min-height:100vh;-webkit-font-smoothing:antialiased;}
+button{font-family:'Sora',sans-serif;cursor:pointer;}
+input,textarea,select{font-family:'Sora',sans-serif;}
+.grad-text{background:var(--grad3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.btn-primary{background:var(--grad);color:var(--white);font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.85rem 2rem;border:none;border-radius:2px;transition:all .3s;display:inline-flex;align-items:center;gap:.5rem;}
+.btn-primary:hover{opacity:.85;transform:translateY(-1px);}
+.btn-primary:disabled{opacity:.3;cursor:not-allowed;transform:none;}
+.btn-ghost{color:rgba(248,240,255,.5);font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:none;border:1px solid rgba(248,240,255,.12);padding:.85rem 1.8rem;border-radius:2px;transition:all .3s;}
+.btn-ghost:hover{color:var(--lavender);border-color:rgba(248,240,255,.25);}
+.screen{display:none;min-height:100vh;flex-direction:column;align-items:center;justify-content:flex-start;padding:3.5rem 1.5rem 4rem;position:relative;}
+.screen.active{display:flex;}
+.progress-bar{position:fixed;top:0;left:0;right:0;height:3px;z-index:100;background:rgba(255,255,255,.04);}
+.progress-fill{height:100%;background:var(--grad);transition:width .6s ease;width:0%;}
+.wrap{width:100%;max-width:760px;}
+.chapter-header{text-align:center;margin-bottom:1.8rem;padding-top:1rem;}
+.chapter-tag{font-size:.56rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.4rem;}
+.chapter-title{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;}
+.chapter-sub{font-size:.85rem;color:var(--mist);line-height:1.65;max-width:520px;margin:.8rem auto 0;}
+.narration{max-width:620px;margin:0 auto 1.2rem;background:rgba(123,47,190,.07);border:1px solid rgba(123,47,190,.18);border-left:2px solid var(--magenta);padding:1rem 1.2rem;font-size:.86rem;line-height:1.7;color:rgba(248,240,255,.82);border-radius:2px;}
+.gm-tag{font-size:.55rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--magenta);margin-bottom:.4rem;}
+.field-label{display:block;font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(248,240,255,.45);margin:1.2rem 0 .45rem;}
+.txt{width:100%;background:rgba(123,47,190,.07);border:1px solid rgba(123,47,190,.2);color:var(--white);font-size:.88rem;padding:.75rem .9rem;outline:none;border-radius:2px;}
+.txt:focus{border-color:rgba(199,36,177,.5);}
+.pick-row{display:flex;flex-wrap:wrap;gap:.5rem;}
+.pick{font-size:.78rem;font-weight:600;color:rgba(248,240,255,.65);background:rgba(123,47,190,.08);border:1px solid rgba(123,47,190,.18);padding:.55rem 1rem;border-radius:2px;transition:all .25s;text-align:left;}
+.pick:hover{border-color:rgba(199,36,177,.45);}
+.pick.on{background:var(--grad);border-color:transparent;color:#fff;}
+.opt-card{display:block;width:100%;text-align:left;background:rgba(123,47,190,.06);border:1px solid rgba(123,47,190,.16);padding:1rem 1.2rem;border-radius:2px;margin-bottom:.7rem;font-size:.9rem;line-height:1.55;color:rgba(248,240,255,.85);transition:all .22s;}
+.opt-card:hover{border-color:rgba(199,36,177,.5);background:rgba(123,47,190,.12);transform:translateX(3px);}
+.opt-key{display:inline-block;font-size:.62rem;font-weight:800;color:var(--magenta);margin-right:.7rem;letter-spacing:.1em;}
+.act-card{position:relative;text-align:left;background:rgba(123,47,190,.06);border:1px solid rgba(123,47,190,.16);padding:.9rem 1rem;border-radius:2px;transition:all .22s;font-size:.8rem;line-height:1.5;color:rgba(248,240,255,.78);}
+.act-card.on{border-color:transparent;background:linear-gradient(rgba(123,47,190,.25),rgba(199,36,177,.18));box-shadow:inset 0 0 0 1px rgba(199,36,177,.6);}
+.act-title{font-weight:700;color:var(--white);font-size:.84rem;margin-bottom:.25rem;}
+.bucket-tag{position:absolute;top:.55rem;right:.6rem;font-size:.5rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(248,240,255,.35);}
+.syn-card{background:var(--card);border:1px solid rgba(123,47,190,.22);border-radius:3px;padding:1.3rem 1.4rem;margin-bottom:1rem;text-align:left;}
+.syn-kicker{font-size:.56rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--magenta);margin-bottom:.6rem;}
+.syn-title{font-size:1rem;font-weight:700;margin-bottom:.35rem;}
+.syn-body{font-size:.82rem;line-height:1.65;color:rgba(248,240,255,.75);}
+.syn-edit{position:absolute;}
+.editable{cursor:text;border-bottom:1px dashed rgba(199,36,177,0);transition:border-color .2s;}
+.editable:hover{border-bottom-color:rgba(199,36,177,.5);}
+.editable:focus{outline:none;border-bottom-color:var(--magenta);}
+.loading-veil{position:fixed;inset:0;background:rgba(13,8,24,.88);display:none;align-items:center;justify-content:center;flex-direction:column;gap:1rem;z-index:200;}
+.loading-veil.on{display:flex;}
+.spin{width:34px;height:34px;border:2px solid rgba(199,36,177,.2);border-top-color:var(--magenta);border-radius:50%;animation:spin 1s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.loading-text{font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:var(--mist);}
+.fade-up{animation:fadeUp .6s ease both;}
+.fade-up-d1{animation:fadeUp .6s .15s ease both;}
+.fade-up-d2{animation:fadeUp .6s .3s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+.reveal-quest{font-size:clamp(1.8rem,5vw,3rem);font-weight:800;letter-spacing:-.03em;line-height:1.05;}
+.hook-line{font-size:.95rem;color:rgba(248,240,255,.85);line-height:1.6;font-weight:500;}
+.lever{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;margin:.6rem 0 1.4rem;}
+.small-note{font-size:.68rem;color:var(--soft);line-height:1.6;}
+@media(max-width:560px){.screen{padding:2.5rem 1rem 3rem;}}
+</style>
+</head>
+<body>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div class="loading-veil" id="loadingVeil"><div class="spin"></div><div class="loading-text" id="loadingText">One moment…</div></div>
+
+<!-- LANDING -->
+<div class="screen active" id="landing">
+  <div class="wrap" style="text-align:center;max-width:640px;margin-top:8vh;">
+    <div class="chapter-tag fade-up">Unicorn for Leaders</div>
+    <h1 class="fade-up" style="font-size:clamp(2.4rem,6vw,4.4rem);font-weight:800;letter-spacing:-.04em;line-height:1.02;margin:.6rem 0 1.2rem;">Start <span class="grad-text">Your</span> Story</h1>
+    <p class="fade-up-d1" style="font-size:.95rem;line-height:1.7;color:var(--mist);max-width:480px;margin:0 auto 2.2rem;">A personal brand development experience for leaders. Find the blend of leader you actually are — and walk away with a playbook, not platitudes.</p>
+    <div class="fade-up-d1" style="max-width:380px;margin:0 auto 1.6rem;">
+      <input class="txt" id="playerName" placeholder="Your first name" maxlength="40" style="text-align:center;">
+    </div>
+    <div class="fade-up-d2" style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+      <button class="btn-primary" onclick="startFull()">The Full Story · 45 min</button>
+      <button class="btn-ghost" onclick="startQuick()">Quick Version · 10 min</button>
+    </div>
+    <p class="fade-up-d2 small-note" style="margin-top:1.6rem;">Full: the four-quadrant deep dive, your activation reps, and a coaching + content playbook.<br>Quick: your leadership blend and one practice to start this week.</p>
+  </div>
+</div>
+
+<!-- GAME AREA -->
+<div class="screen" id="game"><div class="wrap" id="gameArea"></div></div>
+
+<script>
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
+const G = {
+  mode: 'full',                 // 'full' | 'quick'
+  playerName: '',
+  content: null,                // /api/v3/content payload
+  // Mirror (Chapter 1)
+  mirror: { vocation: '', vocationContext: '', baseline: '', platforms: [], urls: [], exemplar: '', anchors: [], paste: '', quickPov: '' },
+  // Quadrant chapters (ported from v2 — kept per design doc)
+  light: { words: [], freeText: '', distilled: '' },
+  shadow: { answers: {}, distilled: '' },
+  dark: { answers: {}, distilled: '' },
+  // Scenario test
+  answers: {}, qIndex: 0, blend: null, revealLine: '', closeCall: false, hooks: {},
+  // Activations
+  surfacedDaily: [], weeklySets: [], picks: { daily: [], weekly: [] },
+  // Naming
+  finalBlend: null, tensionLine: null, coinedName: '', candidates: [],
+  // Synthesis
+  recalibration: { challenge_vs_support: 'balanced', visibility_vs_depth: 'balanced' },
+  quad: null,                   // prompt0 output (canonical for downstream prompts)
+  coaching: null, contentLens: null, roleModels: null, personalised: [],
+};
+
+const el = id => document.getElementById(id);
+const esc = s => s ? String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') : '';
+function show(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); el(id).classList.add('active'); window.scrollTo(0,0); }
+function setProgress(p){ el('progressFill').style.width = p + '%'; }
+function showLoading(t){ el('loadingText').textContent = t || 'One moment…'; el('loadingVeil').classList.add('on'); }
+function hideLoading(){ el('loadingVeil').classList.remove('on'); }
+
+// ═══════════════════════════════════════
+// API helpers
+// ═══════════════════════════════════════
+const GM_SYSTEM = () => `You are Dustin, the Game Master of "Start Your Story" — a personal brand development experience by Unicorn for Leaders. The player is building the brand of the leader they're becoming, not a company brand. You are a brand strategist who applies brand thinking to people.
+Voice: warm, direct, specific, British English. Mid-formal, peer-to-peer. Reference what the player has actually said. Never use: journey, potential, authentic self, unleash, highest self, lean into, hold space, level up.
+PLAYER: ${G.playerName} — work context: ${G.mirror.vocation || 'leader'}${G.mirror.vocationContext ? ' (' + G.mirror.vocationContext + ')' : ''}. Adapt examples to their world.`;
+
+async function askAI(prompt, context) {
+  try {
+    const res = await fetch('/api/ai', { method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ system: GM_SYSTEM() + '\n\n' + (context||''), prompt, max_tokens: 700 }) });
+    const data = await res.json();
+    if (data.error) return '';
+    return data.text || '';
+  } catch(e) { return ''; }
+}
+
+async function v3(path, body) {
+  const res = await fetch('/api/v3/' + path, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error);
+  return data;
+}
+
+async function generate(step, extra) {
+  const player = buildPlayerObject(extra);
+  const data = await v3('generate', { step, player });
+  return data.data;
+}
+
+// The shared player object — mirrors the eval harness shape exactly
+function buildPlayerObject(extra = {}) {
+  const b = G.finalBlend || G.blend || { primary:'Pioneer', secondary:'Magician', tertiary:'Captain' };
+  return {
+    playerName: G.playerName,
+    vocation: G.mirror.vocation || 'Leader',
+    vocationContext: G.mirror.vocationContext || G.mirror.quickPov || '',
+    archetypeBlend: { primary:{quest:b.primary,score:0.5}, secondary:{quest:b.secondary,score:0.3}, tertiary:{quest:b.tertiary,score:0.2} },
+    coinedName: G.coinedName || '',
+    computedActivationTilt: tiltSummary(),
+    scenarioAnswers: Object.entries(G.answers).map(([q,k]) => q + ':' + k),
+    chosenActivations: G.picks.daily.map(id => { const a = G.surfacedDaily.find(x=>x.id===id); return { id, title: a ? a.title : '' }; }),
+    bossMonsters: bossMonsters(),
+    lightExpression: G.quad ? G.quad.lightExpression : '',
+    shadowIntegration: G.quad ? G.quad.shadowIntegration : '',
+    darkReflection: G.quad ? G.quad.darkReflection : '',
+    sourceSymbol: G.quad ? G.quad.sourceSymbol : '',
+    onlinePresence: { baseline: G.mirror.baseline || 'not_yet', platforms: G.mirror.platforms, exemplar: G.mirror.exemplar, paste: G.mirror.paste, currentReadingOfYou: '' },
+    playerAnchors: G.mirror.anchors.filter(Boolean),
+    recalibration: G.recalibration,
+    rawInputs: { lightWords: G.light.words, lightFree: G.light.freeText, shadowAnswers: G.shadow.answers, darkAnswers: G.dark.answers },
+    ...extra,
+  };
+}
+
+function bossMonsters() {
+  const out = [];
+  if (G.shadow.answers.q3) out.push('The voice that says "' + G.shadow.answers.q3.slice(0,90) + '"');
+  if (G.shadow.answers.q1) out.push('The fear behind hiding: "' + G.shadow.answers.q1.slice(0,90) + '"');
+  return out.length ? out : ['The voice that says "wait until you are more ready"'];
+}
+
+function tiltSummary() {
+  if (!G.picks.daily.length) return '';
+  const counts = {};
+  G.picks.daily.forEach(id => { const a = G.surfacedDaily.find(x=>x.id===id); if (a && a.questHint) counts[a.questHint] = (counts[a.questHint]||0)+1; });
+  return 'Player picked: ' + G.picks.daily.map(id => { const a=G.surfacedDaily.find(x=>x.id===id); return a?a.title:''; }).filter(Boolean).join(', ');
+}
+
+// ═══════════════════════════════════════
+// BOOT + MODE START
+// ═══════════════════════════════════════
+async function loadContent() {
+  if (G.content) return G.content;
+  const res = await fetch('/api/v3/content');
+  G.content = await res.json();
+  return G.content;
+}
+
+async function startFull() {
+  G.playerName = (el('playerName').value || '').trim();
+  if (!G.playerName) { el('playerName').focus(); return; }
+  G.mode = 'full';
+  showLoading('Preparing your story…');
+  await loadContent();
+  hideLoading();
+  show('game');
+  runMirror();
+}
+
+async function startQuick() {
+  G.playerName = (el('playerName').value || '').trim();
+  if (!G.playerName) { el('playerName').focus(); return; }
+  G.mode = 'quick';
+  showLoading('Preparing the quick version…');
+  await loadContent();
+  hideLoading();
+  show('game');
+  runQuickSetup();
+}
+
+// ═══════════════════════════════════════
+// CHAPTER 1 — THE MIRROR (Full mode)
+// Fields 1,2,3,6,7 here. Field 4 (URLs) optional inline.
+// Field 5 (paste) is DEFERRED — surfaces after the scenario test.
+// ═══════════════════════════════════════
+function runMirror() {
+  setProgress(6);
+  const C = G.content;
+  el('gameArea').innerHTML = `
+    <div class="chapter-header fade-up">
+      <div class="chapter-tag">Chapter 1 — The Mirror</div>
+      <div class="chapter-title">Where you're <span class="grad-text">starting from</span></div>
+      <div class="chapter-sub">A quick honest baseline. Everything here makes the rest of the game speak your language.</div>
+    </div>
+    <div class="fade-up-d1" style="max-width:560px;margin:0 auto;">
+      <label class="field-label">What's the work context you're showing up from?</label>
+      <div class="pick-row" id="vocRow">${C.vocations.map(v => `<button class="pick" data-v="${esc(v)}" onclick="pickVocation(this)">${esc(v)}</button>`).join('')}</div>
+      <input class="txt" id="vocOther" placeholder="Or something else — say it in your own words" style="margin-top:.6rem;" maxlength="120">
+
+      <label class="field-label">One line of context — what are you building or leading right now?</label>
+      <input class="txt" id="vocContext" placeholder="e.g. early-stage B2B SaaS, year 3, team of 12" maxlength="160">
+
+      <label class="field-label">Right now, are you active online about your work?</label>
+      <div class="pick-row">
+        ${[['regularly','Yes, regularly'],['occasionally','Yes, occasionally'],['trying_to_start','Trying to start'],['not_yet','Not yet']].map(([k,l]) => `<button class="pick" data-b="${k}" onclick="pickBaseline(this)">${l}</button>`).join('')}
+      </div>
+
+      <div id="platformBlock" style="display:none;">
+        <label class="field-label">Where do you mainly show up? (pick any)</label>
+        <div class="pick-row">${C.platforms.map(p => `<button class="pick" data-p="${esc(p)}" onclick="togglePlatform(this)">${esc(p)}</button>`).join('')}</div>
+      </div>
+
+      <label class="field-label">One piece of content — yours or someone else's — that feels closest to the you you want to be known as</label>
+      <textarea class="txt" id="exemplar" rows="2" maxlength="300" placeholder="Describe it, name it, or paste a link. Why does it feel like you?"></textarea>
+
+      <label class="field-label">Two things you do at the same time most days — your reliable anchors</label>
+      <input class="txt" id="anchor1" placeholder="e.g. first coffee before opening the laptop" maxlength="80">
+      <input class="txt" id="anchor2" placeholder="e.g. the walk home after work" maxlength="80" style="margin-top:.5rem;">
+      <p class="small-note" style="margin-top:.5rem;">We pin your daily practices to real routines — not invented ones.</p>
+
+      <div style="text-align:center;margin-top:1.8rem;">
+        <button class="btn-primary" onclick="finishMirror()">Begin Chapter 2 →</button>
+      </div>
+    </div>`;
+}
+
+window.pickVocation = btn => {
+  document.querySelectorAll('#vocRow .pick').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  G.mirror.vocation = btn.dataset.v;
+};
+window.pickBaseline = btn => {
+  document.querySelectorAll('[data-b]').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  G.mirror.baseline = btn.dataset.b;
+  el('platformBlock').style.display = (G.mirror.baseline === 'regularly' || G.mirror.baseline === 'occasionally') ? 'block' : 'none';
+};
+window.togglePlatform = btn => {
+  btn.classList.toggle('on');
+  const p = btn.dataset.p;
+  const i = G.mirror.platforms.indexOf(p);
+  if (i >= 0) G.mirror.platforms.splice(i,1); else G.mirror.platforms.push(p);
+};
+window.finishMirror = () => {
+  const other = el('vocOther').value.trim();
+  if (other) G.mirror.vocation = other;
+  if (!G.mirror.vocation) { el('vocOther').placeholder = 'Pick a context above, or type one here'; el('vocOther').focus(); return; }
+  G.mirror.vocationContext = el('vocContext').value.trim();
+  G.mirror.exemplar = el('exemplar').value.trim();
+  G.mirror.anchors = [el('anchor1').value.trim(), el('anchor2').value.trim()].filter(Boolean);
+  if (!G.mirror.baseline) G.mirror.baseline = 'not_yet';
+  runLight();
+}
+
+// ═══════════════════════════════════════
+// CHAPTERS 2–4 — LIGHT / SHADOW / DARK (ported from v2, kept per design doc)
+// ═══════════════════════════════════════
+const LIGHT_WORDS = ['Visionary','Reliable','Direct','Curious','Generous','Sharp','Calm','Brave','Funny','Strategic','Kind','Honest','Demanding','Patient','Decisive','Empathetic','Provocative','Loyal','Witty','Methodical','Restless','Grounded','Imaginative','Principled','Adaptable','Steady','Bold','Warm','Rigorous','Playful'];
+const SHADOW_PROMPTS = [
+  { id:'q1', prompt:'What part of yourself do you most often hide from work — and why?' },
+  { id:'q2', prompt:'Which quality do you admire in others and quietly suppress in yourself?' },
+  { id:'q3', prompt:'What recurring inner critic message holds you back?' }
+];
+const DARK_PROMPTS = [
+  { id:'d1', prompt:'What compliment do you brush off — but it keeps coming?' },
+  { id:'d2', prompt:'What feels ordinary to you that other people find rare?' },
+  { id:'d3', prompt:"When was the last time someone surprised you with what they said you're good at?" }
+];
+
+async function runLight() {
+  setProgress(15);
+  showLoading('Setting the stage…');
+  const intro = await askAI(`Welcome ${G.playerName} to Chapter 2: Light. Tell them, warmly and briefly (2-3 sentences), that this chapter is about what they already openly embody — the qualities the world already sees in them. Reference their work context once.`, 'PHASE: Light chapter opening.');
+  hideLoading();
+  el('gameArea').innerHTML = `
+    <div class="chapter-header fade-up">
+      <div class="chapter-tag">Chapter 2 — Light</div>
+      <div class="chapter-title">What you <span class="grad-text">already embody</span></div>
+      <div class="chapter-sub">Pick the words others would use about you on your best day. Pick 3–5.</div>
+    </div>
+    ${intro ? `<div class="narration fade-up-d1"><div class="gm-tag">Game Master</div>${esc(intro)}</div>` : ''}
+    <div class="pick-row fade-up-d2" style="justify-content:center;max-width:700px;margin:0 auto;">
+      ${LIGHT_WORDS.map(w => `<button class="pick" data-word="${esc(w)}" onclick="toggleLightWord(this)">${w}</button>`).join('')}
+    </div>
+    <div style="max-width:520px;margin:1.4rem auto 0;" class="fade-up-d2">
+      <label class="field-label">Or in your own words</label>
+      <textarea class="txt" id="lightFreeText" rows="2" maxlength="200" placeholder="A word or phrase others use about you that's not on this list…"></textarea>
+    </div>
+    <div style="text-align:center;margin-top:1.5rem;" class="fade-up-d2">
+      <div id="lightCount" class="small-note" style="margin-bottom:.6rem;">Pick 3–5 words to continue</div>
+      <button class="btn-primary" id="lightContinue" onclick="finishLight()" disabled>Continue to Shadow →</button>
+    </div>`;
+}
+
+window.toggleLightWord = btn => {
+  const word = btn.dataset.word;
+  const i = G.light.words.indexOf(word);
+  if (i >= 0) { G.light.words.splice(i,1); btn.classList.remove('on'); }
+  else if (G.light.words.length < 5) { G.light.words.push(word); btn.classList.add('on'); }
+  const c = G.light.words.length;
+  el('lightCount').textContent = c < 3 ? `Pick ${3-c} more to continue` : `${c} selected — ready`;
+  el('lightContinue').disabled = c < 3;
+};
+
+window.finishLight = async () => {
+  G.light.freeText = el('lightFreeText').value.trim();
+  showLoading('Reading the light…');
+  G.light.distilled = await askAI(`The player selected words others affirm in them: ${G.light.words.join(', ')}.${G.light.freeText ? ` They added: "${G.light.freeText}".` : ''}\n\nDistill into a single "Light Expression" — 1-2 sentences naming what they already openly embody. Warm, recognising, specific. Then one short sentence setting up Shadow work ("now we go to what you've been quieter about").`, 'PHASE: Distilling Light Expression.');
+  hideLoading();
+  runShadow();
+};
+
+async function runShadow() {
+  setProgress(26);
+  el('gameArea').innerHTML = `
+    <div class="chapter-header fade-up">
+      <div class="chapter-tag">Chapter 3 — Shadow</div>
+      <div class="chapter-title">What you <span class="grad-text">quiet down</span></div>
+      <div class="chapter-sub">Three reflective prompts. Be honest — answers stay between you and the Game Master.</div>
+    </div>
+    ${G.light.distilled ? `<div class="narration fade-up-d1"><div class="gm-tag">Game Master</div>${esc(G.light.distilled)}</div>` : ''}
+    <div style="max-width:620px;margin:1.2rem auto 0;display:flex;flex-direction:column;gap:1.1rem;" class="fade-up-d2">
+      ${SHADOW_PROMPTS.map((p,i) => `
+        <div>
+          <div style="font-size:.92rem;font-weight:600;margin-bottom:.5rem;line-height:1.45;">${p.prompt}</div>
+          <textarea class="txt" id="shadow-${p.id}" rows="2" maxlength="280" placeholder="A sentence or two…"></textarea>
+        </div>`).join('')}
+    </div>
+    <div style="text-align:center;margin-top:1.5rem;" class="fade-up-d2">
+      <button class="btn-primary" onclick="finishShadow()">Reframe my Shadow →</button>
+    </div>`;
+}
+
+window.finishShadow = async () => {
+  SHADOW_PROMPTS.forEach(p => { G.shadow.answers[p.id] = (el('shadow-'+p.id).value || '').trim(); });
+  showLoading('Reframing your shadow…');
+  const ans = SHADOW_PROMPTS.map(p => `Q: ${p.prompt}\nA: ${G.shadow.answers[p.id] || '(skipped)'}`).join('\n\n');
+  G.shadow.distilled = await askAI(`The player answered shadow-work questions:\n\n${ans}\n\nDistill into a single "Shadow Integration" statement (2-3 sentences). Take ONE quality they've been quieting and reframe it as a hidden strength of their leadership. Name it specifically. Strategic and warm, not therapeutic.`, 'PHASE: Shadow Integration.');
+  hideLoading();
+  runDark();
+};
+
+async function runDark() {
+  setProgress(36);
+  el('gameArea').innerHTML = `
+    <div class="chapter-header fade-up">
+      <div class="chapter-tag">Chapter 4 — Dark</div>
+      <div class="chapter-title">What others see <span class="grad-text">that you don't</span></div>
+      <div class="chapter-sub">Three prompts about your blind-spot gifts. Three short answers.</div>
+    </div>
+    ${G.shadow.distilled ? `<div class="narration fade-up-d1"><div class="gm-tag">Game Master</div>${esc(G.shadow.distilled)}</div>` : ''}
+    <div style="max-width:620px;margin:1.2rem auto 0;display:flex;flex-direction:column;gap:1.1rem;" class="fade-up-d2">
+      ${DARK_PROMPTS.map((p,i) => `
+        <div>
+          <div style="font-size:.92rem;font-weight:600;margin-bottom:.5rem;line-height:1.45;">${p.prompt}</div>
+          <textarea class="txt" id="dark-${p.id}" rows="2" maxlength="280" placeholder="A sentence or two…"></textarea>
+        </div>`).join('')}
+    </div>
+    <div style="text-align:center;margin-top:1.5rem;" class="fade-up-d2">
+      <button class="btn-primary" onclick="finishDark()">Surface the gift →</button>
+    </div>`;
+}
+
+window.finishDark = async () => {
+  DARK_PROMPTS.forEach(p => { G.dark.answers[p.id] = (el('dark-'+p.id).value || '').trim(); });
+  showLoading('Naming what others see…');
+  const ans = DARK_PROMPTS.map(p => `Q: ${p.prompt}\nA: ${G.dark.answers[p.id] || '(skipped)'}`).join('\n\n');
+  G.dark.distilled = await askAI(`The player answered prompts that surface what OTHERS see in them:\n\n${ans}\n\nDistill into a single "Dark Reflection" (2-3 sentences). Name ONE surprising gift others see that the player undervalues. Make them feel seen — specific, not generic.`, 'PHASE: Dark gift.');
+  hideLoading();
+  runScenario();
+};
+
+// ═══════════════════════════════════════
+// CHAPTER 5 — THE SCENARIO TEST
+// One question at a time; scoring is server-side (tags never reach the client).
+// ═══════════════════════════════════════
+function scenarioQuestions() {
+  const qs = G.content.questions;
+  return G.mode === 'quick' ? qs.filter(q => q.starred) : qs;
+}
+
+function runScenario() {
+  G.qIndex = 0;
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const qs = scenarioQuestions();
+  const q = qs[G.qIndex];
+  const base = G.mode === 'quick' ? 20 : 42;
+  const span = G.mode === 'quick' ? 40 : 18;
+  setProgress(base + Math.round(span * (G.qIndex / qs.length)));
+  el('gameArea').innerHTML = `
+    <div class="chapter-header fade-up">
+      <div class="chapter-tag">${G.mode === 'quick' ? 'The Quick Test' : 'Chapter 5 — The Scenario Test'} · ${G.qIndex+1} of ${qs.length}</div>
+      <div class="chapter-title" style="font-size:clamp(1.2rem,3vw,1.7rem);max-width:640px;margin:0 auto;">${esc(q.prompt)}</div>
+      <div class="chapter-sub">Go with the answer that's actually true — not the one you'd like to be true.</div>
+    </div>
+    <div style="max-width:620px;margin:0 auto;" class="fade-up-d1">
+      ${q.options.map(o => `<button class="opt-card" onclick="answerQuestion('${q.id}','${o.key}')"><span class="opt-key">${o.key}</span>${esc(o.text)}</button>`).join('')}
+    </div>
+    ${G.qIndex > 0 ? `<button class="btn-ghost" style="margin-top:1rem;" onclick="G.qIndex--;renderQuestion()">← Back</button>` : ''}`;
+}
+
+window.answerQuestion = (qid, key) => {
+  G.answers[qid] = key;
+  const qs = scenarioQuestions();
+  if (G.qIndex < qs.length - 1) { G.qIndex++; renderQuestion(); }
+  else finishScenario();
+};
+
+async function finishScenario() {
+  showLoading('Reading the pattern…');
+  try {
+    const data = await v3('score', { answers: G.answers, mode: G.mode });
+    G.blend = data.blend; G.revealLine = data.revealLine; G.closeCall = data.closeCall; G.hooks = data.hooks;
+  } catch(e) { hideLoading(); alert('Scoring failed: ' + e.message); return; }
+  hideLoading();
+  renderReveal();
+}
+
+function renderReveal() {
+  setProgress(G.mode === 'quick' ? 62 : 60);
+  const b = G.blend;
+  el('gameArea').innerHTML = `
+    <div class="chapter-header fade-up">
+      <div class="chapter-tag">Your pattern</div>
+      <div class="reveal-quest">The <span class="grad-text">${esc(b.primary)}</span></div>
+      <div class="chapter-sub" style="font-weight:600;color:rgba(248,240,255,.8);">${esc(G.revealLine)}</div>
+    </div>
+    <div class="fade-up-d1" style="max-width:600px;margin:0 auto;">
+      <div class="syn-card"><div class="syn-kicker">Primary — ${esc(b.primary)}</div><div class="hook-line">${esc(G.hooks[b.primary]||'')}</div></div>
+      <div class="syn-card" style="opacity:.85;"><div class="syn-kicker">Second — ${esc(b.secondary)}</div><div class="hook-line">${esc(G.hooks[b.secondary]||'')}</div></div>
+      <div class="syn-card" style="opacity:.7;"><div class="syn-kicker">Third — ${esc(b.tertiary)}</div><div class="hook-line">${esc(G.hooks[b.tertiary]||'')}</div></div>
+      ${G.closeCall ? `<div style="text-align:center;margin:.6rem 0 0;"><button class="btn-ghost" onclick="swapTopTwo()">These two are close — swap them</button></div>` : ''}
+      <div style="text-align:center;margin-top:1.6rem;">
+        <div class="small-note" style="margin-bottom:.8rem;">Most leaders are blends. We'll work with all three.</div>
+        <button class="btn-primary" onclick="${G.mode === 'quick' ? 'runQuickPractice()' : 'runPasteEnrichment()'}">Continue →</button>
+      </div>
+    </div>`;
+}
+
+window.swapTopTwo = () => {
+  const b = G.blend;
+  [b.primary, b.secondary] = [b.secondary, b.primary];
+  renderReveal();
+};
+
+// Field 5 — deferred paste enrichment (after the reveal, when curiosity is high)
+function runPasteEnrichment() {
+  setProgress(63);
+  el('gameArea').innerHTML = `
+    <div class="chapter-header fade-up">
+      <div class="chapter-tag">Optional — 30 seconds</div>
+      <div class="chapter-title">Want the playbook to read <span class="grad-text">your actual voice?</span></div>
+      <div class="chapter-sub">LinkedIn and X won't let our reader in. Paste your bio or a recent post and the playbook will be built against how you already sound. Skip freely.</div>
+    </div>
+    <div style="max-width:560px;margin:0 auto;" class="fade-up-d1">
+      <textarea class="txt" id="pasteBox" rows="5" maxlength="1500" placeholder="Your bio / about section, or a recent post you wrote…"></textarea>
+      <div style="text-align:center;margin-top:1.3rem;display:flex;gap:.8rem;justify-content:center;">
+        <button class="btn-primary" onclick="G.mirror.paste = el('pasteBox').value.trim(); runActivations();">Use this →</button>
+        <button class="btn-ghost" onclick="runActivations()">Skip</button>
+      </div>
+    </div>`;
+}
+
+// ═══════════════════════════════════════
+// CHAPTER 6 — THE ACTIVATIONS (the commitment is the identity)
+// Caps: 4–6 daily, 1–2 weekly. Choosing has to mean excluding.
+// ═══════════════════════════════════════
+async function runActivations() {
+  setProgress(68);
+  showLoading('Finding your reps…');
+  let data;
+  try { data = await v3('activations', G.blend); }
+  catch(e) { hideLoading(); alert(e.message); return; }
+  hideLoading();
+  G.surfacedDaily = data.daily;
+  G.weeklySets = data.weekly;
+  G.picks = { daily: [], weekly: [] };
+  const bucketLabel = b => b === 'A' ? 'daily rep' : b === 'B' ? 'when the moment comes' : '5-min break';
+  el('gameArea').innerHTML = `
+    <div class="chapter-header fade-up">
+      <div class="chapter-tag">Chapter 6 — The Activations</div>
+      <div class="chapter-title">These aren't goals. <span class="grad-text">They're reps.</span></div>
+      <div class="chapter-sub">Which of these, if you actually did them, would compound into the leader you're becoming? Pick 4–6 daily reps and 1–2 weekly practices. The cap is the point — choosing means excluding.</div>
+    </div>
+    <div class="fade-up-d1" style="max-width:680px;margin:0 auto;">
+      <label class="field-label" style="text-align:center;">Daily — <span id="dailyCount">0</span> of 4–6</label>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.7rem;">
+        ${G.surfacedDaily.map(a => `
+          <button class="act-card" id="act-${a.id}" onclick="toggleDaily(${a.id})">
+            <span class="bucket-tag">${bucketLabel(a.bucket)}</span>
+            <div class="act-title">${esc(a.title)}</div>${esc(a.text)}
+          </button>`).join('')}
+      </div>
+      <label class="field-label" style="text-align:center;margin-top:1.6rem;">Weekly — <span id="weeklyCount">0</span> of 1–2</label>
+      ${G.weeklySets.map(set => `
+        <div class="small-note" style="margin:.7rem 0 .4rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;">${esc(set.quest)}</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.7rem;">
+          ${set.options.map((w,i) => `
+            <button class="act-card" id="wk-${set.quest}-${i}" onclick="toggleWeekly('${set.quest}',${i})">
+              <div class="act-title">${esc(w.title)}</div>${esc(w.text)}
+            </button>`).join('')}
+        </div>`).join('')}
+      <div style="text-align:center;margin-top:1.8rem;">
+        <div id="pickStatus" class="small-note" style="margin-bottom:.7rem;">Pick at least 4 daily and 1 weekly</div>
+        <button class="btn-primary" id="actContinue" disabled onclick="finishActivations()">Lock my reps →</button>
+      </div>
+    </div>`;
+}
+
+window.toggleDaily = id => {
+  const i = G.picks.daily.indexOf(id);
+  if (i >= 0) G.picks.daily.splice(i,1);
+  else { if (G.picks.daily.length >= 6) return pulseStatus('Maximum 6 daily — choosing has to mean excluding.'); G.picks.daily.push(id); }
+  el('act-'+id).classList.toggle('on', i < 0);
+  refreshPickStatus();
+};
+window.toggleWeekly = (quest, idx) => {
+  const key = quest + ':' + idx;
+  const i = G.picks.weekly.indexOf(key);
+  if (i >= 0) G.picks.weekly.splice(i,1);
+  else { if (G.picks.weekly.length >= 2) return pulseStatus('Maximum 2 weekly practices.'); G.picks.weekly.push(key); }
+  el('wk-'+quest+'-'+idx).classList.toggle('on', i < 0);
+  refreshPickStatus();
+};
+function pulseStatus(msg) { const s = el('pickStatus'); s.textContent = msg; s.style.color = '#E84D8A'; setTimeout(refreshPickStatus, 1800); }
+function refreshPickStatus() {
+  const d = G.picks.daily.length, w = G.picks.weekly.length;
+  el('dailyCount').textContent = d; el('weeklyCount').textContent = w;
+  const ok = d >= 4 && d <= 6 && w >= 1 && w <= 2;
+  const s = el('pickStatus'); s.style.color = '';
+  s.textContent = ok ? 'The picking is the commitment — ready when you are.' :
+    d < 4 ? `Pick ${4-d} more daily rep${4-d>1?'s':''}` : w < 1 ? 'Pick 1 weekly practice' : 'Ready';
+  el('actContinue').disabled = !ok;
+}
+
+async function finishActivations() {
+  showLoading('Reconciling who you tested as with what you chose to do…');
+  let rec;
+  try { rec = await v3('reconcile', { answers: G.answers, chosenIds: G.picks.daily, weeklyCount: G.picks.weekly.length, mode: G.mode }); }
+  catch(e) { hideLoading(); alert(e.message); return; }
+  hideLoading();
+  G.finalBlend = { primary: rec.primary, secondary: rec.secondary, tertiary: rec.tertiary };
+  G.tensionLine = rec.tension ? rec.tensionLine : null;
+  if (rec.tension) renderTension(); else runNaming();
+}
+
+// The tension moment — scenario said one thing, the reps said another. Good game design, not a bug.
+function renderTension() {
+  setProgress(74);
+  const scen = G.blend.primary, act = G.finalBlend.primary;
+  el('gameArea').innerHTML = `
+    <div class="chapter-header fade-up">
+      <div class="chapter-tag">A fork worth noticing</div>
+      <div class="chapter-title">Two true things</div>
+      <div class="chapter-sub">${esc(G.tensionLine)}</div>
+    </div>
+    <div class="fade-up-d1" style="max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:.8rem;">
+      <button class="opt-card" onclick="G.finalBlend.primary='${esc(scen)}';runNaming()"><span class="opt-key">TESTED</span>The ${esc(scen)} — ${esc(G.hooks[scen]||'')}</button>
+      <button class="opt-card" onclick="runNaming()"><span class="opt-key">CHOSEN</span>The ${esc(act)} — how your picked reps lean</button>
+    </div>`;
+}
+
+// ═══════════════════════════════════════
+// CHAPTER 7 — THE NAMING (prompt0 runs here too — quadrants become canonical)
+// ═══════════════════════════════════════
+async function runNaming() {
+  setProgress(78);
+  showLoading('Synthesising your four quadrants…');
+  try { G.quad = await generate('prompt0'); } catch(e) { G.quad = null; }
+  showLoading('Naming the blend…');
+  let naming = null;
+  try { naming = await generate('prompt3'); } catch(e) {}
+  hideLoading();
+  G.candidates = naming && naming.candidates ? naming.candidates : [];
+  const b = G.finalBlend;
+  el('gameArea').innerHTML = `
+    <div class="chapter-header fade-up">
+      <div class="chapter-tag">Chapter 7 — The Naming</div>
+      <div class="chapter-title">What do you want to <span class="grad-text">call this leader?</span></div>
+      <div class="chapter-sub">${esc(naming && naming.naming_prompt_for_the_player ? naming.naming_prompt_for_the_player : `Your blend is ${b.primary} × ${b.secondary} × ${b.tertiary}. Pick a name, or write your own — it's yours either way.`)}</div>
+    </div>
+    <div class="fade-up-d1" style="max-width:560px;margin:0 auto;">
+      ${G.candidates.map(c => `<button class="opt-card" onclick="pickName('${esc(c.name).replace(/'/g,"\\'")}')"><span class="opt-key">${esc((c.strategy||'').toUpperCase())}</span><strong>${esc(c.name)}</strong><div class="small-note" style="margin-top:.3rem;">${esc(c.why_this_name||'')}</div></button>`).join('')}
+      <label class="field-label" style="margin-top:1.4rem;">Or write your own</label>
+      <input class="txt" id="ownName" placeholder="e.g. The Quiet Builder" maxlength="40">
+      <div style="text-align:center;margin-top:1.2rem;">
+        <button class="btn-primary" onclick="pickName(el('ownName').value.trim())">This is my name →</button>
+      </div>
+    </div>`;
+}
+
+window.pickName = name => {
+  if (!name) { el('ownName').focus(); return; }
+  G.coinedName = name;
+  runLever();
+};
+
+// ═══════════════════════════════════════
+// THE GLOBAL CALIBRATION LEVER — one decision, global effect
+// ═══════════════════════════════════════
+function runLever() {
+  setProgress(82);
+  el('gameArea').innerHTML = `
+    <div class="chapter-header fade-up">
+      <div class="chapter-tag">Before your playbook is written</div>
+      <div class="chapter-title">Two calibrations, <span class="grad-text">${esc(G.coinedName)}</span></div>
+      <div class="chapter-sub">These shape everything that's about to be generated — one decision, global effect.</div>
+    </div>
+    <div class="fade-up-d1" style="max-width:540px;margin:0 auto;text-align:center;">
+      <label class="field-label" style="text-align:center;">Do you want this playbook to push you toward…</label>
+      <div class="lever">
+        <button class="pick lever-a on" data-v="more_challenge" onclick="setLever(this,'challenge_vs_support','lever-a')">More challenge</button>
+        <button class="pick lever-a" data-v="balanced" onclick="setLever(this,'challenge_vs_support','lever-a')">Balanced</button>
+        <button class="pick lever-a" data-v="more_support" onclick="setLever(this,'challenge_vs_support','lever-a')">More support</button>
+      </div>
+      <label class="field-label" style="text-align:center;">And should it lean toward…</label>
+      <div class="lever">
+        <button class="pick lever-b on" data-v="more_visibility" onclick="setLever(this,'visibility_vs_depth','lever-b')">More visibility</button>
+        <button class="pick lever-b" data-v="balanced" onclick="setLever(this,'visibility_vs_depth','lever-b')">Balanced</button>
+        <button class="pick lever-b" data-v="more_depth" onclick="setLever(this,'visibility_vs_depth','lever-b')">More depth</button>
+      </div>
+      <button class="btn-primary" style="margin-top:1.4rem;" onclick="runSynthesis()">Write my playbook →</button>
+    </div>`;
+  G.recalibration = { challenge_vs_support: 'more_challenge', visibility_vs_depth: 'more_visibility' };
+}
+
+window.setLever = (btn, key, group) => {
+  document.querySelectorAll('.'+group).forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  G.recalibration[key] = btn.dataset.v;
+};
+
+// ═══════════════════════════════════════
+// CHAPTER 8 — THE SYNTHESIS (default-accept; whole roadmap, inline edit)
+// ═══════════════════════════════════════
+async function runSynthesis() {
+  setProgress(88);
+  showLoading('Writing your coaching lens…');
+  const jobs = [];
+  try {
+    const [coaching, content, models] = await Promise.all([
+      generate('prompt1').catch(()=>null),
+      (showLoading('Writing your coaching + content lens…'), generate('prompt2').catch(()=>null)),
+      generate('prompt4').catch(()=>null),
+    ]);
+    G.coaching = coaching; G.contentLens = content; G.roleModels = models;
+    showLoading('Personalising your daily reps…');
+    const firstTwo = G.picks.daily.slice(0,2).map(id => G.surfacedDaily.find(a => a.id === id)).filter(Boolean);
+    G.personalised = (await Promise.all(firstTwo.map(a =>
+      generate('prompt5', { activation: { title: a.title, description: a.text, taggedQuests: [] } }).catch(()=>null)
+    ))).filter(Boolean);
+  } catch(e) {}
+  hideLoading();
+  renderPlaybook();
+}
+
+function ed(text) { return `<span class="editable" contenteditable="true">${esc(text||'')}</span>`; }
+
+function renderPlaybook() {
+  setProgress(100);
+  const b = G.finalBlend, co = G.coaching, cl = G.contentLens, rm = G.roleModels;
+  el('gameArea').innerHTML = `
+    <div class="chapter-header fade-up">
+      <div class="chapter-tag">The playbook of</div>
+      <div class="reveal-quest"><span class="grad-text">${esc(G.coinedName)}</span></div>
+      <div class="chapter-sub">${esc(b.primary)} × ${esc(b.secondary)} × ${esc(b.tertiary)} — composed by ${esc(G.playerName)}. Everything below is yours: click any line to edit it.</div>
+    </div>
+    <div class="fade-up-d1" style="max-width:680px;margin:0 auto;text-align:left;">
+
+      ${G.quad ? `
+      <div class="syn-card"><div class="syn-kicker">Your four quadrants</div>
+        <div class="syn-body"><strong>Light.</strong> ${ed(G.quad.lightExpression)}<br><br>
+        <strong>Shadow.</strong> ${ed(G.quad.shadowIntegration)}<br><br>
+        <strong>Dark.</strong> ${ed(G.quad.darkReflection)}<br><br>
+        <strong>Source.</strong> ${ed(G.quad.sourceSymbol)}</div></div>` : ''}
+
+      ${co ? `
+      <div class="syn-card"><div class="syn-kicker">Coaching lens — what to work on</div>
+        ${(co.development_areas||[]).map(d => `<div style="margin-bottom:.9rem;"><div class="syn-title">${ed(d.title)}</div><div class="syn-body">${ed(d.why)}<br><em style="color:var(--magenta);">This week:</em> ${ed(d.first_action)}</div></div>`).join('')}
+        ${co.boss_monster ? `<div style="margin-top:1rem;padding-top:1rem;border-top:1px solid rgba(123,47,190,.2);"><div class="syn-title">Your headwind: ${ed(co.boss_monster.name)}</div><div class="syn-body">${(co.boss_monster.counter_moves||[]).map(m => '— ' + esc(m)).join('<br>')}</div></div>` : ''}
+        ${(co.books_or_thinkers||[]).length ? `<div style="margin-top:1rem;padding-top:1rem;border-top:1px solid rgba(123,47,190,.2);"><div class="syn-kicker">Read next</div>${co.books_or_thinkers.map(t => `<div class="syn-body" style="margin-bottom:.5rem;"><strong>${esc(t.name)}</strong> — ${esc(t.work)}. Start with: ${esc(t.first_thing_to_read)}. <span class="small-note">${esc(t.why_for_this_player)}</span></div>`).join('')}</div>` : ''}
+        ${co.coaching_question ? `<div style="margin-top:1rem;padding-top:1rem;border-top:1px solid rgba(123,47,190,.2);"><div class="syn-kicker">Bring to your next 1:1</div><div class="hook-line">${ed(co.coaching_question)}</div></div>` : ''}
+      </div>` : ''}
+
+      ${cl ? `
+      <div class="syn-card"><div class="syn-kicker">Content lens — what to say, where, when</div>
+        ${(cl.content_territories||[]).map(t => `<div style="margin-bottom:.8rem;"><div class="syn-title">${ed(t.title)}</div><div class="syn-body">${ed(t.framing)}</div></div>`).join('')}
+        ${(cl.hook_patterns||[]).length ? `<div style="margin-top:1rem;padding-top:1rem;border-top:1px solid rgba(123,47,190,.2);"><div class="syn-kicker">Your openers</div>${cl.hook_patterns.map(h => `<div class="syn-body" style="margin-bottom:.5rem;">“${ed(h.example_filled_in)}”</div>`).join('')}</div>` : ''}
+        ${cl.weekly_rhythm ? `<div style="margin-top:1rem;padding-top:1rem;border-top:1px solid rgba(123,47,190,.2);"><div class="syn-kicker">Your rhythm</div><div class="syn-body">${ed(cl.weekly_rhythm.cadence)} — ${ed(cl.weekly_rhythm.format)}</div></div>` : ''}
+        ${cl.next_seven_days_piece ? `<div style="margin-top:1rem;padding-top:1rem;border-top:1px solid rgba(123,47,190,.2);"><div class="syn-kicker">Publish by ${esc(cl.next_seven_days_piece.publish_by)}</div><div class="syn-title">${ed(cl.next_seven_days_piece.topic)}</div><div class="syn-body">${ed(cl.next_seven_days_piece.angle)}<br><br><em>First line:</em> “${ed(cl.next_seven_days_piece.first_line_hook)}”<br><span class="small-note">For: ${esc(cl.next_seven_days_piece.for_whom)} · ${esc(cl.next_seven_days_piece.structure_note)}</span></div></div>` : ''}
+      </div>` : ''}
+
+      ${rm && (rm.selections||[]).length ? `
+      <div class="syn-card"><div class="syn-kicker">Three kindred spirits</div>
+        ${rm.selections.map(s => `<div style="margin-bottom:.8rem;"><div class="syn-title">${esc(s.name)} <span class="small-note">· ${esc(s.from_quest)}</span></div><div class="syn-body">${ed(s.why_for_this_player)}</div></div>`).join('')}
+      </div>` : ''}
+
+      ${G.personalised.length ? `
+      <div class="syn-card"><div class="syn-kicker">Your daily reps — anchored to your real routines</div>
+        ${G.personalised.map(p => `<div style="margin-bottom:.9rem;"><div class="syn-title">${esc(p.title)}</div><div class="syn-body">${ed(p.anchor)} ${ed(p.rep)}<br><em style="color:var(--magenta);">${ed(p.reinforce)}</em><br><span class="small-note">${esc(p.why_this_practice_for_you||'')}</span></div></div>`).join('')}
+      </div>` : ''}
+
+      <div class="syn-card" style="border-color:rgba(199,36,177,.5);text-align:center;" id="sendCard">
+        <div class="syn-kicker">Keep this</div>
+        <div class="syn-body" style="margin-bottom:.8rem;">Get the playbook in your inbox — plus a two-minute check-in in 30 days to see which reps actually happened.</div>
+        <input class="txt" id="playerEmail" type="email" placeholder="you@yourwork.com" style="max-width:320px;display:inline-block;">
+        <div style="margin-top:.8rem;"><button class="btn-primary" id="sendBtn" onclick="sendPlaybook()">Email me my playbook</button></div>
+        <div class="small-note" id="sendStatus" style="margin-top:.6rem;"></div>
+      </div>
+      <div style="text-align:center;margin:1.6rem 0;">
+        <button class="btn-ghost" onclick="runLever()">Recalibrate — regenerate the whole playbook</button>
+        <button class="btn-ghost" style="margin-left:.6rem;" onclick="copyPlaybook(this)">Copy as text</button>
+      </div>
+    </div>`;
+}
+
+window.sendPlaybook = async () => {
+  const email = el('playerEmail').value.trim();
+  const status = el('sendStatus');
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { status.textContent = 'That email doesn\'t look right.'; return; }
+  el('sendBtn').disabled = true; status.textContent = 'Sending…';
+  const weeklyTitles = G.picks.weekly.map(key => {
+    const [quest, idx] = key.split(':');
+    const set = G.weeklySets.find(s => s.quest === quest);
+    return set ? set.options[+idx].title : '';
+  }).filter(Boolean);
+  try {
+    const res = await fetch('/api/v3/complete', { method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ email, player: buildPlayerObject(), playbook: {
+        coinedName: G.coinedName, blend: G.finalBlend, revealLine: G.revealLine,
+        quad: G.quad, coaching: G.coaching, contentLens: G.contentLens,
+        roleModels: G.roleModels, personalised: G.personalised, weeklyTitles,
+        recalibration: G.recalibration,
+      } }) });
+    const data = await res.json();
+    if (data.ok) {
+      status.innerHTML = '<strong style="color:#fff;">Sent ✓</strong>' + (data.remirror ? ' — and your 30-day check-in is booked.' : '');
+      el('sendBtn').textContent = 'Sent ✓';
+    } else { status.textContent = data.error || 'Sending failed — try again?'; el('sendBtn').disabled = false; }
+  } catch(e) { status.textContent = 'Connection issue — try again.'; el('sendBtn').disabled = false; }
+};
+
+window.copyPlaybook = btn => {
+  const text = el('gameArea').innerText;
+  navigator.clipboard.writeText(text).then(() => { btn.textContent = 'Copied ✓'; setTimeout(()=>btn.textContent='Copy playbook as text', 2000); });
+};
+
+// ═══════════════════════════════════════
+// QUICK MODE — 10 minutes, ends on an open loop
+// ═══════════════════════════════════════
+function runQuickSetup() {
+  setProgress(8);
+  const C = G.content;
+  el('gameArea').innerHTML = `
+    <div class="chapter-header fade-up">
+      <div class="chapter-tag">The Quick Version</div>
+      <div class="chapter-title">Two things, <span class="grad-text">then four questions</span></div>
+    </div>
+    <div class="fade-up-d1" style="max-width:560px;margin:0 auto;">
+      <label class="field-label">What's the work context you're showing up from?</label>
+      <div class="pick-row" id="vocRow">${C.vocations.map(v => `<button class="pick" data-v="${esc(v)}" onclick="pickVocation(this)">${esc(v)}</button>`).join('')}</div>
+      <label class="field-label">In one sentence — what's the work you're here to do?</label>
+      <input class="txt" id="quickPov" maxlength="200" placeholder="One sentence. Don't overthink it.">
+      <div style="text-align:center;margin-top:1.6rem;">
+        <button class="btn-primary" onclick="finishQuickSetup()">The four questions →</button>
+      </div>
+    </div>`;
+}
+
+window.finishQuickSetup = () => {
+  if (!G.mirror.vocation) return;
+  G.mirror.quickPov = el('quickPov').value.trim();
+  runScenario();
+};
+
+async function runQuickPractice() {
+  setProgress(72);
+  showLoading('Finding one practice…');
+  let data;
+  try { data = await v3('activations', G.blend); } catch(e) { hideLoading(); alert(e.message); return; }
+  hideLoading();
+  const set = data.weekly.find(w => w.quest === G.blend.primary) || data.weekly[0];
+  el('gameArea').innerHTML = `
+    <div class="chapter-header fade-up">
+      <div class="chapter-tag">One practice to start</div>
+      <div class="chapter-title">Pick the one you'd <span class="grad-text">actually do</span></div>
+      <div class="chapter-sub">A weekly practice for a ${esc(G.blend.primary)}. One is enough — it's a rep, not a resolution.</div>
+    </div>
+    <div class="fade-up-d1" style="max-width:560px;margin:0 auto;">
+      ${set.options.map((w,i) => `<button class="opt-card" onclick="finishQuick('${esc(w.title).replace(/'/g,"\\'")}')"><strong>${esc(w.title)}</strong><div class="small-note" style="margin-top:.3rem;">${esc(w.text)}</div></button>`).join('')}
+    </div>`;
+}
+
+window.finishQuick = async practiceTitle => {
+  G.finalBlend = G.blend;
+  showLoading('Naming your blend…');
+  let label = 'The ' + G.blend.primary;
+  try { const n = await generate('prompt3'); if (n && n.candidates && n.candidates.length) label = n.candidates[0].name; } catch(e) {}
+  G.coinedName = label;
+  hideLoading();
+  setProgress(100);
+  const b = G.blend;
+  el('gameArea').innerHTML = `
+    <div class="chapter-header fade-up">
+      <div class="chapter-tag">Your blend</div>
+      <div class="reveal-quest"><span class="grad-text">${esc(label)}</span></div>
+      <div class="chapter-sub" style="font-weight:600;">${esc(G.revealLine)}</div>
+    </div>
+    <div class="fade-up-d1" style="max-width:560px;margin:0 auto;">
+      <div class="syn-card"><div class="syn-kicker">${esc(b.primary)}</div><div class="hook-line">${esc(G.hooks[b.primary]||'')}</div></div>
+      ${G.mirror.quickPov ? `<div class="syn-card"><div class="syn-kicker">The work you're here to do</div><div class="hook-line">“${esc(G.mirror.quickPov)}”</div></div>` : ''}
+      <div class="syn-card"><div class="syn-kicker">Your practice this week</div><div class="syn-title">${esc(practiceTitle)}</div></div>
+      <div class="syn-card" style="border-color:rgba(199,36,177,.5);">
+        <div class="syn-kicker">We found your blend. That was the easy part.</div>
+        <div class="syn-body">The Full version turns it into a playbook — your coaching lens, your content territories, and <strong>one specific piece of content briefed for you to publish next Tuesday</strong>. 45 minutes, much deeper output.</div>
+        <div style="margin-top:1rem;"><button class="btn-primary" onclick="location.reload()">Play the Full Story</button></div>
+      </div>
+    </div>`;
+};
+</script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+{
+  "timestamp": "2026-06-04T07:23:44.993Z",
+  "model": "claude-sonnet-4-6",
+  "phase": "full-baseline-clean",
+  "pairs": 60,
+  "note": "prompt5 ungated; prompt3 contrastive-tuned; prompt1 cells regenerated to full n",
+  "gatedOverall": 1.633,
+  "summary": {
+    "prompt1": {
+      "mean": 1.42,
+      "n": 60
+    },
+    "prompt2": {
+      "mean": 1.33,
+      "n": 60
+    },
+    "prompt3": {
+      "mean": 1.52,
+      "n": 60
+    },
+    "prompt4": {
+      "mean": 2.27,
+      "n": 60
+    },
+    "prompt5": {
+      "mean": 2.6,
+      "n": 60
+    }
+  }
+}

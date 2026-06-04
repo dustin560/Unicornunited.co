@@ -1,0 +1,14 @@
+{
+  "name": "start-your-story-eval",
+  "version": "1.0.0",
+  "description": "Swap-test eval harness for Personal Mode v3 runtime prompts. Produces a per-prompt 'genericness score' to gate prompt edits and validate before code build.",
+  "main": "run.js",
+  "scripts": {
+    "start": "node run.js",
+    "quick": "node run.js --players=8 --pairs=10",
+    "full": "node run.js --players=20 --pairs=60"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
