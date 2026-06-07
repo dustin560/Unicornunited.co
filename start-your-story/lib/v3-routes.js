@@ -68,8 +68,18 @@ function registerV3Routes(app, { apiKey, rateCheck }) {
     const qs = mode === 'quick' ? C.SCENARIO_QUESTIONS.filter(q => q.starred) : C.SCENARIO_QUESTIONS;
     const ranked = E.scoreAnswers(answers, qs);
     const blend = E.blendFromScores(ranked);
+    // "Show the working" (anti-Barnum): which chosen options drove each top quest
+    const evidence = {};
+    for (const quest of [blend.primary, blend.secondary, blend.tertiary]) {
+      evidence[quest] = [];
+      for (const q of qs) {
+        const key = answers[q.id]; if (!key) continue;
+        const opt = q.options.find(o => o.key === key);
+        if (opt && opt.tags.includes(quest) && evidence[quest].length < 2) evidence[quest].push(opt.text);
+      }
+    }
     res.json({ blend: { primary: blend.primary, secondary: blend.secondary, tertiary: blend.tertiary },
-               closeCall: blend.closeCall, revealLine: blend.revealLine,
+               closeCall: blend.closeCall, revealLine: blend.revealLine, evidence,
                hooks: { [blend.primary]: C.QUEST_HOOKS[blend.primary], [blend.secondary]: C.QUEST_HOOKS[blend.secondary], [blend.tertiary]: C.QUEST_HOOKS[blend.tertiary] } });
   });
 

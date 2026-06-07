@@ -84,7 +84,8 @@ input,textarea,select{font-family:'Sora',sans-serif;}
   <div class="wrap" style="text-align:center;max-width:640px;margin-top:8vh;">
     <div class="chapter-tag fade-up">Unicorn for Leaders</div>
     <h1 class="fade-up" style="font-size:clamp(2.4rem,6vw,4.4rem);font-weight:800;letter-spacing:-.04em;line-height:1.02;margin:.6rem 0 1.2rem;">Start <span class="grad-text">Your</span> Story</h1>
-    <p class="fade-up-d1" style="font-size:.95rem;line-height:1.7;color:var(--mist);max-width:480px;margin:0 auto 2.2rem;">A personal brand development experience for leaders. Find the blend of leader you actually are — and walk away with a playbook, not platitudes.</p>
+    <p class="fade-up-d1" style="font-size:.95rem;line-height:1.7;color:var(--mist);max-width:480px;margin:0 auto 1.4rem;">A personal brand development experience for leaders. Find the blend of leader you actually are — and walk away with a playbook, not platitudes.</p>
+    <p class="fade-up-d1" style="font-size:.85rem;line-height:1.65;color:rgba(248,240,255,.75);max-width:440px;margin:0 auto 2rem;font-weight:600;">Ten forced choices. Most leaders can't predict their own top archetype — by question six, you'll know why.</p>
     <div class="fade-up-d1" style="max-width:380px;margin:0 auto 1.6rem;">
       <input class="txt" id="playerName" placeholder="Your first name" maxlength="40" style="text-align:center;">
     </div>
@@ -92,7 +93,7 @@ input,textarea,select{font-family:'Sora',sans-serif;}
       <button class="btn-primary" onclick="startFull()">The Full Story · 45 min</button>
       <button class="btn-ghost" onclick="startQuick()">Quick Version · 10 min</button>
     </div>
-    <p class="fade-up-d2 small-note" style="margin-top:1.6rem;">Full: the four-quadrant deep dive, your activation reps, and a coaching + content playbook.<br>Quick: your leadership blend and one practice to start this week.</p>
+    <p class="fade-up-d2 small-note" style="margin-top:1.6rem;">Full: the four-quadrant deep dive, your activation reps, and a coaching + content playbook — 45 minutes that earn their length.<br>Quick: your leadership blend and one practice to start this week.</p>
   </div>
 </div>
 
@@ -114,7 +115,7 @@ const G = {
   shadow: { answers: {}, distilled: '' },
   dark: { answers: {}, distilled: '' },
   // Scenario test
-  answers: {}, qIndex: 0, blend: null, revealLine: '', closeCall: false, hooks: {},
+  answers: {}, qIndex: 0, blend: null, revealLine: '', closeCall: false, hooks: {}, evidence: {},
   // Activations
   surfacedDaily: [], weeklySets: [], picks: { daily: [], weekly: [] },
   // Naming
@@ -131,6 +132,17 @@ function show(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.r
 function setProgress(p){ el('progressFill').style.width = p + '%'; }
 function showLoading(t){ el('loadingText').textContent = t || 'One moment…'; el('loadingVeil').classList.add('on'); }
 function hideLoading(){ el('loadingVeil').classList.remove('on'); }
+
+// Milestone beat — endowed progress made visible (chapter-complete feedback
+// reliably helps; per-question progress bars do not).
+function milestone(title, next) {
+  el('gameArea').innerHTML = `
+    <div class="chapter-header fade-up" style="margin-top:22vh;">
+      <div class="chapter-tag">Banked</div>
+      <div class="chapter-title">${esc(title)} <span class="grad-text">✓</span></div>
+    </div>`;
+  setTimeout(next, 1400);
+}
 
 // ═══════════════════════════════════════
 // API helpers
@@ -304,7 +316,8 @@ window.finishMirror = () => {
   G.mirror.exemplar = el('exemplar').value.trim();
   G.mirror.anchors = [el('anchor1').value.trim(), el('anchor2').value.trim()].filter(Boolean);
   if (!G.mirror.baseline) G.mirror.baseline = 'not_yet';
-  runLight();
+  setProgress(14);
+  milestone('Chapter 1 — The Mirror', runLight);
 }
 
 // ═══════════════════════════════════════
@@ -362,7 +375,7 @@ window.finishLight = async () => {
   showLoading('Reading the light…');
   G.light.distilled = await askAI(`The player selected words others affirm in them: ${G.light.words.join(', ')}.${G.light.freeText ? ` They added: "${G.light.freeText}".` : ''}\n\nDistill into a single "Light Expression" — 1-2 sentences naming what they already openly embody. Warm, recognising, specific. Then one short sentence setting up Shadow work ("now we go to what you've been quieter about").`, 'PHASE: Distilling Light Expression.');
   hideLoading();
-  runShadow();
+  milestone('Chapter 2 — Light', runShadow);
 };
 
 async function runShadow() {
@@ -392,7 +405,7 @@ window.finishShadow = async () => {
   const ans = SHADOW_PROMPTS.map(p => `Q: ${p.prompt}\nA: ${G.shadow.answers[p.id] || '(skipped)'}`).join('\n\n');
   G.shadow.distilled = await askAI(`The player answered shadow-work questions:\n\n${ans}\n\nDistill into a single "Shadow Integration" statement (2-3 sentences). Take ONE quality they've been quieting and reframe it as a hidden strength of their leadership. Name it specifically. Strategic and warm, not therapeutic.`, 'PHASE: Shadow Integration.');
   hideLoading();
-  runDark();
+  milestone('Chapter 3 — Shadow', runDark);
 };
 
 async function runDark() {
@@ -422,8 +435,28 @@ window.finishDark = async () => {
   const ans = DARK_PROMPTS.map(p => `Q: ${p.prompt}\nA: ${G.dark.answers[p.id] || '(skipped)'}`).join('\n\n');
   G.dark.distilled = await askAI(`The player answered prompts that surface what OTHERS see in them:\n\n${ans}\n\nDistill into a single "Dark Reflection" (2-3 sentences). Name ONE surprising gift others see that the player undervalues. Make them feel seen — specific, not generic.`, 'PHASE: Dark gift.');
   hideLoading();
-  runScenario();
+  if (G.dark.distilled) renderDarkGift(); else runScenario();
 };
+
+// The designed mid-flow peak (peak-end rule): the dark gift gets its own
+// staged moment instead of vanishing into a transition.
+function renderDarkGift() {
+  setProgress(40);
+  el('gameArea').innerHTML = `
+    <div class="chapter-header fade-up" style="margin-top:10vh;">
+      <div class="chapter-tag">The hinge of the game</div>
+      <div class="chapter-title">The gift others see <span class="grad-text">in you</span></div>
+    </div>
+    <div class="fade-up-d1" style="max-width:620px;margin:0 auto;">
+      <div class="syn-card" style="border-color:rgba(199,36,177,.55);box-shadow:0 0 44px rgba(199,36,177,.14);">
+        <div class="syn-kicker">Hold on to this</div>
+        <div class="hook-line" style="font-size:1.02rem;">${esc(G.dark.distilled)}</div>
+      </div>
+      <div style="text-align:center;margin-top:1.5rem;">
+        <button class="btn-primary" onclick="runScenario()">Carry it into the test →</button>
+      </div>
+    </div>`;
+}
 
 // ═══════════════════════════════════════
 // CHAPTER 5 — THE SCENARIO TEST
@@ -445,7 +478,12 @@ function renderQuestion() {
   const base = G.mode === 'quick' ? 20 : 42;
   const span = G.mode === 'quick' ? 40 : 18;
   setProgress(base + Math.round(span * (G.qIndex / qs.length)));
+  const beat = G.qIndex === 0
+    ? `<div class="narration fade-up" style="margin-bottom:1.4rem;"><div class="gm-tag">Game Master</div>${qs.length} forced choices. Every option is true of someone — pick the one that's most you, at gut speed. There are no good answers, only honest ones.</div>`
+    : (G.mode === 'full' && G.qIndex === 5
+    ? `<div class="narration fade-up" style="margin-bottom:1.4rem;"><div class="gm-tag">Game Master</div>Halfway. A pattern is forming — and one of the remaining questions usually decides it.</div>` : '');
   el('gameArea').innerHTML = `
+    ${beat}
     <div class="chapter-header fade-up">
       <div class="chapter-tag">${G.mode === 'quick' ? 'The Quick Test' : 'Chapter 5 — The Scenario Test'} · ${G.qIndex+1} of ${qs.length}</div>
       <div class="chapter-title" style="font-size:clamp(1.2rem,3vw,1.7rem);max-width:640px;margin:0 auto;">${esc(q.prompt)}</div>
@@ -468,10 +506,24 @@ async function finishScenario() {
   showLoading('Reading the pattern…');
   try {
     const data = await v3('score', { answers: G.answers, mode: G.mode });
-    G.blend = data.blend; G.revealLine = data.revealLine; G.closeCall = data.closeCall; G.hooks = data.hooks;
+    G.blend = data.blend; G.revealLine = data.revealLine; G.closeCall = data.closeCall; G.hooks = data.hooks; G.evidence = data.evidence || {};
   } catch(e) { hideLoading(); alert('Scoring failed: ' + e.message); return; }
   hideLoading();
-  renderReveal();
+  renderAnticipation();
+}
+
+// Anticipation beat — induced-then-resolved curiosity is itself a reward.
+function renderAnticipation() {
+  el('gameArea').innerHTML = `
+    <div class="chapter-header fade-up" style="margin-top:20vh;">
+      <div class="chapter-tag">Reading the pattern</div>
+      <div class="chapter-title"><span class="grad-text" id="anticipGlyph">◆</span></div>
+      <div class="chapter-sub">Fifteen archetypes. Three are rising.</div>
+    </div>`;
+  const glyphs = ['◆','●','▲','■','✦','◆'];
+  let i = 0;
+  const t = setInterval(() => { const g = el('anticipGlyph'); if (g) g.textContent = glyphs[++i % glyphs.length]; }, 320);
+  setTimeout(() => { clearInterval(t); renderReveal(); }, 2400);
 }
 
 function renderReveal() {
@@ -483,10 +535,10 @@ function renderReveal() {
       <div class="reveal-quest">The <span class="grad-text">${esc(b.primary)}</span></div>
       <div class="chapter-sub" style="font-weight:600;color:rgba(248,240,255,.8);">${esc(G.revealLine)}</div>
     </div>
-    <div class="fade-up-d1" style="max-width:600px;margin:0 auto;">
-      <div class="syn-card"><div class="syn-kicker">Primary — ${esc(b.primary)}</div><div class="hook-line">${esc(G.hooks[b.primary]||'')}</div></div>
-      <div class="syn-card" style="opacity:.85;"><div class="syn-kicker">Second — ${esc(b.secondary)}</div><div class="hook-line">${esc(G.hooks[b.secondary]||'')}</div></div>
-      <div class="syn-card" style="opacity:.7;"><div class="syn-kicker">Third — ${esc(b.tertiary)}</div><div class="hook-line">${esc(G.hooks[b.tertiary]||'')}</div></div>
+    <div style="max-width:600px;margin:0 auto;">
+      <div class="syn-card" style="animation:fadeUp .6s .15s ease both;"><div class="syn-kicker">Primary — ${esc(b.primary)}</div><div class="hook-line">${esc(G.hooks[b.primary]||'')}</div>${revealEvidence(b.primary)}</div>
+      <div class="syn-card" style="animation:fadeUp .6s .65s ease both;"><div class="syn-kicker">Second — ${esc(b.secondary)}</div><div class="hook-line">${esc(G.hooks[b.secondary]||'')}</div>${revealEvidence(b.secondary)}</div>
+      <div class="syn-card" style="animation:fadeUp .6s 1.15s ease both;"><div class="syn-kicker">Third — ${esc(b.tertiary)}</div><div class="hook-line">${esc(G.hooks[b.tertiary]||'')}</div>${revealEvidence(b.tertiary)}</div>
       ${G.closeCall ? `<div style="text-align:center;margin:.6rem 0 0;"><button class="btn-ghost" onclick="swapTopTwo()">These two are close — swap them</button></div>` : ''}
       <div style="text-align:center;margin-top:1.6rem;">
         <div class="small-note" style="margin-bottom:.8rem;">Most leaders are blends. We'll work with all three.</div>
@@ -500,6 +552,13 @@ window.swapTopTwo = () => {
   [b.primary, b.secondary] = [b.secondary, b.primary];
   renderReveal();
 };
+
+// Anti-Barnum: show the working — the player's actual choices that drove each quest.
+function revealEvidence(quest) {
+  const ev = (G.evidence && G.evidence[quest]) || [];
+  if (!ev.length) return '';
+  return `<div class="small-note" style="margin-top:.55rem;">Because you chose: ${ev.map(t => '“' + esc(t) + '”').join(' · ')}</div>`;
+}
 
 // Field 5 — deferred paste enrichment (after the reveal, when curiosity is high)
 function runPasteEnrichment() {
@@ -538,7 +597,7 @@ async function runActivations() {
     <div class="chapter-header fade-up">
       <div class="chapter-tag">Chapter 6 — The Activations</div>
       <div class="chapter-title">These aren't goals. <span class="grad-text">They're reps.</span></div>
-      <div class="chapter-sub">Which of these, if you actually did them, would compound into the leader you're becoming? Pick 4–6 daily reps and 1–2 weekly practices. The cap is the point — choosing means excluding.</div>
+      <div class="chapter-sub">Which of these, if you actually did them, would compound into the leader you're becoming? Pick 4–6 daily reps and 1–2 weekly practices. Most players want eight — you get six. The cut is the commitment.</div>
     </div>
     <div class="fade-up-d1" style="max-width:680px;margin:0 auto;">
       <label class="field-label" style="text-align:center;">Daily — <span id="dailyCount">0</span> of 4–6</label>
@@ -727,10 +786,10 @@ function renderPlaybook() {
 
       ${G.quad ? `
       <div class="syn-card"><div class="syn-kicker">Your four quadrants</div>
-        <div class="syn-body"><strong>Light.</strong> ${ed(G.quad.lightExpression)}<br><br>
-        <strong>Shadow.</strong> ${ed(G.quad.shadowIntegration)}<br><br>
-        <strong>Dark.</strong> ${ed(G.quad.darkReflection)}<br><br>
-        <strong>Source.</strong> ${ed(G.quad.sourceSymbol)}</div></div>` : ''}
+        <div class="syn-body"><strong>Light.</strong> ${ed(G.quad.lightExpression)}${quadEvidence('light')}<br>
+        <strong>Shadow.</strong> ${ed(G.quad.shadowIntegration)}${quadEvidence('shadow')}<br>
+        <strong>Dark.</strong> ${ed(G.quad.darkReflection)}${quadEvidence('dark')}<br>
+        <strong>Source.</strong> ${ed(G.quad.sourceSymbol)}${quadEvidence('source')}</div></div>` : ''}
 
       ${co ? `
       <div class="syn-card"><div class="syn-kicker">Coaching lens — what to work on</div>
@@ -758,6 +817,11 @@ function renderPlaybook() {
         ${G.personalised.map(p => `<div style="margin-bottom:.9rem;"><div class="syn-title">${esc(p.title)}</div><div class="syn-body">${ed(p.anchor)} ${ed(p.rep)}<br><em style="color:var(--magenta);">${ed(p.reinforce)}</em><br><span class="small-note">${esc(p.why_this_practice_for_you||'')}</span></div></div>`).join('')}
       </div>` : ''}
 
+      <div style="text-align:center;margin:1.6rem 0;">
+        <button class="btn-ghost" onclick="runLever()">Recalibrate — regenerate the whole playbook</button>
+        <button class="btn-ghost" style="margin-left:.6rem;" onclick="copyPlaybook(this)">Copy as text</button>
+      </div>
+
       <div class="syn-card" style="border-color:rgba(199,36,177,.5);text-align:center;" id="sendCard">
         <div class="syn-kicker">Keep this</div>
         <div class="syn-body" style="margin-bottom:.8rem;">Get the playbook in your inbox — plus a two-minute check-in in 30 days to see which reps actually happened.</div>
@@ -765,11 +829,21 @@ function renderPlaybook() {
         <div style="margin-top:.8rem;"><button class="btn-primary" id="sendBtn" onclick="sendPlaybook()">Email me my playbook</button></div>
         <div class="small-note" id="sendStatus" style="margin-top:.6rem;"></div>
       </div>
-      <div style="text-align:center;margin:1.6rem 0;">
-        <button class="btn-ghost" onclick="runLever()">Recalibrate — regenerate the whole playbook</button>
-        <button class="btn-ghost" style="margin-left:.6rem;" onclick="copyPlaybook(this)">Copy as text</button>
+
+      <!-- Peak-end: the experience closes on identity, never on a form -->
+      <div style="text-align:center;margin:2.8rem 0 1.2rem;" class="fade-up">
+        <div class="chapter-tag">Signed</div>
+        <div class="reveal-quest" style="font-size:clamp(1.5rem,4vw,2.3rem);"><span class="grad-text">${esc(G.coinedName)}</span></div>
+        <div class="small-note" style="margin-top:.7rem;line-height:1.8;">This is the playbook of ${esc(G.coinedName)}, composed by ${esc(G.playerName)}.<br>In 30 days, one question comes back. Until then — the reps.</div>
       </div>
     </div>`;
+}
+
+// Anti-Barnum: prompt0's evidence fields — which of the player's own inputs
+// each quadrant statement was derived from.
+function quadEvidence(key) {
+  const ev = G.quad && G.quad.evidence && G.quad.evidence[key];
+  return ev ? `<div class="small-note" style="margin:.25rem 0 .7rem;">How we know: ${esc(String(ev))}</div>` : '<br>';
 }
 
 window.sendPlaybook = async () => {
