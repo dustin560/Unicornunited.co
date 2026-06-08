@@ -36,6 +36,18 @@ input,textarea,select{font-family:'Sora',sans-serif;}
 .chapter-sub{font-size:.85rem;color:var(--mist);line-height:1.65;max-width:520px;margin:.8rem auto 0;}
 .narration{max-width:620px;margin:0 auto 1.2rem;background:rgba(123,47,190,.07);border:1px solid rgba(123,47,190,.18);border-left:2px solid var(--magenta);padding:1rem 1.2rem;font-size:.86rem;line-height:1.7;color:rgba(248,240,255,.82);border-radius:2px;}
 .gm-tag{font-size:.55rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--magenta);margin-bottom:.4rem;}
+.gm-row{display:flex;gap:.85rem;align-items:flex-start;max-width:640px;margin:0 auto 1.2rem;}
+.gm-av{flex:0 0 44px;width:44px;height:44px;border-radius:50%;background:radial-gradient(circle at 50% 40%,rgba(199,36,177,.25),rgba(123,47,190,.08));border:1px solid rgba(199,36,177,.35);display:flex;align-items:center;justify-content:center;margin-top:.1rem;}
+.gm-av svg{width:26px;height:26px;}
+.gm-core{transform-origin:center;}
+.gm-bubble{flex:1;background:rgba(123,47,190,.07);border:1px solid rgba(123,47,190,.18);border-left:2px solid var(--magenta);padding:.85rem 1.1rem;font-size:.86rem;line-height:1.7;color:rgba(248,240,255,.84);border-radius:2px;}
+.gm-av.welcoming{animation:gmPulse 2.6s ease-in-out infinite;}
+.gm-av.thinking .gm-core{animation:gmSpin 1.6s linear infinite;}
+.gm-av.delighted{animation:gmBounce 1.1s ease infinite;border-color:rgba(232,77,138,.7);background:radial-gradient(circle at 50% 40%,rgba(232,77,138,.4),rgba(199,36,177,.12));}
+.gm-av.grave{animation:none;border-color:rgba(91,79,214,.6);background:radial-gradient(circle at 50% 45%,rgba(91,79,214,.3),rgba(13,8,24,.4));}
+@keyframes gmPulse{0%,100%{box-shadow:0 0 0 0 rgba(199,36,177,.3);}50%{box-shadow:0 0 0 7px rgba(199,36,177,0);}}
+@keyframes gmSpin{to{transform:rotate(360deg);}}
+@keyframes gmBounce{0%,100%{transform:translateY(0);}40%{transform:translateY(-5px);}}
 .field-label{display:block;font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(248,240,255,.45);margin:1.2rem 0 .45rem;}
 .txt{width:100%;background:rgba(123,47,190,.07);border:1px solid rgba(123,47,190,.2);color:var(--white);font-size:.88rem;padding:.75rem .9rem;outline:none;border-radius:2px;}
 .txt:focus{border-color:rgba(199,36,177,.5);}
@@ -132,6 +144,21 @@ function show(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.r
 function setProgress(p){ el('progressFill').style.width = p + '%'; }
 function showLoading(t){ el('loadingText').textContent = t || 'One moment…'; el('loadingVeil').classList.add('on'); }
 function hideLoading(){ el('loadingVeil').classList.remove('on'); }
+
+// Game Master avatar — a visible character carrying the experience
+// (cross-product pattern: a guide figure with emotional states).
+// states: welcoming | thinking | delighted | grave
+function gmAvatar(state = 'welcoming') {
+  return `<div class="gm-av ${state}"><svg viewBox="0 0 28 28" fill="none">
+    <path class="gm-core" d="M14 3 L17.5 11 L25 11.5 L19 16.5 L21 24 L14 19.5 L7 24 L9 16.5 L3 11.5 L10.5 11 Z"
+      fill="url(#gmg)" stroke="rgba(248,240,255,.5)" stroke-width=".6" stroke-linejoin="round"/>
+    <defs><linearGradient id="gmg" x1="3" y1="24" x2="25" y2="3"><stop stop-color="#7B2FBE"/><stop offset="1" stop-color="#E84D8A"/></linearGradient></defs>
+  </svg></div>`;
+}
+function gmBlock(state, text) {
+  if (!text) return '';
+  return `<div class="gm-row fade-up">${gmAvatar(state)}<div class="gm-bubble"><div class="gm-tag">Game Master</div>${text}</div></div>`;
+}
 
 // Milestone beat — endowed progress made visible (chapter-complete feedback
 // reliably helps; per-question progress bars do not).
@@ -253,12 +280,16 @@ async function startQuick() {
 function runMirror() {
   setProgress(6);
   const C = G.content;
+  // Slimmed opening (research: the first interaction shapes completion most).
+  // Only what the AI needs to start narrating: name (have it) + vocation + context.
+  // Baseline/platforms/exemplar/anchors move to the post-reveal beat.
   el('gameArea').innerHTML = `
     <div class="chapter-header fade-up">
       <div class="chapter-tag">Chapter 1 — The Mirror</div>
       <div class="chapter-title">Where you're <span class="grad-text">starting from</span></div>
-      <div class="chapter-sub">A quick honest baseline. Everything here makes the rest of the game speak your language.</div>
+      <div class="chapter-sub">Two quick things, then we begin. This is so the game speaks your language, not generic leadership.</div>
     </div>
+    ${gmBlock('welcoming', `Good to meet you, ${esc(G.playerName)}. Before the work starts — what world are you showing up from?`)}
     <div class="fade-up-d1" style="max-width:560px;margin:0 auto;">
       <label class="field-label">What's the work context you're showing up from?</label>
       <div class="pick-row" id="vocRow">${C.vocations.map(v => `<button class="pick" data-v="${esc(v)}" onclick="pickVocation(this)">${esc(v)}</button>`).join('')}</div>
@@ -267,26 +298,8 @@ function runMirror() {
       <label class="field-label">One line of context — what are you building or leading right now?</label>
       <input class="txt" id="vocContext" placeholder="e.g. early-stage B2B SaaS, year 3, team of 12" maxlength="160">
 
-      <label class="field-label">Right now, are you active online about your work?</label>
-      <div class="pick-row">
-        ${[['regularly','Yes, regularly'],['occasionally','Yes, occasionally'],['trying_to_start','Trying to start'],['not_yet','Not yet']].map(([k,l]) => `<button class="pick" data-b="${k}" onclick="pickBaseline(this)">${l}</button>`).join('')}
-      </div>
-
-      <div id="platformBlock" style="display:none;">
-        <label class="field-label">Where do you mainly show up? (pick any)</label>
-        <div class="pick-row">${C.platforms.map(p => `<button class="pick" data-p="${esc(p)}" onclick="togglePlatform(this)">${esc(p)}</button>`).join('')}</div>
-      </div>
-
-      <label class="field-label">One piece of content — yours or someone else's — that feels closest to the you you want to be known as</label>
-      <textarea class="txt" id="exemplar" rows="2" maxlength="300" placeholder="Describe it, name it, or paste a link. Why does it feel like you?"></textarea>
-
-      <label class="field-label">Two things you do at the same time most days — your reliable anchors</label>
-      <input class="txt" id="anchor1" placeholder="e.g. first coffee before opening the laptop" maxlength="80">
-      <input class="txt" id="anchor2" placeholder="e.g. the walk home after work" maxlength="80" style="margin-top:.5rem;">
-      <p class="small-note" style="margin-top:.5rem;">We pin your daily practices to real routines — not invented ones.</p>
-
       <div style="text-align:center;margin-top:1.8rem;">
-        <button class="btn-primary" onclick="finishMirror()">Begin Chapter 2 →</button>
+        <button class="btn-primary" onclick="finishMirror()">Begin →</button>
       </div>
     </div>`;
 }
@@ -313,8 +326,6 @@ window.finishMirror = () => {
   if (other) G.mirror.vocation = other;
   if (!G.mirror.vocation) { el('vocOther').placeholder = 'Pick a context above, or type one here'; el('vocOther').focus(); return; }
   G.mirror.vocationContext = el('vocContext').value.trim();
-  G.mirror.exemplar = el('exemplar').value.trim();
-  G.mirror.anchors = [el('anchor1').value.trim(), el('anchor2').value.trim()].filter(Boolean);
   if (!G.mirror.baseline) G.mirror.baseline = 'not_yet';
   setProgress(14);
   milestone('Chapter 1 — The Mirror', runLight);
@@ -346,7 +357,7 @@ async function runLight() {
       <div class="chapter-title">What you <span class="grad-text">already embody</span></div>
       <div class="chapter-sub">Pick the words others would use about you on your best day. Pick 3–5.</div>
     </div>
-    ${intro ? `<div class="narration fade-up-d1"><div class="gm-tag">Game Master</div>${esc(intro)}</div>` : ''}
+    ${gmBlock('welcoming', esc(intro))}
     <div class="pick-row fade-up-d2" style="justify-content:center;max-width:700px;margin:0 auto;">
       ${LIGHT_WORDS.map(w => `<button class="pick" data-word="${esc(w)}" onclick="toggleLightWord(this)">${w}</button>`).join('')}
     </div>
@@ -386,7 +397,7 @@ async function runShadow() {
       <div class="chapter-title">What you <span class="grad-text">quiet down</span></div>
       <div class="chapter-sub">Three reflective prompts. Be honest — answers stay between you and the Game Master.</div>
     </div>
-    ${G.light.distilled ? `<div class="narration fade-up-d1"><div class="gm-tag">Game Master</div>${esc(G.light.distilled)}</div>` : ''}
+    ${gmBlock('thinking', esc(G.light.distilled))}
     <div style="max-width:620px;margin:1.2rem auto 0;display:flex;flex-direction:column;gap:1.1rem;" class="fade-up-d2">
       ${SHADOW_PROMPTS.map((p,i) => `
         <div>
@@ -416,7 +427,7 @@ async function runDark() {
       <div class="chapter-title">What others see <span class="grad-text">that you don't</span></div>
       <div class="chapter-sub">Three prompts about your blind-spot gifts. Three short answers.</div>
     </div>
-    ${G.shadow.distilled ? `<div class="narration fade-up-d1"><div class="gm-tag">Game Master</div>${esc(G.shadow.distilled)}</div>` : ''}
+    ${gmBlock('thinking', esc(G.shadow.distilled))}
     <div style="max-width:620px;margin:1.2rem auto 0;display:flex;flex-direction:column;gap:1.1rem;" class="fade-up-d2">
       ${DARK_PROMPTS.map((p,i) => `
         <div>
@@ -448,6 +459,7 @@ function renderDarkGift() {
       <div class="chapter-title">The gift others see <span class="grad-text">in you</span></div>
     </div>
     <div class="fade-up-d1" style="max-width:620px;margin:0 auto;">
+      ${gmBlock('grave', 'This is the hinge of the whole game. Most people undervalue exactly this.')}
       <div class="syn-card" style="border-color:rgba(199,36,177,.55);box-shadow:0 0 44px rgba(199,36,177,.14);">
         <div class="syn-kicker">Hold on to this</div>
         <div class="hook-line" style="font-size:1.02rem;">${esc(G.dark.distilled)}</div>
@@ -479,9 +491,9 @@ function renderQuestion() {
   const span = G.mode === 'quick' ? 40 : 18;
   setProgress(base + Math.round(span * (G.qIndex / qs.length)));
   const beat = G.qIndex === 0
-    ? `<div class="narration fade-up" style="margin-bottom:1.4rem;"><div class="gm-tag">Game Master</div>${qs.length} forced choices. Every option is true of someone — pick the one that's most you, at gut speed. There are no good answers, only honest ones.</div>`
+    ? gmBlock('welcoming', `${qs.length} forced choices. Every option is true of someone — pick the one that's most you, at gut speed. There are no good answers, only honest ones.`)
     : (G.mode === 'full' && G.qIndex === 5
-    ? `<div class="narration fade-up" style="margin-bottom:1.4rem;"><div class="gm-tag">Game Master</div>Halfway. A pattern is forming — and one of the remaining questions usually decides it.</div>` : '');
+    ? gmBlock('thinking', `Halfway. A pattern is forming — and one of the remaining questions usually decides it.`) : '');
   el('gameArea').innerHTML = `
     ${beat}
     <div class="chapter-header fade-up">
@@ -560,23 +572,51 @@ function revealEvidence(quest) {
   return `<div class="small-note" style="margin-top:.55rem;">Because you chose: ${ev.map(t => '“' + esc(t) + '”').join(' · ')}</div>`;
 }
 
-// Field 5 — deferred paste enrichment (after the reveal, when curiosity is high)
+// Deferred Mirror fields — collected AFTER the reveal, at peak investment
+// (research: openers shape completion; these only matter from here on).
 function runPasteEnrichment() {
   setProgress(63);
+  const C = G.content;
   el('gameArea').innerHTML = `
     <div class="chapter-header fade-up">
-      <div class="chapter-tag">Optional — 30 seconds</div>
-      <div class="chapter-title">Want the playbook to read <span class="grad-text">your actual voice?</span></div>
-      <div class="chapter-sub">LinkedIn and X won't let our reader in. Paste your bio or a recent post and the playbook will be built against how you already sound. Skip freely.</div>
+      <div class="chapter-tag">Now we tailor it to you</div>
+      <div class="chapter-title">A few things so the playbook is <span class="grad-text">yours, not generic</span></div>
+      <div class="chapter-sub">You've got your blend. These shape the coaching, the content plan, and the daily reps that come next.</div>
     </div>
     <div style="max-width:560px;margin:0 auto;" class="fade-up-d1">
-      <textarea class="txt" id="pasteBox" rows="5" maxlength="1500" placeholder="Your bio / about section, or a recent post you wrote…"></textarea>
-      <div style="text-align:center;margin-top:1.3rem;display:flex;gap:.8rem;justify-content:center;">
-        <button class="btn-primary" onclick="G.mirror.paste = el('pasteBox').value.trim(); runActivations();">Use this →</button>
-        <button class="btn-ghost" onclick="runActivations()">Skip</button>
+      <label class="field-label">Right now, are you active online about your work?</label>
+      <div class="pick-row">
+        ${[['regularly','Yes, regularly'],['occasionally','Yes, occasionally'],['trying_to_start','Trying to start'],['not_yet','Not yet']].map(([k,l]) => `<button class="pick" data-b="${k}" onclick="pickBaseline(this)">${l}</button>`).join('')}
+      </div>
+      <div id="platformBlock" style="display:none;">
+        <label class="field-label">Where do you mainly show up? (pick any)</label>
+        <div class="pick-row">${C.platforms.map(p => `<button class="pick" data-p="${esc(p)}" onclick="togglePlatform(this)">${esc(p)}</button>`).join('')}</div>
+      </div>
+
+      <label class="field-label">One piece of content — yours or someone else's — that feels closest to the you you want to be known as</label>
+      <textarea class="txt" id="exemplar" rows="2" maxlength="300" placeholder="Describe it, name it, or paste a link. Why does it feel like you?"></textarea>
+
+      <label class="field-label">Two things you do at the same time most days — your reliable anchors</label>
+      <input class="txt" id="anchor1" placeholder="e.g. first coffee before opening the laptop" maxlength="80">
+      <input class="txt" id="anchor2" placeholder="e.g. the walk home after work" maxlength="80" style="margin-top:.5rem;">
+      <p class="small-note" style="margin-top:.5rem;">We pin your daily practices to real routines — not invented ones.</p>
+
+      <label class="field-label">Optional — paste your bio or a recent post (so it reads your actual voice)</label>
+      <textarea class="txt" id="pasteBox" rows="3" maxlength="1500" placeholder="LinkedIn and X block our reader. Paste here and skip the rest if you like…"></textarea>
+
+      <div style="text-align:center;margin-top:1.5rem;">
+        <button class="btn-primary" onclick="finishEnrichment()">Build my playbook foundation →</button>
       </div>
     </div>`;
 }
+
+window.finishEnrichment = () => {
+  G.mirror.exemplar = el('exemplar').value.trim();
+  G.mirror.anchors = [el('anchor1').value.trim(), el('anchor2').value.trim()].filter(Boolean);
+  G.mirror.paste = el('pasteBox').value.trim();
+  if (!G.mirror.baseline) G.mirror.baseline = 'not_yet';
+  runActivations();
+};
 
 // ═══════════════════════════════════════
 // CHAPTER 6 — THE ACTIVATIONS (the commitment is the identity)
@@ -835,9 +875,73 @@ function renderPlaybook() {
         <div class="chapter-tag">Signed</div>
         <div class="reveal-quest" style="font-size:clamp(1.5rem,4vw,2.3rem);"><span class="grad-text">${esc(G.coinedName)}</span></div>
         <div class="small-note" style="margin-top:.7rem;line-height:1.8;">This is the playbook of ${esc(G.coinedName)}, composed by ${esc(G.playerName)}.<br>In 30 days, one question comes back. Until then — the reps.</div>
+        <canvas id="shareCanvas" width="1080" height="1920" style="display:none;"></canvas>
+        <div style="margin-top:1.2rem;display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap;">
+          <button class="btn-primary" onclick="downloadShareCard()">Get my identity card</button>
+          <button class="btn-ghost" onclick="runAllyShare()">Ask 3 people what they see</button>
+        </div>
+        <div class="small-note" id="shareStatus" style="margin-top:.6rem;"></div>
       </div>
     </div>`;
 }
+
+// ═══════════════════════════════════════
+// 9:16 SHAREABLE IDENTITY CARD (1080×1920, platform-native, zero-crop)
+// ═══════════════════════════════════════
+function wrapText(ctx, text, maxWidth) {
+  const words = String(text).split(' '); const lines = []; let line = '';
+  for (const w of words) { const test = line ? line + ' ' + w : w;
+    if (ctx.measureText(test).width > maxWidth && line) { lines.push(line); line = w; } else line = test; }
+  if (line) lines.push(line);
+  return lines;
+}
+function drawShareCard() {
+  const c = el('shareCanvas'), ctx = c.getContext('2d'), W = 1080, Hh = 1920;
+  // background
+  const g = ctx.createLinearGradient(0, 0, W, Hh);
+  g.addColorStop(0, '#1A0A2E'); g.addColorStop(0.5, '#170d2a'); g.addColorStop(1, '#0d0818');
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, Hh);
+  // glow
+  const rg = ctx.createRadialGradient(W/2, 560, 60, W/2, 560, 620);
+  rg.addColorStop(0, 'rgba(199,36,177,.22)'); rg.addColorStop(1, 'rgba(199,36,177,0)');
+  ctx.fillStyle = rg; ctx.fillRect(0, 0, W, 1200);
+  ctx.textAlign = 'center';
+  // kicker
+  ctx.fillStyle = 'rgba(248,240,255,.55)'; ctx.font = '600 30px Sora, sans-serif';
+  ctx.fillText('S T A R T   Y O U R   S T O R Y', W/2, 230);
+  // glyphs for the blend
+  const glyphs = ['◆','●','▲']; ctx.font = '700 64px Sora, sans-serif';
+  const b = G.finalBlend;
+  const gg = ctx.createLinearGradient(W/2-160, 0, W/2+160, 0); gg.addColorStop(0,'#7B2FBE'); gg.addColorStop(1,'#E84D8A');
+  ctx.fillStyle = gg; ctx.fillText(glyphs.join('    '), W/2, 470);
+  // coined name (the identity)
+  ctx.fillStyle = '#ffffff'; ctx.font = '800 96px Sora, sans-serif';
+  let y = 660; for (const ln of wrapText(ctx, G.coinedName, 920)) { ctx.fillText(ln, W/2, y); y += 108; }
+  // blend line
+  ctx.fillStyle = 'rgba(248,240,255,.6)'; ctx.font = '500 38px Sora, sans-serif';
+  ctx.fillText(`${b.primary} · ${b.secondary} · ${b.tertiary}`, W/2, y + 30);
+  // hook
+  ctx.fillStyle = 'rgba(248,240,255,.92)'; ctx.font = '600 46px Sora, sans-serif';
+  y += 150; for (const ln of wrapText(ctx, '“' + (G.hooks[b.primary]||'') + '”', 880)) { ctx.fillText(ln, W/2, y); y += 62; }
+  // one evidence line (specificity → close-tie shareability, anti-Barnum)
+  const ev = (G.evidence && G.evidence[b.primary] && G.evidence[b.primary][0]) || '';
+  if (ev) { ctx.fillStyle = 'rgba(199,36,177,.85)'; ctx.font = '500 32px Sora, sans-serif';
+    y += 60; for (const ln of wrapText(ctx, 'Because I chose: “' + ev + '”', 860)) { ctx.fillText(ln, W/2, y); y += 44; } }
+  // footer
+  ctx.fillStyle = 'rgba(248,240,255,.4)'; ctx.font = '500 30px Sora, sans-serif';
+  ctx.fillText('Composed by ' + G.playerName + ' · unicornunited.co', W/2, 1830);
+  return c;
+}
+window.downloadShareCard = () => {
+  try {
+    drawShareCard().toBlob(blob => {
+      const url = URL.createObjectURL(blob); const a = document.createElement('a');
+      a.href = url; a.download = `start-your-story-${(G.coinedName||'card').replace(/[^a-z0-9]+/gi,'-').toLowerCase()}.png`;
+      document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+      el('shareStatus').textContent = 'Saved — drop it on LinkedIn, Stories, anywhere.';
+    }, 'image/png');
+  } catch(e) { el('shareStatus').textContent = 'Card generation failed — your playbook email still has everything.'; }
+};
 
 // Anti-Barnum: prompt0's evidence fields — which of the player's own inputs
 // each quadrant statement was derived from.
@@ -875,6 +979,52 @@ window.sendPlaybook = async () => {
 window.copyPlaybook = btn => {
   const text = el('gameArea').innerText;
   navigator.clipboard.writeText(text).then(() => { btn.textContent = 'Copied ✓'; setTimeout(()=>btn.textContent='Copy playbook as text', 2000); });
+};
+
+// ═══════════════════════════════════════
+// ALLY SHARE (relatedness — the largest motivation effect; ported from v2)
+// Asks 3 people what they see in you; reuses /api/send-ally-share.
+// ═══════════════════════════════════════
+function runAllyShare() {
+  el('gameArea').innerHTML = `
+    <div class="chapter-header fade-up">
+      <div class="chapter-tag">One more move</div>
+      <div class="chapter-title">Ask the people who <span class="grad-text">see you clearly</span></div>
+      <div class="chapter-sub">The Dark quadrant — what others see that you don't — is the hinge of all this. Ask up to three people one question: what do they see in you at your best? Their answers come back to you.</div>
+    </div>
+    ${gmBlock('welcoming', `You can't see your own Dark gift from the inside. This is how you check it against the people who can.`)}
+    <div class="fade-up-d1" style="max-width:520px;margin:0 auto;">
+      <label class="field-label">Your email (so their replies reach you)</label>
+      <input class="txt" id="allyPlayerEmail" type="email" placeholder="you@yourwork.com">
+      ${[1,2,3].map(i => `
+        <label class="field-label">Person ${i}${i>1?' (optional)':''}</label>
+        <div style="display:flex;gap:.5rem;">
+          <input class="txt" id="allyName${i}" placeholder="Name" maxlength="40" style="flex:0 0 38%;">
+          <input class="txt" id="allyEmail${i}" type="email" placeholder="their@email.com" style="flex:1;">
+        </div>`).join('')}
+      <div style="text-align:center;margin-top:1.4rem;display:flex;gap:.7rem;justify-content:center;">
+        <button class="btn-primary" id="allyBtn" onclick="sendAllyShare()">Send the question</button>
+        <button class="btn-ghost" onclick="renderPlaybook()">← Back to playbook</button>
+      </div>
+      <div class="small-note" id="allyStatus" style="text-align:center;margin-top:.7rem;"></div>
+    </div>`;
+}
+
+window.sendAllyShare = async () => {
+  const playerEmail = el('allyPlayerEmail').value.trim();
+  const status = el('allyStatus');
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(playerEmail)) { status.textContent = 'Add your email so replies can reach you.'; return; }
+  const allies = [1,2,3].map(i => ({ name: el('allyName'+i).value.trim(), email: el('allyEmail'+i).value.trim() }))
+    .filter(a => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(a.email));
+  if (!allies.length) { status.textContent = 'Add at least one person to ask.'; return; }
+  el('allyBtn').disabled = true; status.textContent = 'Sending…';
+  try {
+    const res = await fetch('/api/send-ally-share', { method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ playerName: G.playerName, playerEmail, lockedQuest: { name: G.coinedName, quest: G.hooks[G.finalBlend.primary] || '' }, allies }) });
+    const data = await res.json();
+    if (data.error) { status.textContent = data.error; el('allyBtn').disabled = false; }
+    else { status.innerHTML = `<strong style="color:#fff;">Sent to ${allies.length} ${allies.length>1?'people':'person'} ✓</strong> — their replies come straight to your inbox.`; el('allyBtn').textContent = 'Sent ✓'; }
+  } catch(e) { status.textContent = 'Connection issue — try again.'; el('allyBtn').disabled = false; }
 };
 
 // ═══════════════════════════════════════
