@@ -298,7 +298,7 @@ footer{background:var(--ink);border-top:1px solid rgba(123,47,190,.1);padding:3.
 
 <!-- NAV -->
 <nav id="mainNav">
-  <a class='nav-logo' href='/'>
+  <a class='nav-logo' href="/">
     <svg class="nav-mark" viewBox="0 0 120 148" fill="none">
       <defs>
         <linearGradient id="nmg" x1="0" y1="148" x2="120" y2="0">
@@ -313,12 +313,13 @@ footer{background:var(--ink);border-top:1px solid rgba(123,47,190,.1);padding:3.
   </a>
   <ul class="nav-links">
     <li><a href="/#how-it-works">How It Works</a></li>
-    <li><a href="/#products">For Business</a></li>
-    <li><a href="#tiers">For Leaders</a></li>
+    <li><a href="/#products">Pricing</a></li>
+    <li><a class="active" href="/for-leaders">For Leaders</a></li>
     <li><a href="/ai">AI for Business</a></li>
+    <li><span class="nav-soon" style="font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(248,240,255,.3);cursor:default;display:inline-flex;align-items:center;gap:.4rem;white-space:nowrap;">Workbooks<span style="font-size:.5rem;font-weight:700;letter-spacing:.1em;padding:.15rem .4rem;border-radius:2px;background:rgba(199,36,177,.18);color:#f4a0c0;">Soon</span></span></li>
     <li><a href="https://start-your-story-production-75f3.up.railway.app" target="_blank">Start Your Story</a></li>
   </ul>
-  <a href="#" class="nav-cta" onclick="openContact();return false;">Let's Talk</a>
+  <a href="/#contact" class="nav-cta" onclick="if(window.openContact){openContact();return false;}">Let's Talk</a>
 </nav>
 
 <!-- HERO -->
@@ -701,11 +702,13 @@ footer{background:var(--ink);border-top:1px solid rgba(123,47,190,.1);padding:3.
     </div>
     <div class="footer-col">
       <h4>Unicorn</h4>
-      <ul class="footer-nav-list">
-        <li><a href="/">Brand for businesses</a></li>
-        <li><a href="/ai">AI for business</a></li>
+            <ul class="footer-nav-list">
+        <li><a href="/#how-it-works">How It Works</a></li>
+        <li><a href="/#products">Pricing</a></li>
+        <li><a href="/for-leaders">For Leaders</a></li>
+        <li><a href="/ai">AI for Business</a></li>
+        <li><span style="font-size:.82rem;color:rgba(248,240,255,.3);display:inline-flex;align-items:center;gap:.4rem;">Workbooks<span style="font-size:.5rem;font-weight:700;letter-spacing:.1em;padding:.1rem .35rem;border-radius:2px;background:rgba(199,36,177,.18);color:#f4a0c0;">Soon</span></span></li>
         <li><a href="https://start-your-story-production-75f3.up.railway.app" target="_blank">Start Your Story</a></li>
-        <li><a href="#" onclick="openContact();return false;">Let's talk</a></li>
       </ul>
     </div>
   </div>
