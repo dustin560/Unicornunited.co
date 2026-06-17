@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /workbooks
+Disallow: /proposals/
+
+Sitemap: https://unicornunited.co/sitemap.xml
