@@ -292,6 +292,23 @@ footer{background:var(--ink);border-top:1px solid rgba(123,47,190,.1);padding:3.
   .footer-grid{grid-template-columns:1fr;gap:32px;}
 }
 @media(max-width:560px){.quests-grid{grid-template-columns:1fr;}}
+
+/* ── MOBILE NAV (consistent across site) ── */
+.nav-burger{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;background:none;border:none;cursor:pointer;padding:7px;z-index:130;}
+.nav-burger span{display:block;height:2px;width:100%;background:#F8F0FF;border-radius:2px;transition:transform .3s,opacity .3s;}
+.nav-burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.nav-burger.open span:nth-child(2){opacity:0;}
+.nav-burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+@media(max-width:900px){
+  nav{justify-content:flex-start;}
+  .nav-burger{display:flex;}
+  .nav-cta{margin-left:auto;}
+  nav .nav-links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;align-items:flex-start;background:rgba(13,8,24,.98);border-bottom:1px solid rgba(123,47,190,.2);padding:.6rem 1.5rem 1.3rem;box-shadow:0 24px 40px rgba(0,0,0,.45);}
+  nav .nav-links.open{display:flex;}
+  nav .nav-links li{width:100%;padding:.6rem 0;border-bottom:1px solid rgba(123,47,190,.1);}
+  nav .nav-links li:last-child{border-bottom:none;}
+  nav .nav-links a,nav .nav-links .nav-soon{font-size:.95rem;}
+}
 </style>
 </head>
 <body>
@@ -320,6 +337,7 @@ footer{background:var(--ink);border-top:1px solid rgba(123,47,190,.1);padding:3.
     <li><a href="https://start-your-story-production-75f3.up.railway.app" target="_blank">Start Your Story</a></li>
   </ul>
   <a href="/#contact" class="nav-cta" onclick="if(window.openContact){openContact();return false;}">Let's Talk</a>
+  <button class="nav-burger" aria-label="Toggle menu" aria-expanded="false" onclick="toggleNav(this)"><span></span><span></span><span></span></button>
 </nav>
 
 <!-- HERO -->
@@ -815,6 +833,10 @@ function submitContact(e){
     document.getElementById('contactThanks').style.display='block';
   });
 }
+</script>
+<script>
+function toggleNav(btn){var ul=btn.closest('nav').querySelector('.nav-links');if(!ul)return;var open=ul.classList.toggle('open');btn.classList.toggle('open',open);btn.setAttribute('aria-expanded',open?'true':'false');}
+document.addEventListener('click',function(e){var n=document.querySelector('nav');if(!n||n.contains(e.target))return;var ul=n.querySelector('.nav-links.open');if(ul)ul.classList.remove('open');var b=n.querySelector('.nav-burger.open');if(b){b.classList.remove('open');b.setAttribute('aria-expanded','false');}});
 </script>
 </body>
 </html>
